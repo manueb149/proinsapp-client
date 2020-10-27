@@ -59,7 +59,7 @@ const Services = () => {
 
 	const handleSearch = async () => {
 		if(search.poliza.trim()!==''){
-			await axios.get(`http://localhost:8080/data/poliza/${search.poliza}`)
+			await axios.get(`https://young-retreat-94433.herokuapp.com/api/data/poliza/${search.poliza}`)
 				.then(res => {
 					setData({
 						poliza: res.data[0],
