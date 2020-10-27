@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import FileUpload from "../utils/fileUpload";
-import axios from "axios";
+// import axios from "axios";
+import axios from '../../http-common';
 
 const UploadFiles = () => {
 	const [selectedFiles, setSelectedFiles] = useState(undefined);

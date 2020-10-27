@@ -4,7 +4,8 @@ import { Button } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import { Typeahead } from "react-bootstrap-typeahead";
 import MapModal from './MapService';
-import axios from 'axios';
+// import axios from 'axios';
+import axios from '../../http-common';
 // import { Form, Button } from "react-bootstrap";
 
 const Services = () => {
@@ -59,7 +60,7 @@ const Services = () => {
 
 	const handleSearch = async () => {
 		if(search.poliza.trim()!==''){
-			await axios.get(`https://young-retreat-94433.herokuapp.com/api/data/poliza/${search.poliza}`)
+			await axios.get(`/data/poliza/${search.poliza}`)
 				.then(res => {
 					setData({
 						poliza: res.data[0],
