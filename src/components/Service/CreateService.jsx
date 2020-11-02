@@ -34,6 +34,7 @@ const Services = () => {
 		chassis: "",
 		placa: "",
 		tipoV: "",
+		color: "",
 		aseguradora: ""
 	});
 
@@ -59,22 +60,24 @@ const Services = () => {
 	}
 
 	const handleSearch = async () => {
-		if(search.poliza.trim()!==''){
-			await axios.get(`/data/poliza/${search.poliza}`)
-				.then(res => {
-					setData({
-						poliza: res.data[0],
-						asegurado: res.data[1],
-						marca: res.data[4],
-						modelo: res.data[5],
-						anio: res.data[6],
-						chassis: res.data[7],
-						placa: res.data[8],
-						tipoV: res.data[9],
-						aseguradora: " Seguros La Internacional"
-					})
-				})
-		}
+		// if(search.poliza.trim()!==''){
+		// 	await axios.get(`/data/poliza/${search.poliza}`)
+		// 		.then(res => {
+		// 			setData({
+		// 				poliza: res.data[0],
+		// 				asegurado: res.data[1],
+		// 				marca: res.data[4],
+		// 				modelo: res.data[5],
+		// 				anio: res.data[6],
+		// 				chassis: res.data[7],
+		// 				placa: res.data[8],
+		// 				tipoV: res.data[9],
+		// 				// color: res.data[10],
+		// 				aseguradora: "LA INTERNACIONAL",
+		// 				plan: "PLAN BASICO"
+		// 			})
+		// 		})
+		// }
 	}
 
 	return (
@@ -179,7 +182,7 @@ const Services = () => {
 							<label htmlFor="no-poliza">No. Póliza</label>
 							<input type="text" className="form-control form-control-sm" id="no-poliza" value={data.poliza} required disabled></input>
 						</div>
-						<div className="col-lg-2 mb-3">
+						<div className="col-lg-3 mb-3">
 							<label htmlFor="chassis">Chassis</label>
 							<input type="text" className="form-control form-control-sm" id="chassis" value={data.chassis} required disabled></input>
 						</div>
@@ -198,6 +201,10 @@ const Services = () => {
 					</div>
 					<div className="form-row">
 						<div className="col-lg-2 mb-3">
+							<label htmlFor="color">Color</label>
+							<input type="text" className="form-control form-control-sm" id="color" value={data.color} required disabled></input>
+						</div>
+						<div className="col-lg-1 mb-3">
 							<label htmlFor="anio">Año</label>
 							<input type="text" className="form-control form-control-sm" id="anio" value={data.anio} required disabled></input>
 						</div>
@@ -337,7 +344,7 @@ const Services = () => {
 						</div>
 						<div className="col-lg-2 mb-3">
 							<label htmlFor="precio">Precio Aproximado</label>
-							<input type="text" className="form-control form-control-sm" id="precio" placeholder="RD$ pesos " required></input>
+							<input type="text" className="form-control form-control-sm" id="precio" placeholder="RD$ Pesos " required></input>
 						</div>
 					</div>
 				</div>

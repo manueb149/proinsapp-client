@@ -1,11 +1,11 @@
-import http from '../../http-common';
+import axios from '../../http-common';
 
-const upload = (file, onUploadProgress) => {
+const upload = async (file, onUploadProgress) => {
   let formData = new FormData();
 
   formData.append("file", file);
 
-  return http.post("/upload", formData, {
+  return await axios.post("/file/upload", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -13,8 +13,8 @@ const upload = (file, onUploadProgress) => {
   });
 };
 
-const getFiles = () => {
-  return http.get("/files");
+const getFiles = async () => {
+  return await axios.get("/files");
 };
 
 export default {

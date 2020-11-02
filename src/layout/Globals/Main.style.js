@@ -16,7 +16,9 @@ export const MainContainer = styled.div`
     input.form-check-input.rad{
         margin-top: 0rem !important;
     }
-    
+    table.archivo.table{
+        margin-bottom: 0px;
+    }
     ::-webkit-scrollbar {
         width: 10px;  /* Remove scrollbar space */
         /* background-color: red;  Optional: just make scrollbar invisible */
