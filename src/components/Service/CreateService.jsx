@@ -5,7 +5,7 @@ import Modal from "react-bootstrap/Modal";
 import { Typeahead } from "react-bootstrap-typeahead";
 import MapModal from './MapService';
 // import axios from 'axios';
-import axios from '../../http-common';
+// import axios from '../../http-common';
 // import { Form, Button } from "react-bootstrap";
 
 const Services = () => {
@@ -22,9 +22,11 @@ const Services = () => {
 	const [singleSelection, setSingleSelection] = useState([]);
 	// eslint-disable-next-line
 	const [grueros, setGrueros] = useState(['Gruero1','Gruero2','Gruero3',,'Gruero4','Gruero5']);
+	// eslint-disable-next-line
 	const [search, setSearch] = useState({
 		SearchChoise: ""
 	});
+	// eslint-disable-next-line
 	const [data, setData] = useState({
 		poliza: "",
 		asegurado: "",

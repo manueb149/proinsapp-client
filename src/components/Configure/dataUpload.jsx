@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import FileUpload from "../utils/fileUpload";
-import { Table, Button } from "react-bootstrap";
-// import axios from "axios";
-import axios from "../../http-common";
+import { Table } from "react-bootstrap";
+import File from "./File";
 
 const UploadFiles = () => {
 	const [selectedFiles, setSelectedFiles] = useState(undefined);
@@ -10,33 +9,13 @@ const UploadFiles = () => {
 	const [progress, setProgress] = useState(0);
 	const [message, setMessage] = useState("");
 	const [fileInfos, setFileInfos] = useState([]);
-	const [isLoading, setLoading] = useState(false);
-	const [fileToLoad, setFileToLoad]= useState("")
+	const [updateList, setUpdateList] = useState(false);
 
 	useEffect(() => {
 		FileUpload.getFiles().then((response) => {
 			setFileInfos(response.data);
 		});
-		if(isLoading){
-			buttonLoading(fileToLoad);
-		}
-	}, [fileInfos, isLoading]);
-
-	const handleClick = (id) => {
-		setFileToLoad(id)
-		setLoading(true);
-	}
-	const buttonLoading = async (id) => {
-		await axios.post("/data/upload",{id})
-		.then(res => {
-			setMessage(res);
-			setLoading(false);
-		})
-		.catch(err => {
-			setMessage(err);
-			setLoading(false);
-		});
-	}
+	}, [updateList]);
 
 	const selectFile = (event) => {
 		setSelectedFiles(event.target.files);
@@ -47,23 +26,27 @@ const UploadFiles = () => {
 
 		setProgress(0);
 		setCurrentFile(file);
-
-		FileUpload.upload(file, (event) => {
-			setProgress(Math.round((100 * event.loaded) / event.total));
-		})
-			.then((response) => {
-				setMessage(response.data.message);
-				return FileUpload.getFiles();
+		try {
+			FileUpload.upload(file, (event) => {
+				setProgress(Math.round((100 * event.loaded) / event.total));
 			})
-			.then((files) => {
-				setFileInfos(files.data);
-			})
-			.catch(() => {
-				setProgress(0);
-				setMessage("Could not upload the file!");
-				setCurrentFile(undefined);
-			});
-
+				.then((response) => {
+					setMessage(response.data.message);
+					return FileUpload.getFiles();
+				})
+				.then((files) => {
+					setFileInfos(files.data);
+				})
+				.catch(() => {
+					setProgress(0);
+					setMessage(
+						"No se pudo cargar el archivo, verifique si ya esta cargado."
+					);
+					setCurrentFile(undefined);
+				});
+		} catch (err) {
+			console.log(err);
+		}
 		setSelectedFiles(undefined);
 	};
 
@@ -107,6 +90,7 @@ const UploadFiles = () => {
 						onClick={() => {
 							setCurrentFile(undefined);
 							setSelectedFiles(undefined);
+							setMessage("");
 						}}
 					>
 						ELIMINAR
@@ -127,30 +111,14 @@ const UploadFiles = () => {
 					<Table className="archivo" striped bordered hover>
 						<tbody>
 							{fileInfos &&
-								fileInfos.map((file, index) => (
-									<>
-										<tr>
-											<td>{file.name}</td>
-											<td className="text-center">
-												<Button
-													className="m-1"
-													variant="outline-info"
-													size="sm"
-													disabled={(file.status || isLoading) ? true : false }
-													onClick={!isLoading ? handleClick : null}
-												>
-													{isLoading ? "CARGANDO..." : "CARGAR"}
-												</Button>
-												<Button
-													className="m-1"
-													variant="outline-danger"
-													size="sm"
-												>
-													ELIMINAR
-												</Button>
-											</td>
-										</tr>
-									</>
+								fileInfos.map((file) => (
+									<File
+										file={file}
+										setMessage={setMessage}
+										key={file._id}
+										setUpdateList={setUpdateList}
+										updateList={updateList}
+									/>
 								))}
 						</tbody>
 					</Table>
