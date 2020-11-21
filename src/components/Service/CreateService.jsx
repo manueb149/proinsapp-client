@@ -25,7 +25,6 @@ const CreateService = () => {
 		"Gruero1",
 		"Gruero2",
 		"Gruero3",
-		,
 		"Gruero4",
 		"Gruero5",
 	]);
@@ -84,6 +83,7 @@ const CreateService = () => {
 	const handleSearch = async () => {
 		if (search.id.trim() === "" && search.type.trim() === "") return;
 		if (search.type === "codigo" || search.type === "cedula") return;
+		if (search.id.trim().toUpperCase() === "TRAMITE") return;
 		await axios
 			.get(`/data/${search.type}/${search.id}`)
 			.then((res) => {
@@ -375,7 +375,7 @@ const CreateService = () => {
 								required
 							>
 								<option defaultValue>
-									Elija un opción de búsqueda...
+									Elija una opción de búsqueda...
 								</option>
 								<option value={"poliza"}>Póliza</option>
 								<option value={"codigo"}>Código</option>
@@ -406,7 +406,7 @@ const CreateService = () => {
 								type="text"
 								className="form-control form-control-sm"
 								id="no-poliza"
-								value={data.poliza || ''}
+								value={data.poliza || ""}
 								disabled
 							></input>
 						</div>
@@ -416,7 +416,7 @@ const CreateService = () => {
 								type="text"
 								className="form-control form-control-sm"
 								id="chassis"
-								value={data.chassis || ''}
+								value={data.chassis || ""}
 								disabled
 							></input>
 						</div>
@@ -426,7 +426,7 @@ const CreateService = () => {
 								type="text"
 								className="form-control form-control-sm"
 								id="tipo"
-								value={data.tipoV || ''}
+								value={data.tipoV || ""}
 								disabled
 							></input>
 						</div>
@@ -436,7 +436,7 @@ const CreateService = () => {
 								type="text"
 								className="form-control form-control-sm"
 								id="marca"
-								value={data.marca || ''}
+								value={data.marca || ""}
 								disabled
 							></input>
 						</div>
@@ -446,7 +446,7 @@ const CreateService = () => {
 								type="text"
 								className="form-control form-control-sm"
 								id="modelo"
-								value={data.modelo || ''}
+								value={data.modelo || ""}
 								disabled
 							></input>
 						</div>
@@ -458,8 +458,8 @@ const CreateService = () => {
 								type="text"
 								className="form-control form-control-sm"
 								id="color"
-								value={data.color || ''}
-								disabled
+								// value={data.color || ''}
+								// disabled
 							></input>
 						</div>
 						<div className="col-lg-1 mb-3">
@@ -468,7 +468,7 @@ const CreateService = () => {
 								type="text"
 								className="form-control form-control-sm"
 								id="anio"
-								value={data.anio || ''}
+								value={data.anio || ""}
 								disabled
 							></input>
 						</div>
@@ -478,7 +478,7 @@ const CreateService = () => {
 								type="text"
 								className="form-control form-control-sm"
 								id="placa2"
-								value={data.placa || ''}
+								value={data.placa || ""}
 								disabled
 							></input>
 						</div>
@@ -488,7 +488,7 @@ const CreateService = () => {
 								type="text"
 								className="form-control form-control-sm"
 								id="aseg"
-								value={data.aseguradora || ''}
+								value={data.aseguradora || ""}
 								disabled
 							></input>
 						</div>
@@ -498,7 +498,7 @@ const CreateService = () => {
 								type="text"
 								className="form-control form-control-sm"
 								id="plan"
-								value={data.plan || ''}
+								value={data.plan || ""}
 								disabled
 							></input>
 						</div>
@@ -515,13 +515,13 @@ const CreateService = () => {
 								type="text"
 								className="form-control form-control-sm"
 								id="nombre"
-								value={data.asegurado || ''}
+								value={data.asegurado || ""}
 								required
 								disabled
 							></input>
 						</div>
 					</div>
-					<div className="form-row">
+					{/* <div className="form-row">
 						<div className="col-lg-12 mb-3">
 							<label htmlFor="direccion">Dirección</label>
 							<input
@@ -532,9 +532,9 @@ const CreateService = () => {
 								disabled
 							></input>
 						</div>
-					</div>
+					</div> */}
 					<div className="form-row">
-						<div className="col-lg-4 mb-3">
+						{/* <div className="col-lg-4 mb-3">
 							<label htmlFor="cedula2">Cédula</label>
 							<input
 								type="text"
@@ -543,7 +543,7 @@ const CreateService = () => {
 								required
 								disabled
 							></input>
-						</div>
+						</div> */}
 						<div className="col-lg-4 mb-3">
 							<label htmlFor="tel1">Teléfono 1</label>
 							<input
@@ -663,6 +663,16 @@ const CreateService = () => {
 								required
 								disabled
 							></input>
+						</div>
+					</div>
+					<div className="form-row">
+						<div className="col-lg-12 mb-3">
+							<label htmlFor="contacto">Comentarios</label>
+							<textarea
+								type="text"
+								className="form-control form-control-sm"
+								id="comentarioGrua"
+							></textarea>
 						</div>
 					</div>
 				</div>

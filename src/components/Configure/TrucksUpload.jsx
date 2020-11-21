@@ -12,7 +12,7 @@ const UploadFiles = () => {
 	const [updateList, setUpdateList] = useState(false);
 
 	useEffect(() => {
-		FileUpload.getFiles().then((response) => {
+		FileUpload.getTrucks().then((response) => {
 			setFileInfos(response.data);
 		});
 	}, [updateList]);
@@ -29,10 +29,10 @@ const UploadFiles = () => {
 		try {
 			FileUpload.upload(file, (event) => {
 				setProgress(Math.round((100 * event.loaded) / event.total));
-			},'files')
+			},'trucks')
 				.then((response) => {
 					setMessage(response.data.message);
-					return FileUpload.getFiles();
+					return FileUpload.getTrucks();
 				})
 				.then((files) => {
 					setFileInfos(files.data);
@@ -118,7 +118,7 @@ const UploadFiles = () => {
 										key={file._id}
 										setUpdateList={setUpdateList}
 										updateList={updateList}
-										type={'files'}
+										type={'trucks'}
 									/>
 								))}
 						</tbody>

@@ -2,13 +2,17 @@ import React, { Fragment, useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import axios from '../../http-common';
 
-const File = ({file, setMessage, updateList, setUpdateList}) => {
+/*
+	type: data -> cargar datos de las aseguradoras
+	type: truck -> cargar datos de los grueros
+*/
+const File = ({file, setMessage, updateList, setUpdateList, type}) => {
 
     const [isLoading, setLoading] = useState(false);
 
 	useEffect(() => {
 		if (isLoading) {
-            axios.post('/data/upload',{id: file._id})
+            axios.post(`/${type}/upload`, {id: file._id})
             .then( res => {
 				setMessage(res.data.message);
 				setLoading(false);
@@ -23,7 +27,7 @@ const File = ({file, setMessage, updateList, setUpdateList}) => {
     };
     
     const handleDelete = async () => {
-        await axios.delete(`/files/delete/${file._id}`)
+        await axios.delete(`/${type}/delete/${file._id}`)
         .then(res => {
 			setMessage(res.data.message)
 			setUpdateList(!updateList)
