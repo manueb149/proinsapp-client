@@ -3,7 +3,7 @@ import { navbarContext } from '../contexts/NavbarContext';
 import StartPage from '../components/Dashboard/Start';
 import CreateReportPage from '../components/Report/CreateReport';
 import CreateServicePage from '../components/Service/CreateService';
-import DataUploadPage from '../components/Configure/DataUploa';
+import DataUploadPage from '../components/Configure/DataUpload';
 import TrucksUploadPage from '../components/Configure/TrucksUpload';
 
 const DashboardPages = () => {
