@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import FileUpload from "../utils/fileUpload";
 import { Table } from "react-bootstrap";
 import File from "./File";
@@ -51,7 +51,7 @@ const UploadFiles = () => {
 	};
 
 	return (
-		<>
+		<Fragment>
 			<div className="card text-center">
 				<h2>
 					<span className="badge badge-secondary mt-2">
@@ -125,7 +125,7 @@ const UploadFiles = () => {
 					</Table>
 				</ul>
 			</div>
-		</>
+		</Fragment>
 	);
 };
 
