@@ -3,7 +3,7 @@ import FileUpload from "../utils/fileUpload";
 import { Table } from "react-bootstrap";
 import File from "./File";
 
-const UploadFiles = () => {
+const DataUpload = () => {
 	const [selectedFiles, setSelectedFiles] = useState(undefined);
 	const [currentFile, setCurrentFile] = useState(undefined);
 	const [progress, setProgress] = useState(0);
@@ -129,4 +129,4 @@ const UploadFiles = () => {
 	);
 };
 
-export default UploadFiles;
+export default DataUpload;
