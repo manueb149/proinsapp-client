@@ -10,7 +10,6 @@ const DashboardPages = () => {
 
     const NavbarContext = useContext(navbarContext);
     const { activeMenu, activeSubMenu } = NavbarContext;
-    // console.log(activeMenu);
 
     return (
         <div>
