@@ -93,7 +93,7 @@ const UploadFiles = () => {
 							setMessage("");
 						}}
 					>
-						ELIMINAR
+						LIMPIAR
 					</button>
 				</div>
 			</div>

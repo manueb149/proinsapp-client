@@ -22,4 +22,18 @@ export const CreateServiceContainer = styled.div`
     .form-check-input{
         margin-top: 0.2rem !important;
     }
+    button.close.rbt-close.rbt-token-remove-button{
+        padding: 0px;
+        top: 0px;
+        transform: translate(50%,32%);
+        -webkit-transform: translate(50%,32%);
+        -ms-transform: translate(50%,32%);
+        border-radius: 50%;
+        width: 13px;
+        height: 13px;
+    }
+    button.close{
+        line-height: 0.9;
+        color: white;
+    }
 `;

@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "react-bootstrap/Modal";
 
-const MapService = ({ showMap, setShowMap }) => {
+const MapModal = ({ showMap, setShowMap }) => {
 	return (
 		<Modal
 			show={showMap}
@@ -21,4 +21,4 @@ const MapService = ({ showMap, setShowMap }) => {
 	);
 };
 
-export default MapService;
+export default MapModal;

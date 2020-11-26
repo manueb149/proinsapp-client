@@ -17,8 +17,8 @@ const UploadFiles = () => {
 		});
 	}, [updateList]);
 
-	const selectFile = (event) => {
-		setSelectedFiles(event.target.files);
+	const selectFile = (e) => {
+		setSelectedFiles(e.target.files);
 	};
 
 	const upload = () => {
@@ -27,8 +27,8 @@ const UploadFiles = () => {
 		setProgress(0);
 		setCurrentFile(file);
 		try {
-			FileUpload.upload(file, (event) => {
-				setProgress(Math.round((100 * event.loaded) / event.total));
+			FileUpload.upload(file, (e) => {
+				setProgress(Math.round((100 * e.loaded) / e.total));
 			},'trucks')
 				.then((response) => {
 					setMessage(response.data.message);
@@ -93,7 +93,7 @@ const UploadFiles = () => {
 							setMessage("");
 						}}
 					>
-						ELIMINAR
+						LIMPIAR
 					</button>
 				</div>
 			</div>

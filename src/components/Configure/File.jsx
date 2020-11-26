@@ -8,11 +8,12 @@ import axios from '../../http-common';
 */
 const File = ({file, setMessage, updateList, setUpdateList, type}) => {
 
+	const typeData = (type === 'files') ? 'data' : 'trucksData';
     const [isLoading, setLoading] = useState(false);
 
 	useEffect(() => {
 		if (isLoading) {
-            axios.post(`/${type}/upload`, {id: file._id})
+            axios.post(`/${typeData}/upload`, {id: file._id})
             .then( res => {
 				setMessage(res.data.message);
 				setLoading(false);

@@ -1,39 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CreateServiceContainer } from "../../layout/Service/Service.style";
 import { Button } from "react-bootstrap";
-import Modal from "react-bootstrap/Modal";
 import { Typeahead } from "react-bootstrap-typeahead";
-import MapModal from "./MapService";
-// import axios from 'axios';
+import "react-bootstrap-typeahead/css/Typeahead.css";
+import MapModal from "./MapModal";
+import DetailsModal from "./DetailsModal";
+import TypesModal from "./TypesModal";
 import axios from "../../http-common";
-// import { Form, Button } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 
 const CreateService = () => {
 	const [showType, setShowType] = useState(false);
-	const handleCloseType = () => setShowType(false);
-	const handleShowType = () => setShowType(true);
-
 	const [showDetail, setShowDetail] = useState(false);
-	const handleCloseDetail = () => setShowDetail(false);
-	const handleShowDetail = () => setShowDetail(true);
-
 	const [showMap, setShowMap] = useState(false);
+	const [truckAreas, setTruckAreas] = useState([]);
+	const [trucks, setTrucks] = useState([]);
 
 	const [singleSelection, setSingleSelection] = useState([]);
-	// eslint-disable-next-line
-	const [grueros, setGrueros] = useState([
-		"Gruero1",
-		"Gruero2",
-		"Gruero3",
-		"Gruero4",
-		"Gruero5",
-	]);
-	// eslint-disable-next-line
+	const [multiSelections, setMultiSelections] = useState([]);
+
 	const [search, setSearch] = useState({
 		id: "",
-		type: "",
+		type: "poliza", //Default value: póliza
 	});
-	// eslint-disable-next-line
+
 	const [data, setData] = useState({
 		poliza: "",
 		asegurado: "",
@@ -46,6 +36,16 @@ const CreateService = () => {
 		color: "",
 		aseguradora: "",
 		plan: "",
+		ubicacion: "",
+		destino: "",
+		direccionGruero: "",
+		telGruero: "",
+		contactoGruero: "",
+		comentarioGruero: "",
+		tiempoGrua: "",
+		tiempoCliente: "",
+		distancia: "",
+		precio: ""
 	});
 
 	const [servicesType, setServiceType] = useState({
@@ -60,12 +60,6 @@ const CreateService = () => {
 		Check18: false,
 		Check19: false,
 	});
-	const handleServiceTypeCk = (e) => {
-		setServiceType({
-			...servicesType,
-			[e.target.id]: !servicesType[e.target.id],
-		});
-	};
 
 	const [detailSinister, setDetailSinister] = useState({
 		Check20: false,
@@ -73,6 +67,56 @@ const CreateService = () => {
 		Check22: false,
 		Check23: false,
 	});
+
+	useEffect(() => {
+		const getTrucksAreas = async () => {
+			await axios
+				.get("/trucksData/areas")
+				.then((res) => setTruckAreas(res.data.areas))
+				.catch((err) => console.log(err));
+		};
+		getTrucksAreas();
+	}, []);
+
+	useEffect(() => {
+		const getTrucks = async () => {
+			await axios
+				.post("/trucksData", {region: multiSelections[0] || ""})
+				.then(res => setTrucks(res.data))
+				.catch( err => console.log(err));
+		}
+		getTrucks();
+	}, [multiSelections]);
+
+	useEffect(() => {
+		const setGrueroData = () => {
+			setData({
+				...data,
+				direccionGruero: singleSelection[0].direccion || "",
+				telGruero: singleSelection[0].telOficina || "",
+				contactoGruero: singleSelection[0].contacto || "",
+			});
+		}
+		if(singleSelection[0]){
+			setGrueroData()
+		}else{
+			setData({
+				...data,
+				direccionGruero: "",
+				telGruero: "",
+				contactoGruero: "",
+			});
+		}
+	// eslint-disable-next-line 
+	}, [singleSelection])
+
+	const handleServiceTypeCk = (e) => {
+		setServiceType({
+			...servicesType,
+			[e.target.id]: !servicesType[e.target.id],
+		});
+	};
+
 	const handleDetailCk = (e) => {
 		setDetailSinister({
 			...detailSinister,
@@ -88,6 +132,7 @@ const CreateService = () => {
 			.get(`/data/${search.type}/${search.id}`)
 			.then((res) => {
 				setData({
+					...data,
 					poliza: res.data.poliza,
 					asegurado: res.data.asegurado,
 					marca: res.data.marca,
@@ -108,232 +153,32 @@ const CreateService = () => {
 
 	return (
 		<CreateServiceContainer>
-			<Modal show={showType} onHide={handleCloseType}>
-				<Modal.Header closeButton>
-					<Modal.Title>Tipos de servicios</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>
-					<div className="form-row">
-						<div className="form-group form-check">
-							<input
-								type="checkbox"
-								className="form-check-input"
-								id="Check10"
-								checked={servicesType.Check10}
-								onChange={handleServiceTypeCk}
-							></input>
-							<label
-								className="form-check-label"
-								htmlFor="Check10"
-							>
-								Transporte on Grúa
-							</label>
-							<br></br>
-							<input
-								type="checkbox"
-								className="form-check-input"
-								id="Check11"
-								checked={servicesType.Check11}
-								onChange={handleServiceTypeCk}
-							></input>
-							<label
-								className="form-check-label"
-								htmlFor="Check11"
-							>
-								Extracción
-							</label>
-							<br></br>
-							<input
-								type="checkbox"
-								className="form-check-input"
-								id="Check12"
-								checked={servicesType.Check12}
-								onChange={handleServiceTypeCk}
-							></input>
-							<label
-								className="form-check-label"
-								htmlFor="Check12"
-							>
-								Cerrageria
-							</label>
-							<br></br>
-							<input
-								type="checkbox"
-								className="form-check-input"
-								id="Check13"
-								checked={servicesType.Check13}
-								onChange={handleServiceTypeCk}
-							></input>
-							<label
-								className="form-check-label"
-								htmlFor="Check13"
-							>
-								Cambio de Gomas
-							</label>
-							<br></br>
-							<input
-								type="checkbox"
-								className="form-check-input"
-								id="Check14"
-								checked={servicesType.Check14}
-								onChange={handleServiceTypeCk}
-							></input>
-							<label
-								className="form-check-label"
-								htmlFor="Check14"
-							>
-								Corriente y Encendido
-							</label>
-							<br></br>
-							<input
-								type="checkbox"
-								className="form-check-input"
-								id="Check15"
-								checked={servicesType.Check15}
-								onChange={handleServiceTypeCk}
-							></input>
-							<label
-								className="form-check-label"
-								htmlFor="Check15"
-							>
-								Suministros y Gasolina
-							</label>
-							<br></br>
-							<input
-								type="checkbox"
-								className="form-check-input"
-								id="Check16"
-								checked={servicesType.Check16}
-								onChange={handleServiceTypeCk}
-							></input>
-							<label
-								className="form-check-label"
-								htmlFor="Check16"
-							>
-								Peaje
-							</label>
-							<br></br>
-							<input
-								type="checkbox"
-								className="form-check-input"
-								id="Check17"
-								checked={servicesType.Check17}
-								onChange={handleServiceTypeCk}
-							></input>
-							<label
-								className="form-check-label"
-								htmlFor="Check17"
-							>
-								Transporte on Grúa
-							</label>
-							<br></br>
-							<input
-								type="checkbox"
-								className="form-check-input"
-								id="Check18"
-								checked={servicesType.Check18}
-								onChange={handleServiceTypeCk}
-							></input>
-							<label
-								className="form-check-label"
-								htmlFor="Check18"
-							>
-								Ext. Peso
-							</label>
-							<br></br>
-							<input
-								type="checkbox"
-								className="form-check-input"
-								id="Check19"
-								checked={servicesType.Check19}
-								onChange={handleServiceTypeCk}
-							></input>
-							<label
-								className="form-check-label"
-								htmlFor="Check19"
-							>
-								Sub. Loma
-							</label>
-							<br></br>
-						</div>
-					</div>
-				</Modal.Body>
-			</Modal>
-
-			<Modal show={showDetail} onHide={handleCloseDetail}>
-				<Modal.Header closeButton>
-					<Modal.Title>Detalle Siniestro</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>
-					<div className="form-row">
-						<div className="form-group form-check">
-							<input
-								type="checkbox"
-								className="form-check-input"
-								id="Check20"
-								checked={detailSinister.Check20}
-								onChange={handleDetailCk}
-							></input>
-							<label
-								className="form-check-label"
-								htmlFor="Check20"
-							>
-								Volcadura
-							</label>
-							<br></br>
-							<input
-								type="checkbox"
-								className="form-check-input"
-								id="Check21"
-								checked={detailSinister.Check21}
-								onChange={handleDetailCk}
-							></input>
-							<label
-								className="form-check-label"
-								htmlFor="Check21"
-							>
-								Incedios
-							</label>
-							<br></br>
-							<input
-								type="checkbox"
-								className="form-check-input"
-								id="Check22"
-								checked={detailSinister.Check22}
-								onChange={handleDetailCk}
-							></input>
-							<label
-								className="form-check-label"
-								htmlFor="Check22"
-							>
-								Colision
-							</label>
-							<br></br>
-							<input
-								type="checkbox"
-								className="form-check-input"
-								id="Check23"
-								checked={detailSinister.Check23}
-								onChange={handleDetailCk}
-							></input>
-							<label
-								className="form-check-label"
-								htmlFor="Check23"
-							>
-								Volcadura
-							</label>
-							<br></br>
-						</div>
-					</div>
-				</Modal.Body>
-			</Modal>
-
+			<TypesModal
+				showType={showType}
+				setShowType={setShowType}
+				servicesType={servicesType}
+				handleServiceTypeCk={handleServiceTypeCk}
+			/>
+			<DetailsModal
+				showDetail={showDetail}
+				setShowDetail={setShowDetail}
+				detailSinister={detailSinister}
+				handleDetailCk={handleDetailCk}
+			/>
 			<MapModal showMap={showMap} setShowMap={setShowMap} />
 
-			<Button variant="primary" size="sm" onClick={handleShowType}>
+			<Button
+				variant="primary"
+				size="sm"
+				onClick={() => setShowType(true)}
+			>
 				Tipos de servicios
 			</Button>
-			<Button variant="primary" size="sm" onClick={handleShowDetail}>
+			<Button
+				variant="primary"
+				size="sm"
+				onClick={() => setShowDetail(true)}
+			>
 				Detalles siniestro
 			</Button>
 			<Button
@@ -374,10 +219,9 @@ const CreateService = () => {
 								}
 								required
 							>
-								<option defaultValue>
-									Elija una opción de búsqueda...
+								<option value={"poliza"} defaultValue>
+									Póliza
 								</option>
-								<option value={"poliza"}>Póliza</option>
 								<option value={"codigo"}>Código</option>
 								<option value={"cedula"}>Cédula</option>
 								<option value={"placa"}>Placa</option>
@@ -458,7 +302,12 @@ const CreateService = () => {
 								type="text"
 								className="form-control form-control-sm"
 								id="color"
-								// value={data.color || ''}
+								// name="color"
+								onChange={(e) => setData({
+									...data,
+									color: e.target.value.toUpperCase()
+								})}
+								value={data.color}
 								// disabled
 							></input>
 						</div>
@@ -577,6 +426,13 @@ const CreateService = () => {
 								type="text"
 								className="form-control form-control-sm"
 								id="ubicacion"
+								onChange={(e) => {
+									setData({
+										...data,
+										ubicacion: e.target.value.toUpperCase()
+									})
+								}}
+								value={data.ubicacion}
 								required
 							></input>
 						</div>
@@ -586,6 +442,13 @@ const CreateService = () => {
 								type="text"
 								className="form-control form-control-sm"
 								id="destino"
+								onChange={(e) => {
+									setData({
+										...data,
+										destino: e.target.value.toUpperCase()
+									})
+								}}
+								value={data.destino}
 								required
 							></input>
 						</div>
@@ -596,12 +459,50 @@ const CreateService = () => {
 				<div className="card-header">Datos Grúa</div>
 				<div className="card-body">
 					<div className="form-row">
+						<div className="col-lg-12 col-md-12 col-sm-12 mb-3">
+							<Form.Group
+								style={{
+									marginTop: "2px",
+									marginBottom: "2px",
+								}}
+							>
+								<Form.Label>Seleccionar Area</Form.Label>
+								<Typeahead
+									id="basic-typeahead-multiple"
+									labelKey="name"
+									multiple
+									onChange={setMultiSelections}
+									options={truckAreas}
+									placeholder="Escriba el area de cobertura"
+									selected={multiSelections}
+									size={"small"}
+								/>
+							</Form.Group>
+						</div>
+						<div className="col-lg-12 col-md-12 col-sm-12 mb-3">
+							<label htmlFor="gruerosSelect">
+								Seleccionar gruero
+							</label>
+							<Typeahead
+								id="basic-typeahead-single"
+								labelKey="gruaDeServicio"
+								onChange={setSingleSelection}
+								options={trucks}
+								placeholder="Escriba el nombre del gruero"
+								selected={singleSelection}
+								// maxResults={2}
+								// positionFixed={true}
+								size={"small"}
+							/>
+						</div>
+					</div>
+					{/* <div className="form-row">
 						<div className="col-lg-2 mb-3">
 							<label htmlFor="nombre1">Nombre</label>
 							<input
 								type="text"
 								className="form-control form-control-sm"
-								id="nombre1"
+								id="nombreGruero"
 								required
 								disabled
 							></input>
@@ -616,30 +517,15 @@ const CreateService = () => {
 								disabled
 							></input>
 						</div>
-						<div className="col-md-6 mb-3">
-							<label htmlFor="gruerosSelect">
-								Seleccionar gruero
-							</label>
-							<Typeahead
-								id="basic-typeahead-single"
-								labelKey="gruerosSelect"
-								onChange={setSingleSelection}
-								options={grueros}
-								placeholder="Escriba el nombre del gruero"
-								selected={singleSelection}
-								maxResults={2}
-								positionFixed={true}
-								size={"small"}
-							/>
-						</div>
-					</div>
+					</div> */}
 					<div className="form-row">
 						<div className="col-lg-7 mb-3">
 							<label htmlFor="direccion2">Dirección</label>
 							<textarea
 								type="text"
 								className="form-control form-control-sm"
-								id="direccion2"
+								id="direccionGruero"
+								value={data.direccionGruero}
 								required
 								disabled
 							></textarea>
@@ -649,7 +535,8 @@ const CreateService = () => {
 							<input
 								type="text"
 								className="form-control form-control-sm"
-								id="tel-grua"
+								id="telGruero"
+								value={data.telGruero}
 								required
 								disabled
 							></input>
@@ -659,7 +546,8 @@ const CreateService = () => {
 							<input
 								type="text"
 								className="form-control form-control-sm"
-								id="contacto"
+								id="contactoGruero"
+								value={data.contactoGruero}
 								required
 								disabled
 							></input>
@@ -671,7 +559,14 @@ const CreateService = () => {
 							<textarea
 								type="text"
 								className="form-control form-control-sm"
-								id="comentarioGrua"
+								id="comentarioGruero"
+								onChange={(e) => {
+									setData({
+										...data,
+										comentarioGruero: e.target.value.toUpperCase()
+									})
+								}}
+								value={data.comentarioGruero}
 							></textarea>
 						</div>
 					</div>
@@ -737,6 +632,13 @@ const CreateService = () => {
 								className="form-control form-control-sm"
 								id="timepoLlegada"
 								placeholder="Minutos"
+								onChange={(e) => {
+									setData({
+										...data,
+										tiempoGrua: e.target.value.toUpperCase()
+									})
+								}}
+								value={data.tiempoGrua}
 								required
 							></input>
 						</div>
@@ -749,6 +651,13 @@ const CreateService = () => {
 								className="form-control form-control-sm"
 								id="timepoLlegadaCliente"
 								placeholder="Minutos"
+								onChange={(e) => {
+									setData({
+										...data,
+										tiempoCliente: e.target.value.toUpperCase()
+									})
+								}}
+								value={data.tiempoCliente}
 								required
 							></input>
 						</div>
@@ -759,6 +668,13 @@ const CreateService = () => {
 								className="form-control form-control-sm"
 								id="distancia"
 								placeholder="Kilómentros"
+								onChange={(e) => {
+									setData({
+										...data,
+										distancia: e.target.value.toUpperCase()
+									})
+								}}
+								value={data.distancia}
 								required
 							></input>
 						</div>
@@ -768,7 +684,14 @@ const CreateService = () => {
 								type="text"
 								className="form-control form-control-sm"
 								id="precio"
-								placeholder="RD$ Pesos "
+								placeholder="RD$ Pesos"
+								onChange={(e) => {
+									setData({
+										...data,
+										precio: e.target.value.toUpperCase()
+									})
+								}}
+								value={data.precio}
 								required
 							></input>
 						</div>
