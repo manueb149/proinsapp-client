@@ -13,45 +13,45 @@ const DetailsModal = ({ showDetail, setShowDetail, detailSinister, handleDetailC
 						<input
 							type="checkbox"
 							className="form-check-input"
-							id="Check20"
-							checked={detailSinister.Check20}
+							id="Volcadura"
+							checked={detailSinister.Volcadura}
 							onChange={handleDetailCk}
 						></input>
-						<label className="form-check-label" htmlFor="Check20">
+						<label className="form-check-label" htmlFor="Volcadura">
 							Volcadura
 						</label>
 						<br></br>
 						<input
 							type="checkbox"
 							className="form-check-input"
-							id="Check21"
-							checked={detailSinister.Check21}
+							id="Incedios"
+							checked={detailSinister.Incedios}
 							onChange={handleDetailCk}
 						></input>
-						<label className="form-check-label" htmlFor="Check21">
+						<label className="form-check-label" htmlFor="Incedios">
 							Incedios
 						</label>
 						<br></br>
 						<input
 							type="checkbox"
 							className="form-check-input"
-							id="Check22"
-							checked={detailSinister.Check22}
+							id="Colision"
+							checked={detailSinister.Colision}
 							onChange={handleDetailCk}
 						></input>
-						<label className="form-check-label" htmlFor="Check22">
-							Colision
+						<label className="form-check-label" htmlFor="Colision">
+							Colisión
 						</label>
 						<br></br>
 						<input
 							type="checkbox"
 							className="form-check-input"
-							id="Check23"
-							checked={detailSinister.Check23}
+							id="Danios"
+							checked={detailSinister.Danios}
 							onChange={handleDetailCk}
 						></input>
-						<label className="form-check-label" htmlFor="Check23">
-							Volcadura
+						<label className="form-check-label" htmlFor="Danios">
+							Daños Mecánicos
 						</label>
 						<br></br>
 					</div>

@@ -36,4 +36,14 @@ export const CreateServiceContainer = styled.div`
         line-height: 0.9;
         color: white;
     }
+    .MuiIconButton-root.MuiIconButton-root{
+        transform: translate(5%,20%);
+        border-radius: 50%
+    }
+    button.MuiIconButton-root.MuiIconButton-root:hover{
+        background-color: rgba(0,0,0,0.4);
+    }
+    button.MuiButtonBase-root.MuiIconButton-root{
+        background-color: rgba(0,0,0,0.1);
+    }
 `;

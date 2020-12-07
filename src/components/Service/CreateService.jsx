@@ -6,8 +6,10 @@ import "react-bootstrap-typeahead/css/Typeahead.css";
 import MapModal from "./MapModal";
 import DetailsModal from "./DetailsModal";
 import TypesModal from "./TypesModal";
+import ConfirmModal from "../utils/ConfirmModal";
 import axios from "../../http-common";
 import { Form } from "react-bootstrap";
+import SnackBar from "../utils/SnackBar";
 
 const CreateService = () => {
 	const [showType, setShowType] = useState(false);
@@ -15,9 +17,16 @@ const CreateService = () => {
 	const [showMap, setShowMap] = useState(false);
 	const [truckAreas, setTruckAreas] = useState([]);
 	const [trucks, setTrucks] = useState([]);
+	const [severity, setSeverity] = useState("info");
+	const [notification, setNotification] = useState("");
+
+	const [showConfirm, setShowConfirm] = useState(false);
+    const closeConfirm = () => setShowConfirm(false);
 
 	const [singleSelection, setSingleSelection] = useState([]);
 	const [multiSelections, setMultiSelections] = useState([]);
+
+	const [openSB, setOpenSB] = React.useState(false);
 
 	const [search, setSearch] = useState({
 		id: "",
@@ -26,6 +35,7 @@ const CreateService = () => {
 
 	const [data, setData] = useState({
 		poliza: "",
+		cedula: "",
 		asegurado: "",
 		marca: "",
 		modelo: "",
@@ -40,32 +50,33 @@ const CreateService = () => {
 		destino: "",
 		direccionGruero: "",
 		telGruero: "",
+		celGruero: "",
 		contactoGruero: "",
 		comentarioGruero: "",
+		dia: "",
 		tiempoGrua: "",
 		tiempoCliente: "",
 		distancia: "",
-		precio: ""
+		precio: "",
 	});
 
 	const [servicesType, setServiceType] = useState({
-		Check10: false,
-		Check11: false,
-		Check12: false,
-		Check13: false,
-		Check14: false,
-		Check15: false,
-		Check16: false,
-		Check17: false,
-		Check18: false,
-		Check19: false,
+		TranGrua: false,
+		Extraccion: false,
+		Cerrageria: false,
+		CambioGomas: false,
+		CorrienteEncendido: false,
+		SuministrosGasolina: false,
+		Peaje: false,
+		ExtPeso: false,
+		SubLoma: false,
 	});
 
 	const [detailSinister, setDetailSinister] = useState({
-		Check20: false,
-		Check21: false,
-		Check22: false,
-		Check23: false,
+		Volcadura: false,
+		Incedios: false,
+		Colision: false,
+		Danios: false,
 	});
 
 	useEffect(() => {
@@ -81,10 +92,10 @@ const CreateService = () => {
 	useEffect(() => {
 		const getTrucks = async () => {
 			await axios
-				.post("/trucksData", {region: multiSelections[0] || ""})
-				.then(res => setTrucks(res.data))
-				.catch( err => console.log(err));
-		}
+				.post("/trucksData", { region: multiSelections[0] || "" })
+				.then((res) => setTrucks(res.data))
+				.catch((err) => console.log(err));
+		};
 		getTrucks();
 	}, [multiSelections]);
 
@@ -94,21 +105,23 @@ const CreateService = () => {
 				...data,
 				direccionGruero: singleSelection[0].direccion || "",
 				telGruero: singleSelection[0].telOficina || "",
+				celGruero: singleSelection[0].telCelular || "",
 				contactoGruero: singleSelection[0].contacto || "",
 			});
-		}
-		if(singleSelection[0]){
-			setGrueroData()
-		}else{
+		};
+		if (singleSelection[0]) {
+			setGrueroData();
+		} else {
 			setData({
 				...data,
 				direccionGruero: "",
 				telGruero: "",
+				celGruero: "",
 				contactoGruero: "",
 			});
 		}
-	// eslint-disable-next-line 
-	}, [singleSelection])
+		// eslint-disable-next-line
+	}, [singleSelection]);
 
 	const handleServiceTypeCk = (e) => {
 		setServiceType({
@@ -124,35 +137,117 @@ const CreateService = () => {
 		});
 	};
 
+	const handleOpenSB = () => {
+		setOpenSB(true);
+	};
+
+	const handleCloseSB = (event, reason) => {
+		if (reason === "clickaway") {
+			return;
+		}
+		setOpenSB(false);
+	};
+
+	// const handleCreateService = async () => {
+	// 	if (
+	// 		String(data.asegurado).length === 0 ||
+	// 		String(data.dia).length === 0 ||
+	// 		String(data.ubicacion).length === 0 ||
+	// 		String(data.destino).length === 0 ||
+	// 		Number(data.tiempoGrua) === 0 ||
+	// 		Number(data.tiempoCliente) === 0 ||
+	// 		Number(data.distancia) === 0 ||
+	// 		Number(data.precio) === 0 ||
+	// 		singleSelection.length === 0 ||
+	// 		multiSelections.length === 0
+	// 	) {
+	// 		setOpenSB(false);
+	// 		setSeverity("warning");
+	// 		setNotification("Faltan campos por completar!");
+	// 		setOpenSB(true);
+	// 		return;
+	// 	} else {
+	// 		await axios
+	// 			.post("/service/create", {
+	// 				data,
+	// 				singleSelection,
+	// 				multiSelections,
+	// 				detailSinister,
+	// 				servicesType,
+	// 			})
+	// 			.then((res) => {
+	// 				console.log(res);
+	// 				setOpenSB(false);
+	// 				setSeverity("success");
+	// 				setNotification("Servicio Registrado!");
+	// 				setOpenSB(true);
+	// 			})
+	// 			.catch((err) => console.log(err));
+	// 	}
+	// };
+
 	const handleSearch = async () => {
-		if (search.id.trim() === "" && search.type.trim() === "") return;
-		if (search.type === "codigo" || search.type === "cedula") return;
-		if (search.id.trim().toUpperCase() === "TRAMITE") return;
-		await axios
-			.get(`/data/${search.type}/${search.id}`)
-			.then((res) => {
-				setData({
-					...data,
-					poliza: res.data.poliza,
-					asegurado: res.data.asegurado,
-					marca: res.data.marca,
-					modelo: res.data.modelo,
-					anio: res.data.anio,
-					chassis: res.data.chassis,
-					placa: res.data.placa,
-					tipoV: res.data.tipoVehiculo,
-					// color: res.data[10],
-					aseguradora: res.data.aseguradora,
-					plan: res.data.plan,
+		if (search.id.trim() === "" || search.type.trim() === "") {
+			return;
+		} else if (search.type === "codigo") {
+			return;
+		} else if (search.id.trim().toUpperCase() === "TRAMITE") {
+			return;
+		} else {
+			await axios
+				.get(`/data/${search.type}/${search.id}`)
+				.then((res) => {
+					setData({
+						...data,
+						poliza: res.data.poliza,
+						cedula: res.data.cedula,
+						asegurado: res.data.asegurado,
+						marca: res.data.marca,
+						modelo: res.data.modelo,
+						anio: res.data.anio,
+						chassis: res.data.chassis,
+						placa: res.data.placa,
+						tipoV: res.data.tipoVehiculo,
+						aseguradora: res.data.aseguradora,
+						plan: res.data.plan,
+					});
+				})
+				.catch((err) => {
+					console.log(err.response.data.message);
+					setOpenSB(false);
+					setSeverity("error");
+					setNotification(err.response.data.message);
+					setOpenSB(true);
 				});
-			})
-			.catch((err) => {
-				console.log(err.response.data.message);
-			});
+		}
 	};
 
 	return (
 		<CreateServiceContainer>
+			<ConfirmModal 
+				message={{title: "Guardar Servicio", body: "Está seguro que desea guardar este registro?"}}
+				showConfirm={showConfirm}
+				closeConfirm={closeConfirm}
+				setOpenSB={setOpenSB}
+				setSeverity={setSeverity}
+				setNotification={setNotification}
+				payload= {{
+					data,
+					singleSelection,
+					multiSelections,
+					detailSinister,
+					servicesType,
+				}}
+			/>
+
+			<SnackBar
+				severity={severity}
+				notification={notification}
+				openSB={openSB}
+				handleOpenSB={handleOpenSB}
+				handleCloseSB={handleCloseSB}
+			/>
+
 			<TypesModal
 				showType={showType}
 				setShowType={setShowType}
@@ -188,10 +283,14 @@ const CreateService = () => {
 			>
 				Mostrar Mapa
 			</Button>
-			<Button variant="primary" size="sm">
+			<Button 
+				variant="primary"
+				size="sm"
+				onClick={() => setShowConfirm(true)}
+			>
 				Guardar
 			</Button>
-
+		
 			<div className="card c-search mb-2">
 				<div className="card-header">Búsqueda</div>
 				<div className="card-body">
@@ -303,10 +402,12 @@ const CreateService = () => {
 								className="form-control form-control-sm"
 								id="color"
 								// name="color"
-								onChange={(e) => setData({
-									...data,
-									color: e.target.value.toUpperCase()
-								})}
+								onChange={(e) =>
+									setData({
+										...data,
+										color: e.target.value.toUpperCase(),
+									})
+								}
 								value={data.color}
 								// disabled
 							></input>
@@ -370,29 +471,7 @@ const CreateService = () => {
 							></input>
 						</div>
 					</div>
-					{/* <div className="form-row">
-						<div className="col-lg-12 mb-3">
-							<label htmlFor="direccion">Dirección</label>
-							<input
-								type="text"
-								className="form-control form-control-sm"
-								id="direccion"
-								required
-								disabled
-							></input>
-						</div>
-					</div> */}
 					<div className="form-row">
-						{/* <div className="col-lg-4 mb-3">
-							<label htmlFor="cedula2">Cédula</label>
-							<input
-								type="text"
-								className="form-control form-control-sm"
-								id="cedula2"
-								required
-								disabled
-							></input>
-						</div> */}
 						<div className="col-lg-4 mb-3">
 							<label htmlFor="tel1">Teléfono 1</label>
 							<input
@@ -429,8 +508,8 @@ const CreateService = () => {
 								onChange={(e) => {
 									setData({
 										...data,
-										ubicacion: e.target.value.toUpperCase()
-									})
+										ubicacion: e.target.value.toUpperCase(),
+									});
 								}}
 								value={data.ubicacion}
 								required
@@ -445,8 +524,8 @@ const CreateService = () => {
 								onChange={(e) => {
 									setData({
 										...data,
-										destino: e.target.value.toUpperCase()
-									})
+										destino: e.target.value.toUpperCase(),
+									});
 								}}
 								value={data.destino}
 								required
@@ -496,30 +575,8 @@ const CreateService = () => {
 							/>
 						</div>
 					</div>
-					{/* <div className="form-row">
-						<div className="col-lg-2 mb-3">
-							<label htmlFor="nombre1">Nombre</label>
-							<input
-								type="text"
-								className="form-control form-control-sm"
-								id="nombreGruero"
-								required
-								disabled
-							></input>
-						</div>
-						<div className="col-lg-4 mb-3">
-							<label htmlFor="gruero">Gruero</label>
-							<input
-								type="text"
-								className="form-control form-control-sm"
-								id="gruero"
-								required
-								disabled
-							></input>
-						</div>
-					</div> */}
 					<div className="form-row">
-						<div className="col-lg-7 mb-3">
+						<div className="col-lg-5 mb-3">
 							<label htmlFor="direccion2">Dirección</label>
 							<textarea
 								type="text"
@@ -537,6 +594,17 @@ const CreateService = () => {
 								className="form-control form-control-sm"
 								id="telGruero"
 								value={data.telGruero}
+								required
+								disabled
+							></input>
+						</div>
+						<div className="col-lg-2 mb-3">
+							<label htmlFor="tel-grua">Cel:</label>
+							<input
+								type="text"
+								className="form-control form-control-sm"
+								id="celGruero"
+								value={data.celGruero}
 								required
 								disabled
 							></input>
@@ -563,8 +631,8 @@ const CreateService = () => {
 								onChange={(e) => {
 									setData({
 										...data,
-										comentarioGruero: e.target.value.toUpperCase()
-									})
+										comentarioGruero: e.target.value.toUpperCase(),
+									});
 								}}
 								value={data.comentarioGruero}
 							></textarea>
@@ -584,6 +652,12 @@ const CreateService = () => {
 									type="radio"
 									id="inlineRad1"
 									value="DN"
+									onChange={(e) => {
+										setData({
+											...data,
+											dia: e.target.value,
+										});
+									}}
 								></input>
 								<label
 									className="form-check-label"
@@ -599,6 +673,12 @@ const CreateService = () => {
 									type="radio"
 									id="inlineRad2"
 									value="DF"
+									onChange={(e) => {
+										setData({
+											...data,
+											dia: e.target.value,
+										});
+									}}
 								></input>
 								<label
 									className="form-check-label"
@@ -614,6 +694,12 @@ const CreateService = () => {
 									type="radio"
 									id="inlineRad3"
 									value="N"
+									onChange={(e) => {
+										setData({
+											...data,
+											dia: e.target.value,
+										});
+									}}
 								></input>
 								<label
 									className="form-check-label"
@@ -628,15 +714,15 @@ const CreateService = () => {
 								Tiempo de llegada Grúa
 							</label>
 							<input
-								type="text"
+								type="number"
 								className="form-control form-control-sm"
 								id="timepoLlegada"
 								placeholder="Minutos"
 								onChange={(e) => {
 									setData({
 										...data,
-										tiempoGrua: e.target.value.toUpperCase()
-									})
+										tiempoGrua: Number(e.target.value),
+									});
 								}}
 								value={data.tiempoGrua}
 								required
@@ -647,15 +733,15 @@ const CreateService = () => {
 								Tiempo de llegada Cliente
 							</label>
 							<input
-								type="text"
+								type="number"
 								className="form-control form-control-sm"
 								id="timepoLlegadaCliente"
 								placeholder="Minutos"
 								onChange={(e) => {
 									setData({
 										...data,
-										tiempoCliente: e.target.value.toUpperCase()
-									})
+										tiempoCliente: Number(e.target.value),
+									});
 								}}
 								value={data.tiempoCliente}
 								required
@@ -664,15 +750,15 @@ const CreateService = () => {
 						<div className="col-lg-2 mb-3">
 							<label htmlFor="distancia">Distancia</label>
 							<input
-								type="text"
+								type="number"
 								className="form-control form-control-sm"
 								id="distancia"
 								placeholder="Kilómentros"
 								onChange={(e) => {
 									setData({
 										...data,
-										distancia: e.target.value.toUpperCase()
-									})
+										distancia: Number(e.target.value),
+									});
 								}}
 								value={data.distancia}
 								required
@@ -681,15 +767,15 @@ const CreateService = () => {
 						<div className="col-lg-2 mb-3">
 							<label htmlFor="precio">Precio Aproximado</label>
 							<input
-								type="text"
+								type="number"
 								className="form-control form-control-sm"
 								id="precio"
 								placeholder="RD$ Pesos"
 								onChange={(e) => {
 									setData({
 										...data,
-										precio: e.target.value.toUpperCase()
-									})
+										precio: Number(e.target.value),
+									});
 								}}
 								value={data.precio}
 								required

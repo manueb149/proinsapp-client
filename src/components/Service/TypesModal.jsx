@@ -13,110 +13,99 @@ const TypesService = ({ showType, setShowType, servicesType, handleServiceTypeCk
 						<input
 							type="checkbox"
 							className="form-check-input"
-							id="Check10"
-							checked={servicesType.Check10}
+							id="TranGrua"
+							checked={servicesType.TranGrua}
 							onChange={handleServiceTypeCk}
 						></input>
-						<label className="form-check-label" htmlFor="Check10">
-							Transporte on Grúa
+						<label className="form-check-label" htmlFor="TranGrua">
+							Transporte con Grúa
 						</label>
 						<br></br>
 						<input
 							type="checkbox"
 							className="form-check-input"
-							id="Check11"
-							checked={servicesType.Check11}
+							id="Extraccion"
+							checked={servicesType.Extraccion}
 							onChange={handleServiceTypeCk}
 						></input>
-						<label className="form-check-label" htmlFor="Check11">
+						<label className="form-check-label" htmlFor="Extraccion">
 							Extracción
 						</label>
 						<br></br>
 						<input
 							type="checkbox"
 							className="form-check-input"
-							id="Check12"
-							checked={servicesType.Check12}
+							id="Cerrageria"
+							checked={servicesType.Cerrageria}
 							onChange={handleServiceTypeCk}
 						></input>
-						<label className="form-check-label" htmlFor="Check12">
-							Cerrageria
+						<label className="form-check-label" htmlFor="Cerrageria">
+							Cerragería
 						</label>
 						<br></br>
 						<input
 							type="checkbox"
 							className="form-check-input"
-							id="Check13"
-							checked={servicesType.Check13}
+							id="CambioGomas"
+							checked={servicesType.CambioGomas}
 							onChange={handleServiceTypeCk}
 						></input>
-						<label className="form-check-label" htmlFor="Check13">
+						<label className="form-check-label" htmlFor="CambioGomas">
 							Cambio de Gomas
 						</label>
 						<br></br>
 						<input
 							type="checkbox"
 							className="form-check-input"
-							id="Check14"
-							checked={servicesType.Check14}
+							id="CorrienteEncendido"
+							checked={servicesType.CorrienteEncendido}
 							onChange={handleServiceTypeCk}
 						></input>
-						<label className="form-check-label" htmlFor="Check14">
+						<label className="form-check-label" htmlFor="CorrienteEncendido">
 							Corriente y Encendido
 						</label>
 						<br></br>
 						<input
 							type="checkbox"
 							className="form-check-input"
-							id="Check15"
-							checked={servicesType.Check15}
+							id="SuministrosGasolina"
+							checked={servicesType.SuministrosGasolina}
 							onChange={handleServiceTypeCk}
 						></input>
-						<label className="form-check-label" htmlFor="Check15">
+						<label className="form-check-label" htmlFor="SuministrosGasolina">
 							Suministros y Gasolina
 						</label>
 						<br></br>
 						<input
 							type="checkbox"
 							className="form-check-input"
-							id="Check16"
-							checked={servicesType.Check16}
+							id="Peaje"
+							checked={servicesType.Peaje}
 							onChange={handleServiceTypeCk}
 						></input>
-						<label className="form-check-label" htmlFor="Check16">
+						<label className="form-check-label" htmlFor="Peaje">
 							Peaje
 						</label>
 						<br></br>
 						<input
 							type="checkbox"
 							className="form-check-input"
-							id="Check17"
-							checked={servicesType.Check17}
+							id="ExtPeso"
+							checked={servicesType.ExtPeso}
 							onChange={handleServiceTypeCk}
 						></input>
-						<label className="form-check-label" htmlFor="Check17">
-							Transporte on Grúa
-						</label>
-						<br></br>
-						<input
-							type="checkbox"
-							className="form-check-input"
-							id="Check18"
-							checked={servicesType.Check18}
-							onChange={handleServiceTypeCk}
-						></input>
-						<label className="form-check-label" htmlFor="Check18">
+						<label className="form-check-label" htmlFor="ExtPeso">
 							Ext. Peso
 						</label>
 						<br></br>
 						<input
 							type="checkbox"
 							className="form-check-input"
-							id="Check19"
-							checked={servicesType.Check19}
+							id="SubLoma"
+							checked={servicesType.SubLoma}
 							onChange={handleServiceTypeCk}
 						></input>
-						<label className="form-check-label" htmlFor="Check19">
+						<label className="form-check-label" htmlFor="SubLoma">
 							Sub. Loma
 						</label>
 						<br></br>
