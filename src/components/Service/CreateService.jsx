@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { serviceDataContext } from '../../contexts/ServiceDataContext';
 import { CreateServiceContainer } from "../../layout/Service/Service.style";
 import { Button } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
@@ -12,72 +13,36 @@ import { Form } from "react-bootstrap";
 import SnackBar from "../utils/SnackBar";
 
 const CreateService = () => {
+
 	const [showType, setShowType] = useState(false);
 	const [showDetail, setShowDetail] = useState(false);
 	const [showMap, setShowMap] = useState(false);
-	const [truckAreas, setTruckAreas] = useState([]);
-	const [trucks, setTrucks] = useState([]);
-	const [severity, setSeverity] = useState("info");
-	const [notification, setNotification] = useState("");
-
 	const [showConfirm, setShowConfirm] = useState(false);
-    const closeConfirm = () => setShowConfirm(false);
+	const [openSB, setOpenSB] = useState(false);
 
-	const [singleSelection, setSingleSelection] = useState([]);
-	const [multiSelections, setMultiSelections] = useState([]);
-
-	const [openSB, setOpenSB] = React.useState(false);
-
-	const [search, setSearch] = useState({
-		id: "",
-		type: "poliza", //Default value: póliza
-	});
-
-	const [data, setData] = useState({
-		poliza: "",
-		cedula: "",
-		asegurado: "",
-		marca: "",
-		modelo: "",
-		anio: "",
-		chassis: "",
-		placa: "",
-		tipoV: "",
-		color: "",
-		aseguradora: "",
-		plan: "",
-		ubicacion: "",
-		destino: "",
-		direccionGruero: "",
-		telGruero: "",
-		celGruero: "",
-		contactoGruero: "",
-		comentarioGruero: "",
-		dia: "",
-		tiempoGrua: "",
-		tiempoCliente: "",
-		distancia: "",
-		precio: "",
-	});
-
-	const [servicesType, setServiceType] = useState({
-		TranGrua: false,
-		Extraccion: false,
-		Cerrageria: false,
-		CambioGomas: false,
-		CorrienteEncendido: false,
-		SuministrosGasolina: false,
-		Peaje: false,
-		ExtPeso: false,
-		SubLoma: false,
-	});
-
-	const [detailSinister, setDetailSinister] = useState({
-		Volcadura: false,
-		Incedios: false,
-		Colision: false,
-		Danios: false,
-	});
+	const ServiceDataContext = useContext(serviceDataContext);
+	const { 				
+		data,
+		search, 
+		servicesType,
+		detailSinister,
+		trucks, 
+		truckAreas, 
+		dataTrucks, 
+		areaTruckSelect, 
+		severity, 
+		notification,
+		setData,
+		setSearch,
+		setServiceType,
+		setDetailSinister,
+		setTrucks,
+		setTruckAreas,
+		setDataTrucks,
+		SetAreaTruckSelect,
+		setSeverity,
+		setNotification, 
+	} = ServiceDataContext;
 
 	useEffect(() => {
 		const getTrucksAreas = async () => {
@@ -87,29 +52,31 @@ const CreateService = () => {
 				.catch((err) => console.log(err));
 		};
 		getTrucksAreas();
+	// eslint-disable-next-line
 	}, []);
 
 	useEffect(() => {
 		const getTrucks = async () => {
 			await axios
-				.post("/trucksData", { region: multiSelections[0] || "" })
+				.post("/trucksData", { region: areaTruckSelect[0] || "" })
 				.then((res) => setTrucks(res.data))
 				.catch((err) => console.log(err));
 		};
 		getTrucks();
-	}, [multiSelections]);
+	// eslint-disable-next-line
+	}, [areaTruckSelect]);
 
 	useEffect(() => {
 		const setGrueroData = () => {
 			setData({
 				...data,
-				direccionGruero: singleSelection[0].direccion || "",
-				telGruero: singleSelection[0].telOficina || "",
-				celGruero: singleSelection[0].telCelular || "",
-				contactoGruero: singleSelection[0].contacto || "",
+				direccionGruero: dataTrucks[0].direccion || "",
+				telGruero: dataTrucks[0].telOficina || "",
+				celGruero: dataTrucks[0].telCelular || "",
+				contactoGruero: dataTrucks[0].contacto || "",
 			});
 		};
-		if (singleSelection[0]) {
+		if (dataTrucks[0]) {
 			setGrueroData();
 		} else {
 			setData({
@@ -121,7 +88,7 @@ const CreateService = () => {
 			});
 		}
 		// eslint-disable-next-line
-	}, [singleSelection]);
+	}, [dataTrucks]);
 
 	const handleServiceTypeCk = (e) => {
 		setServiceType({
@@ -137,54 +104,12 @@ const CreateService = () => {
 		});
 	};
 
-	const handleOpenSB = () => {
-		setOpenSB(true);
-	};
-
 	const handleCloseSB = (event, reason) => {
 		if (reason === "clickaway") {
 			return;
 		}
 		setOpenSB(false);
 	};
-
-	// const handleCreateService = async () => {
-	// 	if (
-	// 		String(data.asegurado).length === 0 ||
-	// 		String(data.dia).length === 0 ||
-	// 		String(data.ubicacion).length === 0 ||
-	// 		String(data.destino).length === 0 ||
-	// 		Number(data.tiempoGrua) === 0 ||
-	// 		Number(data.tiempoCliente) === 0 ||
-	// 		Number(data.distancia) === 0 ||
-	// 		Number(data.precio) === 0 ||
-	// 		singleSelection.length === 0 ||
-	// 		multiSelections.length === 0
-	// 	) {
-	// 		setOpenSB(false);
-	// 		setSeverity("warning");
-	// 		setNotification("Faltan campos por completar!");
-	// 		setOpenSB(true);
-	// 		return;
-	// 	} else {
-	// 		await axios
-	// 			.post("/service/create", {
-	// 				data,
-	// 				singleSelection,
-	// 				multiSelections,
-	// 				detailSinister,
-	// 				servicesType,
-	// 			})
-	// 			.then((res) => {
-	// 				console.log(res);
-	// 				setOpenSB(false);
-	// 				setSeverity("success");
-	// 				setNotification("Servicio Registrado!");
-	// 				setOpenSB(true);
-	// 			})
-	// 			.catch((err) => console.log(err));
-	// 	}
-	// };
 
 	const handleSearch = async () => {
 		if (search.id.trim() === "" || search.type.trim() === "") {
@@ -211,6 +136,8 @@ const CreateService = () => {
 						aseguradora: res.data.aseguradora,
 						plan: res.data.plan,
 					});
+					setDataTrucks([]);
+					SetAreaTruckSelect([]);
 				})
 				.catch((err) => {
 					console.log(err.response.data.message);
@@ -227,14 +154,14 @@ const CreateService = () => {
 			<ConfirmModal 
 				message={{title: "Guardar Servicio", body: "Está seguro que desea guardar este registro?"}}
 				showConfirm={showConfirm}
-				closeConfirm={closeConfirm}
+				closeConfirm={() => setShowConfirm(false)}
 				setOpenSB={setOpenSB}
 				setSeverity={setSeverity}
 				setNotification={setNotification}
 				payload= {{
 					data,
-					singleSelection,
-					multiSelections,
+					dataTrucks,
+					areaTruckSelect,
 					detailSinister,
 					servicesType,
 				}}
@@ -244,7 +171,7 @@ const CreateService = () => {
 				severity={severity}
 				notification={notification}
 				openSB={openSB}
-				handleOpenSB={handleOpenSB}
+				handleOpenSB={() => setOpenSB(true)}
 				handleCloseSB={handleCloseSB}
 			/>
 
@@ -300,6 +227,7 @@ const CreateService = () => {
 								type="text"
 								className="form-control form-control-sm"
 								id="SearchChoise"
+								value={search.id || ""}
 								onChange={(e) =>
 									setSearch({ ...search, id: e.target.value })
 								}
@@ -550,10 +478,10 @@ const CreateService = () => {
 									id="basic-typeahead-multiple"
 									labelKey="name"
 									multiple
-									onChange={setMultiSelections}
+									onChange={SetAreaTruckSelect}
 									options={truckAreas}
 									placeholder="Escriba el area de cobertura"
-									selected={multiSelections}
+									selected={areaTruckSelect}
 									size={"small"}
 								/>
 							</Form.Group>
@@ -565,10 +493,10 @@ const CreateService = () => {
 							<Typeahead
 								id="basic-typeahead-single"
 								labelKey="gruaDeServicio"
-								onChange={setSingleSelection}
+								onChange={setDataTrucks}
 								options={trucks}
 								placeholder="Escriba el nombre del gruero"
-								selected={singleSelection}
+								selected={dataTrucks}
 								// maxResults={2}
 								// positionFixed={true}
 								size={"small"}
@@ -652,6 +580,7 @@ const CreateService = () => {
 									type="radio"
 									id="inlineRad1"
 									value="DN"
+									checked={data.dia==="DN" ? true : false}
 									onChange={(e) => {
 										setData({
 											...data,
@@ -673,6 +602,7 @@ const CreateService = () => {
 									type="radio"
 									id="inlineRad2"
 									value="DF"
+									checked={data.dia==="DF" ? true : false}
 									onChange={(e) => {
 										setData({
 											...data,
@@ -694,6 +624,7 @@ const CreateService = () => {
 									type="radio"
 									id="inlineRad3"
 									value="N"
+									checked={data.dia==="N" ? true : false}
 									onChange={(e) => {
 										setData({
 											...data,

@@ -5,11 +5,9 @@ import Default from "./DefaultIndex";
 import Navbar from "./Navbar";
 // Import context for dropdown menu
 import NavbarContext from '../contexts/NavbarContext';
-import PagesContext from '../contexts/PagesContext';
+import ServiceDataContext from '../contexts/ServiceDataContext';
 // Default container styled-component
 import DefaultContainer from "../layout/Globals/Container.style";
-// Se importa Main, aquí debe ir una fnción que muestre el main según onClink del sidebar
-// import Start from '../components/Dashboard/Start';
 import Pages from './DashboardPages';
 
 const Dashboard = () => {
@@ -18,7 +16,7 @@ const Dashboard = () => {
 			<div className="container-fluid">
 				<Default.Header />
 				<div className="row">
-					<PagesContext>
+					<ServiceDataContext>
 						<NavbarContext>
 							<Default.Sidebar>
 								<Navbar />
@@ -27,7 +25,7 @@ const Dashboard = () => {
 								<Pages />
 							</Default.Main>
 						</NavbarContext>
-					</PagesContext>
+					</ServiceDataContext>
 				</div>
 			</div>
 		</DefaultContainer>

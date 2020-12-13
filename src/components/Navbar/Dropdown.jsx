@@ -34,7 +34,7 @@ const Dropdown = () => {
                 </DropdownItem>
 
                 <DropdownItem leftIcon={"fa fa-cogs"} goToMenu="config">
-                    Cargar Datos
+                    Configuración
                 </DropdownItem>
 
                 <DropdownItem leftIcon={"fas fa-toggle-off"} goToMenu="main">
@@ -48,6 +48,7 @@ const Dropdown = () => {
                 </DropdownItem>
                 <DropdownItem subMenu={'create'} leftIcon={'fas fa-plus'}>Crear Solicitud</DropdownItem>
                 <DropdownItem subMenu={'print'} leftIcon={'fas fa-print'}>Imprimir Solicitud</DropdownItem>
+                <DropdownItem subMenu={'summary'} leftIcon={'fas fa-calculator'}>Resumen</DropdownItem>
             </DropdownSub>
 
             <DropdownSub menu={'report'} type={'secondary'} >
@@ -62,10 +63,10 @@ const Dropdown = () => {
                 <DropdownItem goToMenu="main" leftIcon={"fas fa-arrow-left"}>
                     Regresar
                 </DropdownItem>
-                <DropdownItem subMenu={'upload'} leftIcon={"fas fa-table"}>Aseguradora</DropdownItem>
+                <DropdownItem subMenu={'files'} leftIcon={"fas fa-table"}>Aseguradoras</DropdownItem>
                 <DropdownItem subMenu={'trucks'} leftIcon={"fas fa-truck-pickup"}>Grueros</DropdownItem>
+                <DropdownItem subMenu={'values'} leftIcon={"fas fa-database"}>Valores Fijos</DropdownItem>
             </DropdownSub>
-        
         </div>
     );
 }

@@ -12,7 +12,6 @@ const ConfirmModal = ({ message, closeConfirm, showConfirm, setOpenSB, setSeveri
 			String(payload.data.ubicacion).length === 0 ||
 			String(payload.data.destino).length === 0 ||
 			Number(payload.data.tiempoGrua) === 0 ||
-			Number(payload.data.tiempoCliente) === 0 ||
 			Number(payload.data.distancia) === 0 ||
 			Number(payload.data.precio) === 0 ||
 			payload.singleSelection.length === 0 ||

@@ -47,3 +47,32 @@ export const CreateServiceContainer = styled.div`
         background-color: rgba(0,0,0,0.1);
     }
 `;
+
+export const SummaryContainer = styled.div`
+    input.form-control{
+        display: inline;
+    }
+    div.row.check-input{
+        flex-wrap: nowrap;
+    }
+    div.card-body {
+        padding: 1rem 0rem 1rem 0rem;
+    }
+    div.card-body.datos-viaje {
+        padding: 1rem 0rem 1rem 1rem;
+    }
+    .MuiCheckbox-colorSecondary.Mui-checked {
+        color: var(--bg-icon);
+    }
+    .MuiInput-underline:after {
+        border-bottom: 2px solid black;
+        transform: scaleX(1);
+    }
+    .MuiInputBase-root.Mui-disabled {
+        color: rgba(0, 0, 0, 0.5);
+        cursor: default;
+    }
+    .MuiFormLabel-root{
+        color: rgba(0, 0, 0, 0.70);
+    }
+`;
