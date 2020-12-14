@@ -47,7 +47,7 @@ const Dropdown = () => {
                     Regresar
                 </DropdownItem>
                 <DropdownItem subMenu={'create'} leftIcon={'fas fa-plus'}>Crear Solicitud</DropdownItem>
-                <DropdownItem subMenu={'print'} leftIcon={'fas fa-print'}>Imprimir Solicitud</DropdownItem>
+                {/* <DropdownItem subMenu={'print'} leftIcon={'fas fa-print'}>Imprimir Solicitud</DropdownItem> */}
                 <DropdownItem subMenu={'summary'} leftIcon={'fas fa-calculator'}>Resumen</DropdownItem>
             </DropdownSub>
 
@@ -56,7 +56,7 @@ const Dropdown = () => {
                     Regresar
                 </DropdownItem>
                 <DropdownItem subMenu={'view'} leftIcon={"fas fa-book-open"}>Ver Registros</DropdownItem>
-                <DropdownItem subMenu={'print'} leftIcon={"fas fa-print"}>Imprimir Registros</DropdownItem>
+                {/* <DropdownItem subMenu={'print'} leftIcon={"fas fa-print"}>Imprimir Registros</DropdownItem> */}
             </DropdownSub>
 
             <DropdownSub menu={'config'} type={'secondary'} >

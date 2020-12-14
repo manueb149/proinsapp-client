@@ -76,3 +76,71 @@ export const SummaryContainer = styled.div`
         color: rgba(0, 0, 0, 0.70);
     }
 `;
+
+export const DetailsModalContainer = styled.div`
+    input.form-control {
+        display: inline;
+    }
+    div.row.check-input {
+        flex-wrap: nowrap;
+    }
+    div.card-body {
+        padding: 1rem 1rem 1rem 0rem;
+    }
+    .MuiCheckbox-colorSecondary.Mui-checked {
+        color: var(--bg-icon);
+    }
+    .MuiInputBase-root.Mui-disabled {
+        color: rgba(0, 0, 0, 0.5);
+        cursor: default;
+    }
+    .MuiFormLabel-root{
+        color: rgba(0, 0, 0, 0.70);
+    }
+    .icon-button {
+        width: 35px;
+        height: 35px;
+        background-color: var(--bg-icon);
+        border-radius: 50%;
+        display: -webkit-inline-box;
+        display: -webkit-inline-flex;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-align-items: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        margin-right: 8px;
+    }
+    .icon-button:hover{
+        cursor: pointer;
+    }
+    .fa, 
+    .fas,
+    .far {
+        color: var(--icon-color);
+    }
+    .title > h5{
+        margin-bottom: 0;
+        line-height: unset;
+        margin-right: 1rem;
+    }
+    .title-flex{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .form-row {
+        flex-direction: row;
+        justify-content: center;
+    }
+`;

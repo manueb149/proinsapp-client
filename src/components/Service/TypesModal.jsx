@@ -1,14 +1,66 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
+import CustomTextField from "../utils/CustomTextField";
+import customFormats from "../utils/customFormats";
+import { DetailsModalContainer } from "../../layout/Service/Service.style";
 
-const TypesService = ({ showType, setShowType, servicesType, handleServiceTypeCk }) => {
+const TypesService = ({
+	showType,
+	setShowType,
+	servicesType,
+	handleServiceTypeCk,
+}) => {
+	const [values, setValues] = useState({
+		TG: "",
+		CR: "",
+		EX: "",
+		SP: "",
+		LM: "",
+		PE: "",
+		SG: "",
+		CE: "",
+		CG: "",
+		VO: "",
+		IN: "",
+		CO: "",
+		DM: "",
+	});
+
+	const [checked, setChecked] = useState({
+		TG: false,
+		CR: false,
+		EX: false,
+		SP: false,
+		LM: false,
+		PE: false,
+		SG: false,
+		CE: false,
+		CG: false,
+		VO: false,
+		IN: false,
+		CO: false,
+		DM: false,
+	});
+
+	const handleChange = (event) => {
+		setValues({
+			...values,
+			[event.target.name]: event.target.value,
+		});
+	};
+
 	return (
-		<Modal show={showType} onHide={() => setShowType(false)}>
+		<Modal 
+			size="xl" 
+			show={showType} 
+			onHide={() => setShowType(false)}
+		>
 			<Modal.Header closeButton>
 				<Modal.Title>Tipos de servicios</Modal.Title>
 			</Modal.Header>
-			<Modal.Body>
-				<div className="form-row">
+			<DetailsModalContainer>
+				<Modal.Body>
+					{/* <div className="form-row">
 					<div className="form-group form-check">
 						<input
 							type="checkbox"
@@ -110,8 +162,140 @@ const TypesService = ({ showType, setShowType, servicesType, handleServiceTypeCk
 						</label>
 						<br></br>
 					</div>
-				</div>
-			</Modal.Body>
+				</div> */}
+					<div className="form-row px-3">
+						<div className="col-sm-12 col-md-12 col-lg-4 mb-3">
+							<div className="row check-input">
+								<CustomTextField
+									values={values}
+									checked={checked}
+									setChecked={setChecked}
+									shortName={"TG"}
+									LongName={"Tansporte de Grúa"}
+									Format={customFormats.PesoKmFormatCustom}
+									handleChange={handleChange}
+								/>
+							</div>
+						</div>
+						<div className="col-sm-12 col-md-12 col-lg-4 mb-3">
+							<div className="row check-input">
+								<CustomTextField
+									values={values}
+									checked={checked}
+									setChecked={setChecked}
+									shortName={"CR"}
+									LongName={"Cerragería"}
+									Format={
+										customFormats.LessNumberFormatCustom
+									}
+									handleChange={handleChange}
+								/>
+							</div>
+						</div>
+						<div className="col-sm-12 col-md-12 col-lg-4 mb-3">
+							<div className="row check-input">
+								<CustomTextField
+									values={values}
+									checked={checked}
+									setChecked={setChecked}
+									shortName={"EX"}
+									LongName={"Extracción"}
+									Format={
+										customFormats.LessNumberFormatCustom
+									}
+									handleChange={handleChange}
+								/>
+							</div>
+						</div>
+						<div className="col-sm-12 col-md-12 col-lg-4 mb-3">
+							<div className="row check-input">
+								<CustomTextField
+									values={values}
+									checked={checked}
+									setChecked={setChecked}
+									shortName={"SP"}
+									LongName={"Sobre peso"}
+									Format={customFormats.PercentFormatCustom}
+									handleChange={handleChange}
+								/>
+							</div>
+						</div>
+						<div className="col-sm-12 col-md-12 col-lg-4 mb-3">
+							<div className="row check-input">
+								<CustomTextField
+									values={values}
+									checked={checked}
+									setChecked={setChecked}
+									shortName={"LM"}
+									LongName={"Subida loma"}
+									Format={customFormats.PesoKmFormatCustom}
+									handleChange={handleChange}
+								/>
+							</div>
+						</div>
+						<div className="col-sm-12 col-md-12 col-lg-4 mb-3">
+							<div className="row check-input">
+								<CustomTextField
+									values={values}
+									checked={checked}
+									setChecked={setChecked}
+									shortName={"PE"}
+									LongName={"Peaje"}
+									Format={
+										customFormats.LessNumberFormatCustom
+									}
+									handleChange={handleChange}
+								/>
+							</div>
+						</div>
+						<div className="col-sm-12 col-md-12 col-lg-4 mb-3">
+							<div className="row check-input">
+								<CustomTextField
+									values={values}
+									checked={checked}
+									setChecked={setChecked}
+									shortName={"SG"}
+									LongName={"Suministros y Gasolina"}
+									Format={
+										customFormats.LessNumberFormatCustom
+									}
+									handleChange={handleChange}
+								/>
+							</div>
+						</div>
+						<div className="col-sm-12 col-md-12 col-lg-4 mb-3">
+							<div className="row check-input">
+								<CustomTextField
+									values={values}
+									checked={checked}
+									setChecked={setChecked}
+									shortName={"CE"}
+									LongName={"Corriente y Encendido"}
+									Format={
+										customFormats.LessNumberFormatCustom
+									}
+									handleChange={handleChange}
+								/>
+							</div>
+						</div>
+						<div className="col-sm-12 col-md-12 col-lg-4 mb-3">
+							<div className="row check-input">
+								<CustomTextField
+									values={values}
+									checked={checked}
+									setChecked={setChecked}
+									shortName={"CG"}
+									LongName={"Cambio de Gomas"}
+									Format={
+										customFormats.LessNumberFormatCustom
+									}
+									handleChange={handleChange}
+								/>
+							</div>
+						</div>
+					</div>
+				</Modal.Body>
+			</DetailsModalContainer>
 		</Modal>
 	);
 };

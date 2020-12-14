@@ -4,11 +4,11 @@ import { serviceDataContext } from "../../contexts/ServiceDataContext";
 import { defaultValuesContext } from "../../contexts/DefaultValuesContext";
 import PropTypes from "prop-types";
 import MaskedInput from "react-text-mask";
-import NumberFormat from "react-number-format";
 import { makeStyles } from "@material-ui/core/styles";
 import CustomTextField from "../utils/CustomTextField";
 import axios from "../../http-common";
 import SnackBar from "../utils/SnackBar";
+import customFormats from "../utils/customFormats";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -45,94 +45,6 @@ function TextMaskCustom(props) {
 			]}
 			placeholderChar={"\u2000"}
 			showMask
-		/>
-	);
-}
-
-function PesoKmFormatCustom(props) {
-	const { inputRef, onChange, ...other } = props;
-
-	return (
-		<NumberFormat
-			{...other}
-			getInputRef={inputRef}
-			onValueChange={(values) => {
-				onChange({
-					target: {
-						name: props.name,
-						value: values.value,
-					},
-				});
-			}}
-			thousandSeparator
-			isNumericString
-			suffix=" $/Km"
-		/>
-	);
-}
-
-function LessNumberFormatCustom(props) {
-	const { inputRef, onChange, ...other } = props;
-
-	return (
-		<NumberFormat
-			{...other}
-			getInputRef={inputRef}
-			onValueChange={(values) => {
-				onChange({
-					target: {
-						name: props.name,
-						value: values.value,
-					},
-				});
-			}}
-			thousandSeparator
-			isNumericString
-			prefix="<= $"
-		/>
-	);
-}
-
-function PercentFormatCustom(props) {
-	const { inputRef, onChange, ...other } = props;
-
-	return (
-		<NumberFormat
-			{...other}
-			getInputRef={inputRef}
-			onValueChange={(values) => {
-				onChange({
-					target: {
-						name: props.name,
-						value: values.value,
-					},
-				});
-			}}
-			thousandSeparator
-			isNumericString
-			suffix=" %"
-		/>
-	);
-}
-
-function NumberFormatCustom(props) {
-	const { inputRef, onChange, ...other } = props;
-
-	return (
-		<NumberFormat
-			{...other}
-			getInputRef={inputRef}
-			onValueChange={(values) => {
-				onChange({
-					target: {
-						name: props.name,
-						value: values.value,
-					},
-				});
-			}}
-			thousandSeparator
-			isNumericString
-			prefix="$"
 		/>
 	);
 }
@@ -269,7 +181,7 @@ const DefaultValues = () => {
 										setChecked={setChecked}
 										shortName={"TG"}
 										LongName={"Tansporte de Grúa"}
-										Format={PesoKmFormatCustom}
+										Format={customFormats.PesoKmFormatCustom}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -282,7 +194,7 @@ const DefaultValues = () => {
 										setChecked={setChecked}
 										shortName={"CR"}
 										LongName={"Cerragería"}
-										Format={LessNumberFormatCustom}
+										Format={customFormats.LessNumberFormatCustom}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -295,7 +207,7 @@ const DefaultValues = () => {
 										setChecked={setChecked}
 										shortName={"EX"}
 										LongName={"Extracción"}
-										Format={LessNumberFormatCustom}
+										Format={customFormats.LessNumberFormatCustom}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -308,7 +220,7 @@ const DefaultValues = () => {
 										setChecked={setChecked}
 										shortName={"SP"}
 										LongName={"Sobre peso"}
-										Format={PercentFormatCustom}
+										Format={customFormats.PercentFormatCustom}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -321,7 +233,7 @@ const DefaultValues = () => {
 										setChecked={setChecked}
 										shortName={"LM"}
 										LongName={"Subida loma"}
-										Format={PesoKmFormatCustom}
+										Format={customFormats.PesoKmFormatCustom}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -334,7 +246,7 @@ const DefaultValues = () => {
 										setChecked={setChecked}
 										shortName={"PE"}
 										LongName={"Peaje"}
-										Format={LessNumberFormatCustom}
+										Format={customFormats.LessNumberFormatCustom}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -347,7 +259,7 @@ const DefaultValues = () => {
 										setChecked={setChecked}
 										shortName={"SG"}
 										LongName={"Suministros y Gasolina"}
-										Format={LessNumberFormatCustom}
+										Format={customFormats.LessNumberFormatCustom}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -360,7 +272,7 @@ const DefaultValues = () => {
 										setChecked={setChecked}
 										shortName={"CE"}
 										LongName={"Corriente y Encendido"}
-										Format={LessNumberFormatCustom}
+										Format={customFormats.LessNumberFormatCustom}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -373,7 +285,7 @@ const DefaultValues = () => {
 										setChecked={setChecked}
 										shortName={"CG"}
 										LongName={"Cambio de Gomas"}
-										Format={LessNumberFormatCustom}
+										Format={customFormats.LessNumberFormatCustom}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -387,7 +299,7 @@ const DefaultValues = () => {
 										setChecked={setChecked}
 										shortName={"VO"}
 										LongName={"Volcaduras"}
-										Format={LessNumberFormatCustom}
+										Format={customFormats.LessNumberFormatCustom}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -400,7 +312,7 @@ const DefaultValues = () => {
 										setChecked={setChecked}
 										shortName={"IN"}
 										LongName={"Incendios"}
-										Format={LessNumberFormatCustom}
+										Format={customFormats.LessNumberFormatCustom}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -413,7 +325,7 @@ const DefaultValues = () => {
 										setChecked={setChecked}
 										shortName={"CO"}
 										LongName={"Colisión"}
-										Format={LessNumberFormatCustom}
+										Format={customFormats.LessNumberFormatCustom}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -426,7 +338,7 @@ const DefaultValues = () => {
 										setChecked={setChecked}
 										shortName={"DM"}
 										LongName={"Daños Mecánicos"}
-										Format={LessNumberFormatCustom}
+										Format={customFormats.LessNumberFormatCustom}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -443,10 +355,4 @@ export default DefaultValues;
 
 TextMaskCustom.propTypes = {
 	inputRef: PropTypes.func.isRequired,
-};
-
-NumberFormatCustom.propTypes = {
-	inputRef: PropTypes.func.isRequired,
-	name: PropTypes.string.isRequired,
-	onChange: PropTypes.func.isRequired,
 };

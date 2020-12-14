@@ -1,14 +1,70 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
+import CustomTextField from "../utils/CustomTextField";
+import customFormats from "../utils/customFormats";
+import { DetailsModalContainer } from "../../layout/Service/Service.style";
 
-const DetailsModal = ({ showDetail, setShowDetail, detailSinister, handleDetailCk }) => {
+const DetailsModal = ({
+	showDetail,
+	setShowDetail,
+	detailSinister,
+	handleDetailCk,
+}) => {
+	const [values, setValues] = useState({
+		TG: "",
+		CR: "",
+		EX: "",
+		SP: "",
+		LM: "",
+		PE: "",
+		SG: "",
+		CE: "",
+		CG: "",
+		VO: "",
+		IN: "",
+		CO: "",
+		DM: "",
+	});
+
+	const [checked, setChecked] = useState({
+		TG: false,
+		CR: false,
+		EX: false,
+		SP: false,
+		LM: false,
+		PE: false,
+		SG: false,
+		CE: false,
+		CG: false,
+		VO: false,
+		IN: false,
+		CO: false,
+		DM: false,
+	});
+
+	const handleChange = (event) => {
+		setValues({
+			...values,
+			[event.target.name]: event.target.value,
+		});
+	};
+
 	return (
-		<Modal show={showDetail} onHide={() => setShowDetail(false)}>
+		<Modal
+			size="xl"
+			show={showDetail}
+			onHide={() => setShowDetail(false)}
+			dialogClassName="modal-details-create-service"
+			aria-labelledby="example-custom-modal-styling-title"
+		>
 			<Modal.Header closeButton>
-				<Modal.Title>Detalle Siniestro</Modal.Title>
+				<Modal.Title id="example-custom-modal-styling-title">
+					Detalle Siniestro
+				</Modal.Title>
 			</Modal.Header>
-			<Modal.Body>
-				<div className="form-row">
+			<DetailsModalContainer>
+				<Modal.Body>
+					{/* <div className="form-row">
 					<div className="form-group form-check">
 						<input
 							type="checkbox"
@@ -55,8 +111,72 @@ const DetailsModal = ({ showDetail, setShowDetail, detailSinister, handleDetailC
 						</label>
 						<br></br>
 					</div>
-				</div>
-			</Modal.Body>
+				</div> */}
+
+					<div className="form-row px-3">
+						<div className="col-sm-12 col-md-6 col-lg-4 mb-3 ml-1 mr-1">
+							<div className="row check-input">
+								<CustomTextField
+									values={values}
+									checked={checked}
+									setChecked={setChecked}
+									shortName={"VO"}
+									LongName={"Volcaduras"}
+									Format={
+										customFormats.LessNumberFormatCustom
+									}
+									handleChange={handleChange}
+								/>
+							</div>
+						</div>
+						<div className="col-sm-12 col-md-6 col-lg-4 mb-3 ml-1 mr-1">
+							<div className="row check-input">
+								<CustomTextField
+									values={values}
+									checked={checked}
+									setChecked={setChecked}
+									shortName={"IN"}
+									LongName={"Incendios"}
+									Format={
+										customFormats.LessNumberFormatCustom
+									}
+									handleChange={handleChange}
+								/>
+							</div>
+						</div>
+						<div className="col-sm-12 col-md-6 col-lg-4 mb-3 ml-1 mr-1">
+							<div className="row check-input">
+								<CustomTextField
+									values={values}
+									checked={checked}
+									setChecked={setChecked}
+									shortName={"CO"}
+									LongName={"Colisión"}
+									Format={
+										customFormats.LessNumberFormatCustom
+									}
+									handleChange={handleChange}
+								/>
+							</div>
+						</div>
+						<div className="col-sm-12 col-md-6 col-lg-4 mb-3 ml-1 mr-1">
+							<div className="row check-input">
+								<CustomTextField
+									values={values}
+									checked={checked}
+									setChecked={setChecked}
+									shortName={"DM"}
+									LongName={"Daños Mecánicos"}
+									Format={
+										customFormats.LessNumberFormatCustom
+									}
+									handleChange={handleChange}
+								/>
+							</div>
+						</div>
+					</div>
+				</Modal.Body>
+			</DetailsModalContainer>
 		</Modal>
 	);
 };
