@@ -140,7 +140,6 @@ const CreateService = () => {
 					SetAreaTruckSelect([]);
 				})
 				.catch((err) => {
-					console.log(err.response.data.message);
 					setOpenSB(false);
 					setSeverity("error");
 					setNotification(err.response.data.message);

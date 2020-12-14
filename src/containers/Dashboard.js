@@ -3,9 +3,10 @@ import React from "react";
 import Default from "./DefaultIndex";
 // Import navbar component
 import Navbar from "./Navbar";
-// Import context for dropdown menu
+// Import contexts
 import NavbarContext from '../contexts/NavbarContext';
 import ServiceDataContext from '../contexts/ServiceDataContext';
+import DefaultValuesContext from '../contexts/DefaultValuesContext';
 // Default container styled-component
 import DefaultContainer from "../layout/Globals/Container.style";
 import Pages from './DashboardPages';
@@ -16,16 +17,18 @@ const Dashboard = () => {
 			<div className="container-fluid">
 				<Default.Header />
 				<div className="row">
-					<ServiceDataContext>
-						<NavbarContext>
-							<Default.Sidebar>
-								<Navbar />
-							</Default.Sidebar>
-							<Default.Main>
-								<Pages />
-							</Default.Main>
-						</NavbarContext>
-					</ServiceDataContext>
+					<DefaultValuesContext>
+						<ServiceDataContext>
+							<NavbarContext>
+								<Default.Sidebar>
+									<Navbar />
+								</Default.Sidebar>
+								<Default.Main>
+									<Pages />
+								</Default.Main>
+							</NavbarContext>
+						</ServiceDataContext>
+					</DefaultValuesContext>
 				</div>
 			</div>
 		</DefaultContainer>

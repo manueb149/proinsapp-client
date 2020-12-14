@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
 import FileUpload from "../utils/fileUpload";
-import { Table } from "react-bootstrap";
+import { Table, Card } from "react-bootstrap";
 import File from "./File";
 
 const DataUpload = () => {
@@ -27,9 +27,13 @@ const DataUpload = () => {
 		setProgress(0);
 		setCurrentFile(file);
 		try {
-			FileUpload.upload(file, (event) => {
-				setProgress(Math.round((100 * event.loaded) / event.total));
-			},'files')
+			FileUpload.upload(
+				file,
+				(event) => {
+					setProgress(Math.round((100 * event.loaded) / event.total));
+				},
+				"files"
+			)
 				.then((response) => {
 					setMessage(response.data.message);
 					return FileUpload.getFiles();
@@ -52,11 +56,14 @@ const DataUpload = () => {
 
 	return (
 		<Fragment>
-			<div className="card text-center">
-				<h2>
-					<span className="badge badge-secondary mt-2">
+			<Card className="text-center">
+				<Card.Header>
+					<h5>Cargar datos de las Aseguradoras</h5>
+				</Card.Header>
+				<Card.Body>
+					<Card.Title>
 						Favor seleccionar el archivo a cargar
-					</span>
+					</Card.Title>
 					{currentFile && (
 						<div className="progress">
 							<div
@@ -71,13 +78,11 @@ const DataUpload = () => {
 							</div>
 						</div>
 					)}
-				</h2>
-				<div className="card-body">
 					<label className="btn btn-default">
 						<input type="file" onChange={selectFile} />
 					</label>
-				</div>
-				<div className="card-footer text-muted">
+				</Card.Body>
+				<Card.Footer className="text-muted">
 					<button
 						className="btn btn-sm btn-success mr-2"
 						disabled={!selectedFiles}
@@ -95,8 +100,8 @@ const DataUpload = () => {
 					>
 						LIMPIAR
 					</button>
-				</div>
-			</div>
+				</Card.Footer>
+			</Card>
 			<br></br>
 
 			{message ? (
@@ -118,7 +123,7 @@ const DataUpload = () => {
 										key={file._id}
 										setUpdateList={setUpdateList}
 										updateList={updateList}
-										type={'files'}
+										type={"files"}
 									/>
 								))}
 						</tbody>

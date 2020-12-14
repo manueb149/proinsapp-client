@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import FileUpload from "../utils/fileUpload";
-import { Table } from "react-bootstrap";
+import { Table, Card } from "react-bootstrap";
 import File from "./File";
 
 const TrucksUpload = () => {
@@ -52,11 +52,14 @@ const TrucksUpload = () => {
 
 	return (
 		<>
-			<div className="card text-center">
-				<h2>
-					<span className="badge badge-secondary mt-2">
+			<Card className="text-center">
+				<Card.Header>
+					<h5>Cargar datos de los Grueros</h5>
+				</Card.Header>
+				<Card.Body>
+					<Card.Title>
 						Favor seleccionar el archivo a cargar
-					</span>
+					</Card.Title>
 					{currentFile && (
 						<div className="progress">
 							<div
@@ -71,13 +74,11 @@ const TrucksUpload = () => {
 							</div>
 						</div>
 					)}
-				</h2>
-				<div className="card-body">
 					<label className="btn btn-default">
 						<input type="file" onChange={selectFile} />
 					</label>
-				</div>
-				<div className="card-footer text-muted">
+				</Card.Body>
+				<Card.Footer className="text-muted">
 					<button
 						className="btn btn-sm btn-success mr-2"
 						disabled={!selectedFiles}
@@ -95,8 +96,8 @@ const TrucksUpload = () => {
 					>
 						LIMPIAR
 					</button>
-				</div>
-			</div>
+				</Card.Footer>
+			</Card>
 			<br></br>
 
 			{message ? (
