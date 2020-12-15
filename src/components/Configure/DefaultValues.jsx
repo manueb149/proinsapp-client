@@ -79,6 +79,8 @@ const DefaultValues = () => {
 		IN: false,
 		CO: false,
 		DM: false,
+		TN: false,
+		FF: false,
 	});
 
     useEffect(() => {
@@ -339,6 +341,32 @@ const DefaultValues = () => {
 										shortName={"DM"}
 										LongName={"Daños Mecánicos"}
 										Format={customFormats.LessNumberFormatCustom}
+										handleChange={handleChange}
+									/>
+								</div>
+							</div>
+							<div className="col-sm-12 col-md-6 col-lg-4 mb-3">
+								<div className="row check-input">
+									<CustomTextField
+										values={values}
+										checked={checked}
+										setChecked={setChecked}
+										shortName={"TN"}
+										LongName={"Tanda Nocturna"}
+										Format={customFormats.PercentFormatCustom}
+										handleChange={handleChange}
+									/>
+								</div>
+							</div>
+							<div className="col-sm-12 col-md-6 col-lg-4 mb-3">
+								<div className="row check-input">
+									<CustomTextField
+										values={values}
+										checked={checked}
+										setChecked={setChecked}
+										shortName={"FF"}
+										LongName={"Feriado/Fin de semana"}
+										Format={customFormats.PercentFormatCustom}
 										handleChange={handleChange}
 									/>
 								</div>

@@ -1,6 +1,28 @@
 import React from 'react';
 import NumberFormat from "react-number-format";
 
+function KmFormatCustom(props) {
+    const { inputRef, onChange, ...other } = props;
+
+    return (
+        <NumberFormat
+            {...other}
+            getInputRef={inputRef}
+            onValueChange={(values) => {
+                onChange({
+                    target: {
+                        name: props.name,
+                        value: values.value,
+                    },
+                });
+            }}
+            thousandSeparator
+            isNumericString
+            suffix=" Km"
+        />
+    );
+}
+
 function PesoKmFormatCustom(props) {
     const { inputRef, onChange, ...other } = props;
 
@@ -62,7 +84,7 @@ function PercentFormatCustom(props) {
             }}
             thousandSeparator
             isNumericString
-            suffix=" %"
+            suffix="%"
         />
     );
 }
@@ -93,5 +115,6 @@ export default {
     NumberFormatCustom, 
     PercentFormatCustom,
     LessNumberFormatCustom,
-    PesoKmFormatCustom
+    PesoKmFormatCustom,
+    KmFormatCustom
 }

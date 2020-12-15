@@ -19,6 +19,8 @@ const DefaultValuesContext = (props) => {
         IN: "",
         CO: "",
         DM: "",
+        TN: "",
+        FF: "",
     });
 
     useEffect(() => {

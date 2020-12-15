@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { SummaryContainer } from "../../../layout/Service/Service.style";
 import PropTypes from "prop-types";
 import MaskedInput from "react-text-mask";
-import NumberFormat from "react-number-format";
+import customFormats from "../../utils/customFormats";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import Checkbox from "@material-ui/core/Checkbox";
 import summaryCalc from "../../utils/summaryCalc";
+import CustomTextField from "../../utils/CustomTextField";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -47,50 +47,6 @@ function TextMaskCustom(props) {
 	);
 }
 
-function kmFormatCustom(props) {
-	const { inputRef, onChange, ...other } = props;
-
-	return (
-		<NumberFormat
-			{...other}
-			getInputRef={inputRef}
-			onValueChange={(values) => {
-				onChange({
-					target: {
-						name: props.name,
-						value: values.value,
-					},
-				});
-			}}
-			thousandSeparator
-			isNumericString
-			suffix=" Km"
-		/>
-	);
-}
-
-function NumberFormatCustom(props) {
-	const { inputRef, onChange, ...other } = props;
-
-	return (
-		<NumberFormat
-			{...other}
-			getInputRef={inputRef}
-			onValueChange={(values) => {
-				onChange({
-					target: {
-						name: props.name,
-						value: values.value,
-					},
-				});
-			}}
-			thousandSeparator
-			isNumericString
-			prefix="$"
-		/>
-	);
-}
-
 const ServiceSummary = () => {
 	const classes = useStyles();
 	const [checked, setChecked] = useState({
@@ -103,6 +59,7 @@ const ServiceSummary = () => {
 	const [values, setValues] = useState({
 		total: "",
 		KmE: "",
+		KmL: "",
 		CB: "",
 		CBPKM: "",
 		CP: "",
@@ -110,7 +67,7 @@ const ServiceSummary = () => {
 		FF: "",
 		EX: "",
 		SP: "",
-		LM: ""
+		LM: "",
 	});
 
 	const handleChange = (event) => {
@@ -140,15 +97,13 @@ const ServiceSummary = () => {
 									<TextField
 										disabled
 										label="Total"
-										value={summaryCalc(
-											values.KmE,
-											values.CB
-										)}
+										value={summaryCalc(values, checked)}
 										onChange={handleTotal}
 										name="total"
 										id="total"
 										InputProps={{
-											inputComponent: NumberFormatCustom,
+											inputComponent:
+												customFormats.NumberFormatCustom,
 										}}
 									/>
 								</div>
@@ -166,17 +121,47 @@ const ServiceSummary = () => {
 											<TextField
 												size="small"
 												variant="outlined"
-												label={`${(Number(values.KmE)>15) ? (`${values.KmE}Km - 15Km = ${(Number(values.KmE)-15)}Km`) : ("Kilómetro Estipulado")}`}
+												label={`${
+													Number(values.KmE) > 15
+														? `${
+																values.KmE
+														  }Km - 15Km = ${
+																Number(
+																	values.KmE
+																) - 15
+														  }Km`
+														: "Kilómetro Estipulado"
+												}`}
 												value={values.KmE}
 												onChange={handleChange}
 												name="KmE"
 												id="KmE"
 												InputProps={{
-													inputComponent: kmFormatCustom,
+													inputComponent:
+														customFormats.KmFormatCustom,
 												}}
 											/>
 										</div>
 									</div>
+									{checked.LM ? (
+										<div className="col-12 mb-3">
+											<div className="row check-input">
+												<TextField
+													size="small"
+													variant="outlined"
+													label="Kilómetro de Loma"
+													value={values.KmL}
+													onChange={handleChange}
+													name="KmL"
+													id="KmL"
+													InputProps={{
+														inputComponent:
+															customFormats.KmFormatCustom,
+													}}
+												/>
+											</div>
+										</div>
+									) : null}
 									<div className="col-12 mb-3">
 										<div className="row check-input">
 											<TextField
@@ -188,12 +173,13 @@ const ServiceSummary = () => {
 												name="CB"
 												id="CB"
 												InputProps={{
-													inputComponent: NumberFormatCustom,
+													inputComponent:
+														customFormats.NumberFormatCustom,
 												}}
 											/>
 										</div>
 									</div>
-									<div className="col-12 mb-3">
+									{/* <div className="col-12 mb-3">
 										<div className="row check-input">
 											<TextField
 												size="small"
@@ -204,11 +190,13 @@ const ServiceSummary = () => {
 												name="CBPKM"
 												id="CBPKM"
 												InputProps={{
-													inputComponent: NumberFormatCustom,
+													inputComponent:
+														customFormats.NumberFormatCustom,
 												}}
+												disabled
 											/>
 										</div>
-									</div>
+									</div> */}
 									<div className="col-12 mb-3">
 										<div className="row check-input">
 											<TextField
@@ -220,7 +208,8 @@ const ServiceSummary = () => {
 												name="CP"
 												id="CP"
 												InputProps={{
-													inputComponent: NumberFormatCustom,
+													inputComponent:
+														customFormats.NumberFormatCustom,
 												}}
 											/>
 										</div>
@@ -237,156 +226,78 @@ const ServiceSummary = () => {
 								<div className="card-body">
 									<div className="col-12 mb-3">
 										<div className="row check-input">
-											<Checkbox
-												name="TN"
-												checked={checked.TN}
-												onChange={(e) =>
-													setChecked({
-														...checked,
-														[e.target.name]: e.target.checked
-													})
+											<CustomTextField
+												values={values}
+												checked={checked}
+												setChecked={setChecked}
+												shortName={"TN"}
+												LongName={"Turno Nocturno"}
+												Format={
+													customFormats.PercentFormatCustom
 												}
-												inputProps={{
-													"aria-label":
-														"secondary checkbox",
-												}}
-											/>
-											<TextField
-												disabled={!checked.TN}
-												size="small"
-												variant="outlined"
-												label="Turno Nocturno"
-												value={values.TN}
-												onChange={handleChange}
-												name="TN"
-												id="TN"
-												InputProps={{
-													inputComponent: NumberFormatCustom,
-												}}
+												handleChange={handleChange}
 											/>
 										</div>
 									</div>
 									<div className="col-12 mb-3">
 										<div className="row check-input">
-											<Checkbox
-												name="FF"
-												checked={checked.FF}
-												onChange={(e) =>
-													setChecked({
-														...checked,
-														[e.target.name]: e.target.checked
-													})
+											<CustomTextField
+												values={values}
+												checked={checked}
+												setChecked={setChecked}
+												shortName={"FF"}
+												LongName={
+													"Feriado/Fin de semana"
 												}
-												inputProps={{
-													"aria-label":
-														"secondary checkbox",
-												}}
-											/>
-											<TextField
-												disabled={!checked.FF}
-												size="small"
-												variant="outlined"
-												label="Feriado/Fin de semana"
-												value={values.FF}
-												onChange={handleChange}
-												name="FF"
-												id="FF"
-												InputProps={{
-													inputComponent: NumberFormatCustom,
-												}}
+												Format={
+													customFormats.PercentFormatCustom
+												}
+												handleChange={handleChange}
 											/>
 										</div>
 									</div>
 									<div className="col-12 mb-3">
 										<div className="row check-input">
-											<Checkbox
-												name="EX"
-												checked={checked.EX}
-												onChange={(e) =>
-													setChecked({
-														...checked,
-														[e.target.name]: e.target.checked
-													})
+											<CustomTextField
+												values={values}
+												checked={checked}
+												setChecked={setChecked}
+												shortName={"EX"}
+												LongName={"Extracción"}
+												Format={
+													customFormats.NumberFormatCustom
 												}
-												inputProps={{
-													"aria-label":
-														"secondary checkbox",
-												}}
-											/>
-											<TextField
-												disabled={!checked.EX}
-												size="small"
-												variant="outlined"
-												label="Extracción"
-												value={values.EX}
-												onChange={handleChange}
-												name="EX"
-												id="EX"
-												InputProps={{
-													inputComponent: NumberFormatCustom,
-												}}
+												handleChange={handleChange}
 											/>
 										</div>
 									</div>
 									<div className="col-12 mb-3">
 										<div className="row check-input">
-											<Checkbox
-												name="SP"
-												checked={checked.SP}
-												onChange={(e) =>
-													setChecked({
-														...checked,
-														[e.target.name]: e.target.checked
-													})
+											<CustomTextField
+												values={values}
+												checked={checked}
+												setChecked={setChecked}
+												shortName={"SP"}
+												LongName={"Sobre peso"}
+												Format={
+													customFormats.PercentFormatCustom
 												}
-												inputProps={{
-													"aria-label":
-														"secondary checkbox",
-												}}
-											/>
-											<TextField
-												disabled={!checked.SP}
-												size="small"
-												variant="outlined"
-												label="Sobre peso"
-												value={values.SP}
-												onChange={handleChange}
-												name="SP"
-												id="SP"
-												InputProps={{
-													inputComponent: NumberFormatCustom,
-												}}
+												handleChange={handleChange}
 											/>
 										</div>
 									</div>
 									<div className="col-12 mb-3">
 										<div className="row check-input">
-											<Checkbox
-												name="LM"
-												checked={checked.LM}
-												onChange={(e) =>
-													setChecked({
-														...checked,
-														[e.target.name]: e.target.checked
-													})
+											<CustomTextField
+												values={values}
+												checked={checked}
+												setChecked={setChecked}
+												shortName={"LM"}
+												LongName={"Loma"}
+												Format={
+													customFormats.PesoKmFormatCustom
 												}
-												inputProps={{
-													"aria-label":
-														"secondary checkbox",
-												}}
-											/>
-											<TextField
-												disabled={!checked.LM}
-												variant="outlined"
-												label="Loma"
-												value={values.LM}
-												onChange={handleChange}
-												name="LM"
-												id="LM"
-												size="small"
-												InputProps={{
-													inputComponent: NumberFormatCustom,
-												}}
+												handleChange={handleChange}
 											/>
 										</div>
 									</div>
@@ -405,10 +316,4 @@ export default ServiceSummary;
 
 TextMaskCustom.propTypes = {
 	inputRef: PropTypes.func.isRequired,
-};
-
-NumberFormatCustom.propTypes = {
-	inputRef: PropTypes.func.isRequired,
-	name: PropTypes.string.isRequired,
-	onChange: PropTypes.func.isRequired,
 };
