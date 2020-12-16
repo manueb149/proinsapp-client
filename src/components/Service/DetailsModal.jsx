@@ -117,6 +117,8 @@ const DetailsModal = ({
 						<div className="col-sm-12 col-md-6 col-lg-4 mb-3 ml-1 mr-1">
 							<div className="row check-input">
 								<CustomTextField
+									size="small"
+									variant="outlined"
 									values={values}
 									checked={checked}
 									setChecked={setChecked}
@@ -132,6 +134,8 @@ const DetailsModal = ({
 						<div className="col-sm-12 col-md-6 col-lg-4 mb-3 ml-1 mr-1">
 							<div className="row check-input">
 								<CustomTextField
+									size="small"
+									variant="outlined"
 									values={values}
 									checked={checked}
 									setChecked={setChecked}
@@ -147,6 +151,8 @@ const DetailsModal = ({
 						<div className="col-sm-12 col-md-6 col-lg-4 mb-3 ml-1 mr-1">
 							<div className="row check-input">
 								<CustomTextField
+									size="small"
+									variant="outlined"
 									values={values}
 									checked={checked}
 									setChecked={setChecked}
@@ -162,6 +168,8 @@ const DetailsModal = ({
 						<div className="col-sm-12 col-md-6 col-lg-4 mb-3 ml-1 mr-1">
 							<div className="row check-input">
 								<CustomTextField
+									size="small"
+									variant="outlined"
 									values={values}
 									checked={checked}
 									setChecked={setChecked}

@@ -1,7 +1,39 @@
 import React from 'react';
 import NumberFormat from "react-number-format";
+import MaskedInput from "react-text-mask";
 
-function KmFormatCustom(props) {
+export const TextMaskCustom = (props) => {
+    const { inputRef, ...other } = props;
+
+    return (
+        <MaskedInput
+            {...other}
+            ref={(ref) => {
+                inputRef(ref ? ref.inputElement : null);
+            }}
+            mask={[
+                "(",
+                /[1-9]/,
+                /\d/,
+                /\d/,
+                ")",
+                " ",
+                /\d/,
+                /\d/,
+                /\d/,
+                "-",
+                /\d/,
+                /\d/,
+                /\d/,
+                /\d/,
+            ]}
+            placeholderChar={"\u2000"}
+            showMask
+        />
+    );
+}
+
+const KmFormatCustom = (props) => {
     const { inputRef, onChange, ...other } = props;
 
     return (
@@ -23,7 +55,7 @@ function KmFormatCustom(props) {
     );
 }
 
-function PesoKmFormatCustom(props) {
+const PesoKmFormatCustom = (props) => {
     const { inputRef, onChange, ...other } = props;
 
     return (
@@ -45,7 +77,7 @@ function PesoKmFormatCustom(props) {
     );
 }
 
-function LessNumberFormatCustom(props) {
+const LessNumberFormatCustom = (props) => {
     const { inputRef, onChange, ...other } = props;
 
     return (
@@ -67,7 +99,7 @@ function LessNumberFormatCustom(props) {
     );
 }
 
-function PercentFormatCustom(props) {
+const PercentFormatCustom = (props) => {
     const { inputRef, onChange, ...other } = props;
 
     return (
@@ -89,7 +121,7 @@ function PercentFormatCustom(props) {
     );
 }
 
-function NumberFormatCustom(props) {
+const NumberFormatCustom = (props) => {
     const { inputRef, onChange, ...other } = props;
 
     return (
@@ -111,10 +143,12 @@ function NumberFormatCustom(props) {
     );
 }
 
-export default { 
-    NumberFormatCustom, 
+const customFormats = {
+    NumberFormatCustom,
     PercentFormatCustom,
     LessNumberFormatCustom,
     PesoKmFormatCustom,
     KmFormatCustom
 }
+
+export default customFormats;

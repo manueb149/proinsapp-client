@@ -46,6 +46,9 @@ export const CreateServiceContainer = styled.div`
     button.MuiButtonBase-root.MuiIconButton-root{
         background-color: rgba(0,0,0,0.1);
     }
+    .MuiFormControl-root.date-picker{
+        min-width: 100%;
+    }
 `;
 
 export const SummaryContainer = styled.div`

@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SummaryContainer } from "../../../layout/Service/Service.style";
 import PropTypes from "prop-types";
-import MaskedInput from "react-text-mask";
-import customFormats from "../../utils/customFormats";
+import customFormats, { TextMaskCustom } from "../../utils/customFormats";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import summaryCalc from "../../utils/summaryCalc";
 import CustomTextField from "../../utils/CustomTextField";
+import axios from "../../../http-common";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -15,37 +15,6 @@ const useStyles = makeStyles((theme) => ({
 		},
 	},
 }));
-
-function TextMaskCustom(props) {
-	const { inputRef, ...other } = props;
-
-	return (
-		<MaskedInput
-			{...other}
-			ref={(ref) => {
-				inputRef(ref ? ref.inputElement : null);
-			}}
-			mask={[
-				"(",
-				/[1-9]/,
-				/\d/,
-				/\d/,
-				")",
-				" ",
-				/\d/,
-				/\d/,
-				/\d/,
-				"-",
-				/\d/,
-				/\d/,
-				/\d/,
-				/\d/,
-			]}
-			placeholderChar={"\u2000"}
-			showMask
-		/>
-	);
-}
 
 const ServiceSummary = () => {
 	const classes = useStyles();
@@ -56,6 +25,7 @@ const ServiceSummary = () => {
 		SP: false,
 		LM: false,
 	});
+
 	const [values, setValues] = useState({
 		total: "",
 		KmE: "",
@@ -69,6 +39,24 @@ const ServiceSummary = () => {
 		SP: "",
 		LM: "",
 	});
+
+	useEffect(() => {
+		const getValues = async () => {
+			await axios
+				.get("values")
+				.then((res) => {
+					setValues({
+						...values,
+						TN: res.data.values.TN,
+						FF: res.data.values.FF,
+						SP: res.data.values.SP,
+					});
+				})
+				.catch();
+		};
+		getValues();
+		// eslint-disable-next-line
+	}, []);
 
 	const handleChange = (event) => {
 		setValues({
@@ -227,6 +215,8 @@ const ServiceSummary = () => {
 									<div className="col-12 mb-3">
 										<div className="row check-input">
 											<CustomTextField
+												size="small"
+												variant="outlined"
 												values={values}
 												checked={checked}
 												setChecked={setChecked}
@@ -236,12 +226,15 @@ const ServiceSummary = () => {
 													customFormats.PercentFormatCustom
 												}
 												handleChange={handleChange}
+												alwaysDisabled
 											/>
 										</div>
 									</div>
 									<div className="col-12 mb-3">
 										<div className="row check-input">
 											<CustomTextField
+												size="small"
+												variant="outlined"
 												values={values}
 												checked={checked}
 												setChecked={setChecked}
@@ -253,12 +246,15 @@ const ServiceSummary = () => {
 													customFormats.PercentFormatCustom
 												}
 												handleChange={handleChange}
+												alwaysDisabled
 											/>
 										</div>
 									</div>
 									<div className="col-12 mb-3">
 										<div className="row check-input">
 											<CustomTextField
+												size="small"
+												variant="outlined"
 												values={values}
 												checked={checked}
 												setChecked={setChecked}
@@ -274,6 +270,8 @@ const ServiceSummary = () => {
 									<div className="col-12 mb-3">
 										<div className="row check-input">
 											<CustomTextField
+												size="small"
+												variant="outlined"
 												values={values}
 												checked={checked}
 												setChecked={setChecked}
@@ -283,12 +281,15 @@ const ServiceSummary = () => {
 													customFormats.PercentFormatCustom
 												}
 												handleChange={handleChange}
+												alwaysDisabled
 											/>
 										</div>
 									</div>
 									<div className="col-12 mb-3">
 										<div className="row check-input">
 											<CustomTextField
+												size="small"
+												variant="outlined"
 												values={values}
 												checked={checked}
 												setChecked={setChecked}
@@ -304,7 +305,6 @@ const ServiceSummary = () => {
 								</div>
 							</div>
 						</div>
-						{/*  */}
 					</div>
 				</div>
 			</div>

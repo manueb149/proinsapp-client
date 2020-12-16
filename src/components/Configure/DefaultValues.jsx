@@ -83,18 +83,19 @@ const DefaultValues = () => {
 		FF: false,
 	});
 
-    useEffect(() => {
-        const getValues = async () => {
-            await axios.get('values')
-                .then((res) => {
-                    setValues(res.data.values)
-                })
-                .catch()
-        }
+	useEffect(() => {
+		const getValues = async () => {
+			await axios
+				.get("values")
+				.then((res) => {
+					setValues(res.data.values);
+				})
+				.catch();
+		};
 		getValues();
 		// eslint-disable-next-line
 	}, []);
-	
+
 	const handleChange = (event) => {
 		setValues({
 			...values,
@@ -178,12 +179,16 @@ const DefaultValues = () => {
 							<div className="col-sm-12 col-md-6 col-lg-4 mb-3">
 								<div className="row check-input">
 									<CustomTextField
+										size="small"
+										variant="outlined"
 										values={values}
 										checked={checked}
 										setChecked={setChecked}
 										shortName={"TG"}
 										LongName={"Tansporte de Grúa"}
-										Format={customFormats.PesoKmFormatCustom}
+										Format={
+											customFormats.PesoKmFormatCustom
+										}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -191,12 +196,16 @@ const DefaultValues = () => {
 							<div className="col-sm-12 col-md-6 col-lg-4 mb-3">
 								<div className="row check-input">
 									<CustomTextField
+										size="small"
+										variant="outlined"
 										values={values}
 										checked={checked}
 										setChecked={setChecked}
 										shortName={"CR"}
 										LongName={"Cerragería"}
-										Format={customFormats.LessNumberFormatCustom}
+										Format={
+											customFormats.LessNumberFormatCustom
+										}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -204,12 +213,16 @@ const DefaultValues = () => {
 							<div className="col-sm-12 col-md-6 col-lg-4 mb-3">
 								<div className="row check-input">
 									<CustomTextField
+										size="small"
+										variant="outlined"
 										values={values}
 										checked={checked}
 										setChecked={setChecked}
 										shortName={"EX"}
 										LongName={"Extracción"}
-										Format={customFormats.LessNumberFormatCustom}
+										Format={
+											customFormats.LessNumberFormatCustom
+										}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -217,12 +230,16 @@ const DefaultValues = () => {
 							<div className="col-sm-12 col-md-6 col-lg-4 mb-3">
 								<div className="row check-input">
 									<CustomTextField
+										size="small"
+										variant="outlined"
 										values={values}
 										checked={checked}
 										setChecked={setChecked}
 										shortName={"SP"}
 										LongName={"Sobre peso"}
-										Format={customFormats.PercentFormatCustom}
+										Format={
+											customFormats.PercentFormatCustom
+										}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -230,12 +247,16 @@ const DefaultValues = () => {
 							<div className="col-sm-12 col-md-6 col-lg-4 mb-3">
 								<div className="row check-input">
 									<CustomTextField
+										size="small"
+										variant="outlined"
 										values={values}
 										checked={checked}
 										setChecked={setChecked}
 										shortName={"LM"}
 										LongName={"Subida loma"}
-										Format={customFormats.PesoKmFormatCustom}
+										Format={
+											customFormats.PesoKmFormatCustom
+										}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -243,12 +264,16 @@ const DefaultValues = () => {
 							<div className="col-sm-12 col-md-6 col-lg-4 mb-3">
 								<div className="row check-input">
 									<CustomTextField
+										size="small"
+										variant="outlined"
 										values={values}
 										checked={checked}
 										setChecked={setChecked}
 										shortName={"PE"}
 										LongName={"Peaje"}
-										Format={customFormats.LessNumberFormatCustom}
+										Format={
+											customFormats.LessNumberFormatCustom
+										}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -256,12 +281,16 @@ const DefaultValues = () => {
 							<div className="col-sm-12 col-md-6 col-lg-4 mb-3">
 								<div className="row check-input">
 									<CustomTextField
+										size="small"
+										variant="outlined"
 										values={values}
 										checked={checked}
 										setChecked={setChecked}
 										shortName={"SG"}
 										LongName={"Suministros y Gasolina"}
-										Format={customFormats.LessNumberFormatCustom}
+										Format={
+											customFormats.LessNumberFormatCustom
+										}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -269,12 +298,16 @@ const DefaultValues = () => {
 							<div className="col-sm-12 col-md-6 col-lg-4 mb-3">
 								<div className="row check-input">
 									<CustomTextField
+										size="small"
+										variant="outlined"
 										values={values}
 										checked={checked}
 										setChecked={setChecked}
 										shortName={"CE"}
 										LongName={"Corriente y Encendido"}
-										Format={customFormats.LessNumberFormatCustom}
+										Format={
+											customFormats.LessNumberFormatCustom
+										}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -282,12 +315,16 @@ const DefaultValues = () => {
 							<div className="col-sm-12 col-md-6 col-lg-4 mb-3">
 								<div className="row check-input">
 									<CustomTextField
+										size="small"
+										variant="outlined"
 										values={values}
 										checked={checked}
 										setChecked={setChecked}
 										shortName={"CG"}
 										LongName={"Cambio de Gomas"}
-										Format={customFormats.LessNumberFormatCustom}
+										Format={
+											customFormats.LessNumberFormatCustom
+										}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -296,12 +333,16 @@ const DefaultValues = () => {
 							<div className="col-sm-12 col-md-6 col-lg-4 mb-3">
 								<div className="row check-input">
 									<CustomTextField
+										size="small"
+										variant="outlined"
 										values={values}
 										checked={checked}
 										setChecked={setChecked}
 										shortName={"VO"}
 										LongName={"Volcaduras"}
-										Format={customFormats.LessNumberFormatCustom}
+										Format={
+											customFormats.LessNumberFormatCustom
+										}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -309,12 +350,16 @@ const DefaultValues = () => {
 							<div className="col-sm-12 col-md-6 col-lg-4 mb-3">
 								<div className="row check-input">
 									<CustomTextField
+										size="small"
+										variant="outlined"
 										values={values}
 										checked={checked}
 										setChecked={setChecked}
 										shortName={"IN"}
 										LongName={"Incendios"}
-										Format={customFormats.LessNumberFormatCustom}
+										Format={
+											customFormats.LessNumberFormatCustom
+										}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -322,12 +367,16 @@ const DefaultValues = () => {
 							<div className="col-sm-12 col-md-6 col-lg-4 mb-3">
 								<div className="row check-input">
 									<CustomTextField
+										size="small"
+										variant="outlined"
 										values={values}
 										checked={checked}
 										setChecked={setChecked}
 										shortName={"CO"}
 										LongName={"Colisión"}
-										Format={customFormats.LessNumberFormatCustom}
+										Format={
+											customFormats.LessNumberFormatCustom
+										}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -335,12 +384,16 @@ const DefaultValues = () => {
 							<div className="col-sm-12 col-md-6 col-lg-4 mb-3">
 								<div className="row check-input">
 									<CustomTextField
+										size="small"
+										variant="outlined"
 										values={values}
 										checked={checked}
 										setChecked={setChecked}
 										shortName={"DM"}
 										LongName={"Daños Mecánicos"}
-										Format={customFormats.LessNumberFormatCustom}
+										Format={
+											customFormats.LessNumberFormatCustom
+										}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -348,12 +401,16 @@ const DefaultValues = () => {
 							<div className="col-sm-12 col-md-6 col-lg-4 mb-3">
 								<div className="row check-input">
 									<CustomTextField
+										size="small"
+										variant="outlined"
 										values={values}
 										checked={checked}
 										setChecked={setChecked}
 										shortName={"TN"}
 										LongName={"Tanda Nocturna"}
-										Format={customFormats.PercentFormatCustom}
+										Format={
+											customFormats.PercentFormatCustom
+										}
 										handleChange={handleChange}
 									/>
 								</div>
@@ -361,12 +418,16 @@ const DefaultValues = () => {
 							<div className="col-sm-12 col-md-6 col-lg-4 mb-3">
 								<div className="row check-input">
 									<CustomTextField
+										size="small"
+										variant="outlined"
 										values={values}
 										checked={checked}
 										setChecked={setChecked}
 										shortName={"FF"}
 										LongName={"Feriado/Fin de semana"}
-										Format={customFormats.PercentFormatCustom}
+										Format={
+											customFormats.PercentFormatCustom
+										}
 										handleChange={handleChange}
 									/>
 								</div>

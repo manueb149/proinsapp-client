@@ -21,8 +21,10 @@ const getTrucks = async () => {
   return await axios.get("/trucks");
 };
 
-export default {
+const fileUpload = {
   upload,
   getFiles,
   getTrucks
-};
+}
+
+export default fileUpload;

@@ -50,10 +50,12 @@ const TypesService = ({
 	};
 
 	return (
-		<Modal 
-			size="xl" 
-			show={showType} 
+		<Modal
+			size="xl"
+			show={showType}
 			onHide={() => setShowType(false)}
+			dialogClassName="modal-type-create-service"
+			aria-labelledby="example-custom-modal-styling-title"
 		>
 			<Modal.Header closeButton>
 				<Modal.Title>Tipos de servicios</Modal.Title>
@@ -167,6 +169,8 @@ const TypesService = ({
 						<div className="col-sm-12 col-md-12 col-lg-4 mb-3">
 							<div className="row check-input">
 								<CustomTextField
+									size="small"
+									variant="outlined"
 									values={values}
 									checked={checked}
 									setChecked={setChecked}
@@ -180,6 +184,8 @@ const TypesService = ({
 						<div className="col-sm-12 col-md-12 col-lg-4 mb-3">
 							<div className="row check-input">
 								<CustomTextField
+									size="small"
+									variant="outlined"
 									values={values}
 									checked={checked}
 									setChecked={setChecked}
@@ -195,6 +201,8 @@ const TypesService = ({
 						<div className="col-sm-12 col-md-12 col-lg-4 mb-3">
 							<div className="row check-input">
 								<CustomTextField
+									size="small"
+									variant="outlined"
 									values={values}
 									checked={checked}
 									setChecked={setChecked}
@@ -210,6 +218,8 @@ const TypesService = ({
 						<div className="col-sm-12 col-md-12 col-lg-4 mb-3">
 							<div className="row check-input">
 								<CustomTextField
+									size="small"
+									variant="outlined"
 									values={values}
 									checked={checked}
 									setChecked={setChecked}
@@ -223,6 +233,8 @@ const TypesService = ({
 						<div className="col-sm-12 col-md-12 col-lg-4 mb-3">
 							<div className="row check-input">
 								<CustomTextField
+									size="small"
+									variant="outlined"
 									values={values}
 									checked={checked}
 									setChecked={setChecked}
@@ -236,6 +248,8 @@ const TypesService = ({
 						<div className="col-sm-12 col-md-12 col-lg-4 mb-3">
 							<div className="row check-input">
 								<CustomTextField
+									size="small"
+									variant="outlined"
 									values={values}
 									checked={checked}
 									setChecked={setChecked}
@@ -251,6 +265,8 @@ const TypesService = ({
 						<div className="col-sm-12 col-md-12 col-lg-4 mb-3">
 							<div className="row check-input">
 								<CustomTextField
+									size="small"
+									variant="outlined"
 									values={values}
 									checked={checked}
 									setChecked={setChecked}
@@ -266,6 +282,8 @@ const TypesService = ({
 						<div className="col-sm-12 col-md-12 col-lg-4 mb-3">
 							<div className="row check-input">
 								<CustomTextField
+									size="small"
+									variant="outlined"
 									values={values}
 									checked={checked}
 									setChecked={setChecked}
@@ -281,6 +299,8 @@ const TypesService = ({
 						<div className="col-sm-12 col-md-12 col-lg-4 mb-3">
 							<div className="row check-input">
 								<CustomTextField
+									size="small"
+									variant="outlined"
 									values={values}
 									checked={checked}
 									setChecked={setChecked}

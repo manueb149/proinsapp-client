@@ -13,7 +13,7 @@ const ConfirmModal = ({ message, closeConfirm, showConfirm, setOpenSB, setSeveri
 			String(payload.data.destino).length === 0 ||
 			Number(payload.data.tiempoGrua) === 0 ||
 			Number(payload.data.distancia) === 0 ||
-			Number(payload.data.precio) === 0 ||
+			// Number(payload.data.precio) === 0 ||
 			payload.areaTruckSelect.length === 0 ||
 			payload.dataTrucks.length === 0
 		) {

@@ -10,6 +10,9 @@ const ServiceDataContext = ({ children }) => {
 	const [notification, setNotification] = useState("");
 	const [dataTrucks, setDataTrucks] = useState([]);
 	const [areaTruckSelect, SetAreaTruckSelect] = useState([]);
+	const [multipleCars, setMultipleCars] = useState([]);
+	const [multipleCarsSelect, setMultipleCarsSelect] = useState([]);
+	const [selectedDate, handleDateChange] = useState(new Date());
 
 	const [search, setSearch] = useState({
 		id: "",
@@ -29,6 +32,8 @@ const ServiceDataContext = ({ children }) => {
 		color: "",
 		aseguradora: "",
 		plan: "",
+		infoSin: "",
+		estadoV: "",
 		ubicacion: "",
 		destino: "",
 		direccionGruero: "",
@@ -37,6 +42,7 @@ const ServiceDataContext = ({ children }) => {
 		contactoGruero: "",
 		comentarioGruero: "",
 		dia: "",
+		noche: "",
 		tiempoGrua: "",
 		tiempoCliente: "",
 		distancia: "",
@@ -75,6 +81,9 @@ const ServiceDataContext = ({ children }) => {
 				areaTruckSelect: areaTruckSelect, 
 				severity: severity, 
 				notification: notification,
+				multipleCars: multipleCars,
+				multipleCarsSelect: multipleCarsSelect,
+				selectedDate: selectedDate,
 				setData: setData,
 				setSearch: setSearch,
                 setServiceType: setServiceType,
@@ -85,6 +94,10 @@ const ServiceDataContext = ({ children }) => {
 				SetAreaTruckSelect: SetAreaTruckSelect,
 				setSeverity: setSeverity,
 				setNotification: setNotification,
+				setMultipleCars: setMultipleCars,
+				setMultipleCarsSelect: setMultipleCarsSelect,
+				handleDateChange: handleDateChange
+
             }}
         >
             {children}

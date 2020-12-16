@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { serviceDataContext } from '../../contexts/ServiceDataContext';
+import { serviceDataContext } from "../../contexts/ServiceDataContext";
 import { CreateServiceContainer } from "../../layout/Service/Service.style";
 import { Button } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
@@ -7,13 +7,14 @@ import "react-bootstrap-typeahead/css/Typeahead.css";
 import MapModal from "./MapModal";
 import DetailsModal from "./DetailsModal";
 import TypesModal from "./TypesModal";
-import ConfirmModal from "../utils/ConfirmModal";
+import ConfirmModal from "./ConfirmModal";
 import axios from "../../http-common";
 import { Form } from "react-bootstrap";
 import SnackBar from "../utils/SnackBar";
+import SelectRowsTable from "./SelectRowsTable";
+import DateTimePicker from "../utils/DateTimePicker";
 
 const CreateService = () => {
-
 	const [showType, setShowType] = useState(false);
 	const [showDetail, setShowDetail] = useState(false);
 	const [showMap, setShowMap] = useState(false);
@@ -21,16 +22,16 @@ const CreateService = () => {
 	const [openSB, setOpenSB] = useState(false);
 
 	const ServiceDataContext = useContext(serviceDataContext);
-	const { 				
+	const {
 		data,
-		search, 
+		search,
 		servicesType,
 		detailSinister,
-		trucks, 
-		truckAreas, 
-		dataTrucks, 
-		areaTruckSelect, 
-		severity, 
+		trucks,
+		truckAreas,
+		dataTrucks,
+		areaTruckSelect,
+		severity,
 		notification,
 		setData,
 		setSearch,
@@ -41,7 +42,13 @@ const CreateService = () => {
 		setDataTrucks,
 		SetAreaTruckSelect,
 		setSeverity,
-		setNotification, 
+		setNotification,
+		multipleCars,
+		setMultipleCars,
+		multipleCarsSelect,
+		setMultipleCarsSelect,
+		selectedDate,
+		handleDateChange
 	} = ServiceDataContext;
 
 	useEffect(() => {
@@ -52,7 +59,7 @@ const CreateService = () => {
 				.catch((err) => console.log(err));
 		};
 		getTrucksAreas();
-	// eslint-disable-next-line
+		// eslint-disable-next-line
 	}, []);
 
 	useEffect(() => {
@@ -63,7 +70,7 @@ const CreateService = () => {
 				.catch((err) => console.log(err));
 		};
 		getTrucks();
-	// eslint-disable-next-line
+		// eslint-disable-next-line
 	}, [areaTruckSelect]);
 
 	useEffect(() => {
@@ -89,6 +96,36 @@ const CreateService = () => {
 		}
 		// eslint-disable-next-line
 	}, [dataTrucks]);
+
+	useEffect(() => {
+		const setCar = async () => {
+			setData({
+				...data,
+				poliza: multipleCarsSelect[0].poliza,
+				cedula: multipleCarsSelect[0].cedula,
+				asegurado: multipleCarsSelect[0].asegurado,
+				marca: multipleCarsSelect[0].marca,
+				modelo: multipleCarsSelect[0].modelo,
+				anio: multipleCarsSelect[0].anio,
+				chassis: multipleCarsSelect[0].chassis,
+				placa: multipleCarsSelect[0].placa,
+				tipoV: multipleCarsSelect[0].tipoVehiculo,
+				aseguradora: multipleCarsSelect[0].aseguradora,
+				plan: multipleCarsSelect[0].plan,
+			});
+			setDataTrucks([]);
+			SetAreaTruckSelect([]);
+		};
+		if (multipleCarsSelect.length > 0) setCar();
+		// eslint-disable-next-line
+	}, [multipleCarsSelect]);
+
+	const handleChange = (e) => {
+		setData({
+			...data,
+			[e.target.name]: Number(e.target.value),
+		});
+	};
 
 	const handleServiceTypeCk = (e) => {
 		setServiceType({
@@ -122,20 +159,48 @@ const CreateService = () => {
 			await axios
 				.get(`/data/${search.type}/${search.id}`)
 				.then((res) => {
-					setData({
-						...data,
-						poliza: res.data.poliza,
-						cedula: res.data.cedula,
-						asegurado: res.data.asegurado,
-						marca: res.data.marca,
-						modelo: res.data.modelo,
-						anio: res.data.anio,
-						chassis: res.data.chassis,
-						placa: res.data.placa,
-						tipoV: res.data.tipoVehiculo,
-						aseguradora: res.data.aseguradora,
-						plan: res.data.plan,
-					});
+					if (res.data.length < 1) {
+						setOpenSB(false);
+						setSeverity("error");
+						setNotification("No se ha encontrado dicho registro");
+						setOpenSB(true);
+						return;
+					} else if (res.data.length > 1) {
+						setData({
+							...data,
+							poliza: "",
+							cedula: "",
+							asegurado: "",
+							marca: "",
+							modelo: "",
+							anio: "",
+							chassis: "",
+							placa: "",
+							tipoV: "",
+							aseguradora: "",
+							plan: "",
+						});
+						setDataTrucks([]);
+						SetAreaTruckSelect([]);
+						setMultipleCars(res.data);
+					} else {
+						setMultipleCars([]);
+						setMultipleCarsSelect([]);
+						setData({
+							...data,
+							poliza: res.data[0].poliza,
+							cedula: res.data[0].cedula,
+							asegurado: res.data[0].asegurado,
+							marca: res.data[0].marca,
+							modelo: res.data[0].modelo,
+							anio: res.data[0].anio,
+							chassis: res.data[0].chassis,
+							placa: res.data[0].placa,
+							tipoV: res.data[0].tipoVehiculo,
+							aseguradora: res.data[0].aseguradora,
+							plan: res.data[0].plan,
+						});
+					}
 					setDataTrucks([]);
 					SetAreaTruckSelect([]);
 				})
@@ -150,19 +215,23 @@ const CreateService = () => {
 
 	return (
 		<CreateServiceContainer>
-			<ConfirmModal 
-				message={{title: "Guardar Servicio", body: "Está seguro que desea guardar este registro?"}}
+			<ConfirmModal
+				message={{
+					title: "Guardar Servicio",
+					body: "Está seguro que desea guardar este registro?",
+				}}
 				showConfirm={showConfirm}
 				closeConfirm={() => setShowConfirm(false)}
 				setOpenSB={setOpenSB}
 				setSeverity={setSeverity}
 				setNotification={setNotification}
-				payload= {{
+				payload={{
 					data,
 					dataTrucks,
 					areaTruckSelect,
 					detailSinister,
 					servicesType,
+					selectedDate
 				}}
 			/>
 
@@ -209,23 +278,29 @@ const CreateService = () => {
 			>
 				Mostrar Mapa
 			</Button>
-			<Button 
+			<Button
 				variant="primary"
 				size="sm"
 				onClick={() => setShowConfirm(true)}
 			>
 				Guardar
 			</Button>
-		
+
 			<div className="card c-search mb-2">
 				<div className="card-header">Búsqueda</div>
 				<div className="card-body">
-					<div className="form-row">
+					<form
+						className="form-row"
+						onSubmit={(e) => {
+							e.preventDefault();
+							handleSearch();
+						}}
+					>
 						<div className="col-lg-3 mb-3">
 							<input
 								type="text"
 								className="form-control form-control-sm"
-								id="SearchChoise"
+								id="SearchBox"
 								value={search.id || ""}
 								onChange={(e) =>
 									setSearch({ ...search, id: e.target.value })
@@ -258,16 +333,33 @@ const CreateService = () => {
 							<Button
 								variant="primary"
 								size="sm"
-								onClick={handleSearch}
+								onClick={() => handleSearch()}
 							>
 								Buscar
 							</Button>
 						</div>
-					</div>
+					</form>
 				</div>
 			</div>
+			{multipleCars.length > 1 ? (
+				<div className="card c-search mb-2">
+					<div className="card-header">
+						Asegurador con polizas comunes
+					</div>
+					<div className="card-body">
+						<div className="form-row">
+							<div className="col-12 mb-3">
+								<SelectRowsTable
+									options={multipleCars}
+									onChange={setMultipleCarsSelect}
+								/>
+							</div>
+						</div>
+					</div>
+				</div>
+			) : null}
 			<div className="card c-vehicle mb-2">
-				<div className="card-header">Datos del Vehículo</div>
+				<div className="card-header">Datos del Vehiculo</div>
 				<div className="card-body">
 					<div className="form-row">
 						<div className="col-lg-3 mb-3">
@@ -427,8 +519,45 @@ const CreateService = () => {
 				<div className="card-body">
 					<div className="form-row">
 						<div className="col-lg-12 mb-3">
+							<label htmlFor="infoSin">
+								Información del siniestro
+							</label>
+							<input
+								placeholder="¿Qué siniestro ocurrió?"
+								type="text"
+								className="form-control form-control-sm"
+								id="infoSin"
+								onChange={(e) => {
+									setData({
+										...data,
+										infoSin: e.target.value.toUpperCase(),
+									});
+								}}
+								value={data.infoSin}
+								required
+							></input>
+						</div>
+						<div className="col-lg-12 mb-3">
+							<label htmlFor="estadoV">Estado del vehículo</label>
+							<input
+								placeholder="¿En qué condición se encuentra el vehículo?"
+								type="text"
+								className="form-control form-control-sm"
+								id="estadoV"
+								onChange={(e) => {
+									setData({
+										...data,
+										estadoV: e.target.value.toUpperCase(),
+									});
+								}}
+								value={data.estadoV}
+								required
+							></input>
+						</div>
+						<div className="col-lg-12 mb-3">
 							<label htmlFor="ubicacion">Ubicación</label>
 							<input
+								placeholder="¿Dónde ocurrió el incidente?"
 								type="text"
 								className="form-control form-control-sm"
 								id="ubicacion"
@@ -445,6 +574,7 @@ const CreateService = () => {
 						<div className="col-lg-12 mb-3">
 							<label htmlFor="destino">Destino</label>
 							<input
+								placeholder="¿Hacia dónde se dirige?"
 								type="text"
 								className="form-control form-control-sm"
 								id="destino"
@@ -457,6 +587,12 @@ const CreateService = () => {
 								value={data.destino}
 								required
 							></input>
+						</div>
+						<div className="col-lg-12 mb-3">
+							<DateTimePicker
+								selectedDate={selectedDate}
+								handleDateChange={handleDateChange}
+							/>
 						</div>
 					</div>
 				</div>
@@ -579,7 +715,7 @@ const CreateService = () => {
 									type="radio"
 									id="inlineRad1"
 									value="DN"
-									checked={data.dia==="DN" ? true : false}
+									checked={data.dia === "DN" ? true : false}
 									onChange={(e) => {
 										setData({
 											...data,
@@ -601,7 +737,7 @@ const CreateService = () => {
 									type="radio"
 									id="inlineRad2"
 									value="DF"
-									checked={data.dia==="DF" ? true : false}
+									checked={data.dia === "DF" ? true : false}
 									onChange={(e) => {
 										setData({
 											...data,
@@ -613,67 +749,63 @@ const CreateService = () => {
 									className="form-check-label"
 									htmlFor="inlineRad2"
 								>
-									Día Feriado
+									Fin de Semana/Feriado
 								</label>
 							</div>
 							<div className="form-check form-check-inline">
 								<input
 									className="form-check-input rad"
-									name="resumeRadio"
-									type="radio"
-									id="inlineRad3"
-									value="N"
-									checked={data.dia==="N" ? true : false}
+									name="noche"
+									type="checkbox"
+									id="noche"
+									value="noche"
+									checked={data.noche}
 									onChange={(e) => {
 										setData({
 											...data,
-											dia: e.target.value,
+											noche: e.target.checked,
 										});
 									}}
 								></input>
 								<label
 									className="form-check-label"
-									htmlFor="inlineRad3"
+									htmlFor="noche"
 								>
 									Noche
 								</label>
 							</div>
 						</div>
 						<div className="col-lg-3 mb-3">
-							<label htmlFor="timepoLlegadaGrua">
+							<label htmlFor="tiempoGrua">
 								Tiempo de llegada Grúa
 							</label>
 							<input
 								type="number"
 								className="form-control form-control-sm"
-								id="timepoLlegada"
+								id="tiempoGrua"
+								name="tiempoGrua"
 								placeholder="Minutos"
-								onChange={(e) => {
-									setData({
-										...data,
-										tiempoGrua: Number(e.target.value),
-									});
-								}}
-								value={data.tiempoGrua}
+								onChange={handleChange}
+								value={
+									data.tiempoGrua <= 0 ? "" : data.tiempoGrua
+								}
 								required
 							></input>
 						</div>
 						<div className="col-lg-3 mb-3">
-							<label htmlFor="timepoLlegadaCliente">
+							<label htmlFor="tiempoCliente">
 								Tiempo de llegada Cliente
 							</label>
 							<input
 								type="number"
 								className="form-control form-control-sm"
-								id="timepoLlegadaCliente"
+								id="tiempoCliente"
+								name="tiempoCliente"
 								placeholder="Minutos"
-								onChange={(e) => {
-									setData({
-										...data,
-										tiempoCliente: Number(e.target.value),
-									});
-								}}
-								value={data.tiempoCliente}
+								onChange={handleChange}
+								value={
+									data.tiempoCliente <= 0 ? "" : data.tiempoCliente
+								}
 								required
 							></input>
 						</div>
@@ -683,14 +815,12 @@ const CreateService = () => {
 								type="number"
 								className="form-control form-control-sm"
 								id="distancia"
+								name="distancia"
 								placeholder="Kilómentros"
-								onChange={(e) => {
-									setData({
-										...data,
-										distancia: Number(e.target.value),
-									});
-								}}
-								value={data.distancia}
+								onChange={handleChange}
+								value={
+									data.distancia <= 0 ? "" : data.distancia
+								}
 								required
 							></input>
 						</div>
@@ -699,16 +829,12 @@ const CreateService = () => {
 							<input
 								type="number"
 								className="form-control form-control-sm"
+								name="precio"
 								id="precio"
 								placeholder="RD$ Pesos"
-								onChange={(e) => {
-									setData({
-										...data,
-										precio: Number(e.target.value),
-									});
-								}}
-								value={data.precio}
-								required
+								value={data.precio <= 0 ? "" : data.precio}
+								onChange={handleChange}
+								disabled
 							></input>
 						</div>
 					</div>
