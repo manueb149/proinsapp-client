@@ -1,18 +1,25 @@
 import React, { useState, useEffect, useContext } from "react";
 import { serviceDataContext } from "../../contexts/ServiceDataContext";
+import { defaultValuesContext } from "../../contexts/DefaultValuesContext";
 import { CreateServiceContainer } from "../../layout/Service/Service.style";
+import { serviceModalsContext } from "../../contexts/ServiceModalsContext";
 import { Button } from "react-bootstrap";
 import { Typeahead } from "react-bootstrap-typeahead";
 import "react-bootstrap-typeahead/css/Typeahead.css";
+import "react-phone-number-input/style.css";
 import MapModal from "./MapModal";
 import DetailsModal from "./DetailsModal";
 import TypesModal from "./TypesModal";
 import ConfirmModal from "./ConfirmModal";
-import axios from "../../http-common";
+import axios from "../../config/http-common";
 import { Form } from "react-bootstrap";
 import SnackBar from "../utils/SnackBar";
 import SelectRowsTable from "./SelectRowsTable";
 import DateTimePicker from "../utils/DateTimePicker";
+import PhoneInput from "react-phone-number-input";
+import AuthContext from "../../contexts/auth/authContext";
+import { useHistory } from "react-router-dom";
+import serviceCalc from "../utils/serviceCalc";
 
 const CreateService = () => {
 	const [showType, setShowType] = useState(false);
@@ -20,13 +27,30 @@ const CreateService = () => {
 	const [showMap, setShowMap] = useState(false);
 	const [showConfirm, setShowConfirm] = useState(false);
 	const [openSB, setOpenSB] = useState(false);
+	const history = useHistory();
 
+	const DefaultValuesContext = useContext(defaultValuesContext);
 	const ServiceDataContext = useContext(serviceDataContext);
+	const ServiceModalsContext = useContext(serviceModalsContext);
+	const authContext = useContext(AuthContext);
+
+	const { logout, user } = authContext;
+	const { values, setValues } = DefaultValuesContext;
+
+	const {
+		servicesType,
+		detailSinister,
+		servicesTypeCk,
+		detailSinisterCk,
+		setDetailSinisterCk,
+		setServicesTypeCk,
+		setDetailSinister,
+		setServicesType,
+	} = ServiceModalsContext;
+
 	const {
 		data,
 		search,
-		servicesType,
-		detailSinister,
 		trucks,
 		truckAreas,
 		dataTrucks,
@@ -35,8 +59,6 @@ const CreateService = () => {
 		notification,
 		setData,
 		setSearch,
-		setServiceType,
-		setDetailSinister,
 		setTrucks,
 		setTruckAreas,
 		setDataTrucks,
@@ -48,7 +70,7 @@ const CreateService = () => {
 		multipleCarsSelect,
 		setMultipleCarsSelect,
 		selectedDate,
-		handleDateChange
+		handleDateChange,
 	} = ServiceDataContext;
 
 	useEffect(() => {
@@ -56,7 +78,23 @@ const CreateService = () => {
 			await axios
 				.get("/trucksData/areas")
 				.then((res) => setTruckAreas(res.data.areas))
-				.catch((err) => console.log(err));
+				.catch((error) => {
+					if (error.response) {
+						// Request made and server responded
+						if (error.response.data.text === "TNV") {
+							logout();
+							history.push("/");
+						}
+						// console.log(error.response.status);
+						// console.log(error.response.headers);
+					} else if (error.request) {
+						// The request was made but no response was received
+						console.log(error.request);
+					} else {
+						// Something happened in setting up the request that triggered an Error
+						console.log("Error", error.message);
+					}
+				});
 		};
 		getTrucksAreas();
 		// eslint-disable-next-line
@@ -67,7 +105,23 @@ const CreateService = () => {
 			await axios
 				.post("/trucksData", { region: areaTruckSelect[0] || "" })
 				.then((res) => setTrucks(res.data))
-				.catch((err) => console.log(err));
+				.catch((error) => {
+					if (error.response) {
+						// Request made and server responded
+						if (error.response.data.text === "TNV") {
+							logout();
+							history.push("/");
+						}
+						// console.log(error.response.status);
+						// console.log(error.response.headers);
+					} else if (error.request) {
+						// The request was made but no response was received
+						console.log(error.request);
+					} else {
+						// Something happened in setting up the request that triggered an Error
+						console.log("Error", error.message);
+					}
+				});
 		};
 		getTrucks();
 		// eslint-disable-next-line
@@ -120,6 +174,39 @@ const CreateService = () => {
 		// eslint-disable-next-line
 	}, [multipleCarsSelect]);
 
+	useEffect(() => {
+		const getValues = async () => {
+			await axios
+				.get("values")
+				.then((res) => {
+					setValues(res.data.values);
+				})
+				.catch((error) => {
+					if (error.response) {
+						// Request made and server responded
+						if (error.response.data.text === "TNV") {
+							logout();
+							history.push("/");
+						}
+						// console.log(error.response.status);
+						// console.log(error.response.headers);
+					} else if (error.request) {
+						// The request was made but no response was received
+						console.log(error.request);
+					} else {
+						// Something happened in setting up the request that triggered an Error
+						console.log("Error", error.message);
+					}
+				});
+		};
+		getValues();
+		setData({
+			...data,
+			user: user.name
+		})
+		// eslint-disable-next-line
+	}, []);
+
 	const handleChange = (e) => {
 		setData({
 			...data,
@@ -128,7 +215,7 @@ const CreateService = () => {
 	};
 
 	const handleServiceTypeCk = (e) => {
-		setServiceType({
+		setServicesType({
 			...servicesType,
 			[e.target.id]: !servicesType[e.target.id],
 		});
@@ -146,6 +233,28 @@ const CreateService = () => {
 			return;
 		}
 		setOpenSB(false);
+	};
+
+	const handlePhone1 = (event) => {
+		if (event !== undefined) {
+			if (event.length <= 12) {
+				setData({
+					...data,
+					telAseg1: event ? event : "",
+				});
+			}
+		}
+	};
+
+	const handlePhone2 = (event) => {
+		if (event !== undefined) {
+			if (event.length <= 12) {
+				setData({
+					...data,
+					telAseg2: event ? event : "",
+				});
+			}
+		}
 	};
 
 	const handleSearch = async () => {
@@ -204,11 +313,27 @@ const CreateService = () => {
 					setDataTrucks([]);
 					SetAreaTruckSelect([]);
 				})
-				.catch((err) => {
-					setOpenSB(false);
-					setSeverity("error");
-					setNotification(err.response.data.message);
-					setOpenSB(true);
+				.catch((error) => {
+					if (error.response) {
+						// Request made and server responded
+						if (error.response.data.text === "TNV") {
+							logout();
+							history.push("/");
+						} else {
+							setOpenSB(false);
+							setSeverity("error");
+							setNotification(error.response.data.message);
+							setOpenSB(true);
+						}
+						// console.log(error.response.status);
+						// console.log(error.response.headers);
+					} else if (error.request) {
+						// The request was made but no response was received
+						console.log(error.request);
+					} else {
+						// Something happened in setting up the request that triggered an Error
+						console.log("Error", error.message);
+					}
 				});
 		}
 	};
@@ -230,9 +355,12 @@ const CreateService = () => {
 					dataTrucks,
 					areaTruckSelect,
 					detailSinister,
+					detailSinisterCk,
 					servicesType,
+					servicesTypeCk,
 					selectedDate
 				}}
+				setData={setData}
 			/>
 
 			<SnackBar
@@ -243,18 +371,36 @@ const CreateService = () => {
 				handleCloseSB={handleCloseSB}
 			/>
 
-			<TypesModal
-				showType={showType}
-				setShowType={setShowType}
-				servicesType={servicesType}
-				handleServiceTypeCk={handleServiceTypeCk}
-			/>
-			<DetailsModal
-				showDetail={showDetail}
-				setShowDetail={setShowDetail}
-				detailSinister={detailSinister}
-				handleDetailCk={handleDetailCk}
-			/>
+			{values ? (
+				<TypesModal
+					valuesContext={values}
+					values={servicesType}
+					setValues={setServicesType}
+					checked={servicesTypeCk}
+					setChecked={setServicesTypeCk}
+					showType={showType}
+					setShowType={setShowType}
+					servicesType={servicesType}
+					handleServiceTypeCk={handleServiceTypeCk}
+					data={data}
+					setData={setData}
+				/>
+			) : null}
+
+			{values ? (
+				<DetailsModal
+					valuesContext={values}
+					values={detailSinister}
+					setValues={setDetailSinister}
+					checked={detailSinisterCk}
+					setChecked={setDetailSinisterCk}
+					showDetail={showDetail}
+					setShowDetail={setShowDetail}
+					detailSinister={detailSinister}
+					handleDetailCk={handleDetailCk}
+				/>
+			) : null}
+
 			<MapModal showMap={showMap} setShowMap={setShowMap} />
 
 			<Button
@@ -492,24 +638,28 @@ const CreateService = () => {
 					</div>
 					<div className="form-row">
 						<div className="col-lg-4 mb-3">
-							<label htmlFor="tel1">Teléfono 1</label>
-							<input
-								type="text"
+							<label htmlFor="telAseg1">Teléfono 1</label>
+							<PhoneInput
 								className="form-control form-control-sm"
-								id="tel1"
-								required
-								disabled
-							></input>
+								name="telAseg1"
+								international
+								countryCallingCodeEditable={false}
+								defaultCountry="DO"
+								value={data.telAseg1}
+								onChange={handlePhone1}
+							/>
 						</div>
 						<div className="col-lg-4 mb-3">
-							<label htmlFor="tel2">Teléfono 2</label>
-							<input
-								type="text"
+							<label htmlFor="telAseg2">Teléfono 2</label>
+							<PhoneInput
 								className="form-control form-control-sm"
-								id="tel2"
-								required
-								disabled
-							></input>
+								name="telAseg2"
+								international
+								countryCallingCodeEditable={false}
+								defaultCountry="DO"
+								value={data.telAseg2}
+								onChange={handlePhone2}
+							/>
 						</div>
 					</div>
 				</div>
@@ -804,7 +954,9 @@ const CreateService = () => {
 								placeholder="Minutos"
 								onChange={handleChange}
 								value={
-									data.tiempoCliente <= 0 ? "" : data.tiempoCliente
+									data.tiempoCliente <= 0
+										? ""
+										: data.tiempoCliente
 								}
 								required
 							></input>
@@ -827,12 +979,20 @@ const CreateService = () => {
 						<div className="col-lg-2 mb-3">
 							<label htmlFor="precio">Precio Aproximado</label>
 							<input
-								type="number"
+								type="text"
 								className="form-control form-control-sm"
 								name="precio"
 								id="precio"
 								placeholder="RD$ Pesos"
-								value={data.precio <= 0 ? "" : data.precio}
+								// value={data.precio <= 0 ? "" : data.precio}
+								value={serviceCalc(
+									data,
+									values,
+									servicesType,
+									servicesTypeCk,
+									detailSinister,
+									detailSinisterCk
+								)}
 								onChange={handleChange}
 								disabled
 							></input>

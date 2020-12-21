@@ -1,6 +1,9 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { Fragment, useState, useEffect, useContext } from "react";
 import { Button } from "react-bootstrap";
-import axios from '../../http-common';
+import axios from '../../config/http-common';
+import AuthContext from "../../contexts/auth/authContext";
+import { useHistory } from "react-router-dom";
+
 
 /*
 	type: data -> cargar datos de las aseguradoras
@@ -9,7 +12,11 @@ import axios from '../../http-common';
 const File = ({file, setMessage, updateList, setUpdateList, type}) => {
 
 	const typeData = (type === 'files') ? 'data' : 'trucksData';
-    const [isLoading, setLoading] = useState(false);
+	const [isLoading, setLoading] = useState(false);
+	
+	const history = useHistory();
+    const authContext = useContext(AuthContext);
+    const { logout } = authContext;
 
 	useEffect(() => {
 		if (isLoading) {
@@ -18,7 +25,24 @@ const File = ({file, setMessage, updateList, setUpdateList, type}) => {
 				setMessage(res.data.message);
 				setLoading(false);
 				setUpdateList(!updateList);
-			}).catch( err => console.log(err));
+			})
+			.catch((error) => {
+				if (error.response) {
+					// Request made and server responded
+					if (error.response.data.text === "TNV") {
+						logout();
+						history.push("/");
+					}
+					// console.log(error.response.status);
+					// console.log(error.response.headers);
+				} else if (error.request) {
+					// The request was made but no response was received
+					console.log(error.request);
+				} else {
+					// Something happened in setting up the request that triggered an Error
+					console.log("Error", error.message);
+				}
+			});
 		}
 	// eslint-disable-next-line 
 	}, [isLoading, file._id]);
@@ -33,7 +57,25 @@ const File = ({file, setMessage, updateList, setUpdateList, type}) => {
 			setMessage(res.data.message)
 			setUpdateList(!updateList)
 		})
-        .catch(err => setMessage(err.data.message));
+		// .catch(err => setMessage(err.data.message));
+		.catch((error) => {
+			if (error.response) {
+				// Request made and server responded
+				if (error.response.data.text === "TNV") {
+					logout();
+					history.push("/");
+				}
+				// console.log(error.response.status);
+				// console.log(error.response.headers);
+			} else if (error.request) {
+				// The request was made but no response was received
+				console.log(error.request);
+			} else {
+				// Something happened in setting up the request that triggered an Error
+				console.log("Error", error.message);
+			}
+		});
+
     };
 
 	return (

@@ -1,4 +1,4 @@
-import axios from '../../http-common';
+import axios from '../../config/http-common';
 
 const upload = async (file, onUploadProgress, type) => {
   let formData = new FormData();

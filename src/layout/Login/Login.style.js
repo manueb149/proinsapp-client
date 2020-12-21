@@ -70,13 +70,14 @@ export const LoginHeader = styled.div`
 `;
 
 export const LoginForm = styled.div`
-    margin-top: 10vh;
+    margin-top: 20vh;
     padding: 15px;
     position: relative;
     border: 5px solid rgba(255,255,255,0.2);
     border-radius: 10px;
     background-color: white;
     z-index: 0;
+    box-shadow: 0 0 10px 10px rgba(30, 50, 55, 0.4),0 0 10px rgba(81,203,238,0.6);
     .login-title{
         font-size: 1.5rem;
         font-weight: 700;
@@ -99,5 +100,20 @@ export const LoginForm = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+    div.row.showpassword{
+        margin-right: 0px;
+        margin-left: 0px;
+        flex-wrap: nowrap;
+    }
+   .eye:hover{
+        cursor: pointer;
+    }
+    .eye{
+        display: flex;
+        padding-left: 10px;
+        padding-right: 2px;
+        align-items: center;
+        transform: scale(1.2);
     }
 `;

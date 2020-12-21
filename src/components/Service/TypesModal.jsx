@@ -1,53 +1,46 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import CustomTextField from "../utils/CustomTextField";
 import customFormats from "../utils/customFormats";
 import { DetailsModalContainer } from "../../layout/Service/Service.style";
 
 const TypesService = ({
+	valuesContext,
+	values,
+	setValues,
+	checked,
+	setChecked,
 	showType,
 	setShowType,
-	servicesType,
-	handleServiceTypeCk,
+	data
 }) => {
-	const [values, setValues] = useState({
-		TG: "",
-		CR: "",
-		EX: "",
-		SP: "",
-		LM: "",
-		PE: "",
-		SG: "",
-		CE: "",
-		CG: "",
-		VO: "",
-		IN: "",
-		CO: "",
-		DM: "",
-	});
-
-	const [checked, setChecked] = useState({
-		TG: false,
-		CR: false,
-		EX: false,
-		SP: false,
-		LM: false,
-		PE: false,
-		SG: false,
-		CE: false,
-		CG: false,
-		VO: false,
-		IN: false,
-		CO: false,
-		DM: false,
-	});
 
 	const handleChange = (event) => {
 		setValues({
 			...values,
-			[event.target.name]: event.target.value,
+			[event.target.name]:
+				event.target.name === "LM"
+					? (Number(event.target.value) <= Number(data.distancia) ? event.target.value : "")
+					: Number(event.target.value) <=
+					  Number(valuesContext[event.target.name])
+					? event.target.value
+					: "",
 		});
 	};
+
+	useEffect(() => {
+		const handleChangeCustom = () => {
+			setValues({
+				...values,
+				TG: checked.TG ? valuesContext.TG : "",
+				SP: checked.SP ? valuesContext.SP : "",
+				SL: checked.LM ? valuesContext.LM : "",
+				TN: valuesContext.TN,
+			});
+		};
+		handleChangeCustom();
+		// eslint-disable-next-line
+	}, [checked]);
 
 	return (
 		<Modal
@@ -62,109 +55,6 @@ const TypesService = ({
 			</Modal.Header>
 			<DetailsModalContainer>
 				<Modal.Body>
-					{/* <div className="form-row">
-					<div className="form-group form-check">
-						<input
-							type="checkbox"
-							className="form-check-input"
-							id="TranGrua"
-							checked={servicesType.TranGrua}
-							onChange={handleServiceTypeCk}
-						></input>
-						<label className="form-check-label" htmlFor="TranGrua">
-							Transporte con Grúa
-						</label>
-						<br></br>
-						<input
-							type="checkbox"
-							className="form-check-input"
-							id="Extraccion"
-							checked={servicesType.Extraccion}
-							onChange={handleServiceTypeCk}
-						></input>
-						<label className="form-check-label" htmlFor="Extraccion">
-							Extracción
-						</label>
-						<br></br>
-						<input
-							type="checkbox"
-							className="form-check-input"
-							id="Cerrageria"
-							checked={servicesType.Cerrageria}
-							onChange={handleServiceTypeCk}
-						></input>
-						<label className="form-check-label" htmlFor="Cerrageria">
-							Cerragería
-						</label>
-						<br></br>
-						<input
-							type="checkbox"
-							className="form-check-input"
-							id="CambioGomas"
-							checked={servicesType.CambioGomas}
-							onChange={handleServiceTypeCk}
-						></input>
-						<label className="form-check-label" htmlFor="CambioGomas">
-							Cambio de Gomas
-						</label>
-						<br></br>
-						<input
-							type="checkbox"
-							className="form-check-input"
-							id="CorrienteEncendido"
-							checked={servicesType.CorrienteEncendido}
-							onChange={handleServiceTypeCk}
-						></input>
-						<label className="form-check-label" htmlFor="CorrienteEncendido">
-							Corriente y Encendido
-						</label>
-						<br></br>
-						<input
-							type="checkbox"
-							className="form-check-input"
-							id="SuministrosGasolina"
-							checked={servicesType.SuministrosGasolina}
-							onChange={handleServiceTypeCk}
-						></input>
-						<label className="form-check-label" htmlFor="SuministrosGasolina">
-							Suministros y Gasolina
-						</label>
-						<br></br>
-						<input
-							type="checkbox"
-							className="form-check-input"
-							id="Peaje"
-							checked={servicesType.Peaje}
-							onChange={handleServiceTypeCk}
-						></input>
-						<label className="form-check-label" htmlFor="Peaje">
-							Peaje
-						</label>
-						<br></br>
-						<input
-							type="checkbox"
-							className="form-check-input"
-							id="ExtPeso"
-							checked={servicesType.ExtPeso}
-							onChange={handleServiceTypeCk}
-						></input>
-						<label className="form-check-label" htmlFor="ExtPeso">
-							Ext. Peso
-						</label>
-						<br></br>
-						<input
-							type="checkbox"
-							className="form-check-input"
-							id="SubLoma"
-							checked={servicesType.SubLoma}
-							onChange={handleServiceTypeCk}
-						></input>
-						<label className="form-check-label" htmlFor="SubLoma">
-							Sub. Loma
-						</label>
-						<br></br>
-					</div>
-				</div> */}
 					<div className="form-row px-3">
 						<div className="col-sm-12 col-md-12 col-lg-4 mb-3">
 							<div className="row check-input">
@@ -178,6 +68,8 @@ const TypesService = ({
 									LongName={"Tansporte de Grúa"}
 									Format={customFormats.PesoKmFormatCustom}
 									handleChange={handleChange}
+									alwaysDisabled
+									noValue
 								/>
 							</div>
 						</div>
@@ -191,9 +83,7 @@ const TypesService = ({
 									setChecked={setChecked}
 									shortName={"CR"}
 									LongName={"Cerragería"}
-									Format={
-										customFormats.LessNumberFormatCustom
-									}
+									Format={customFormats.NumberFormatCustom}
 									handleChange={handleChange}
 								/>
 							</div>
@@ -208,9 +98,7 @@ const TypesService = ({
 									setChecked={setChecked}
 									shortName={"EX"}
 									LongName={"Extracción"}
-									Format={
-										customFormats.LessNumberFormatCustom
-									}
+									Format={customFormats.NumberFormatCustom}
 									handleChange={handleChange}
 								/>
 							</div>
@@ -227,6 +115,8 @@ const TypesService = ({
 									LongName={"Sobre peso"}
 									Format={customFormats.PercentFormatCustom}
 									handleChange={handleChange}
+									alwaysDisabled
+									noValue
 								/>
 							</div>
 						</div>
@@ -240,7 +130,7 @@ const TypesService = ({
 									setChecked={setChecked}
 									shortName={"LM"}
 									LongName={"Subida loma"}
-									Format={customFormats.PesoKmFormatCustom}
+									Format={customFormats.KmFormatCustom}
 									handleChange={handleChange}
 								/>
 							</div>
@@ -255,9 +145,7 @@ const TypesService = ({
 									setChecked={setChecked}
 									shortName={"PE"}
 									LongName={"Peaje"}
-									Format={
-										customFormats.LessNumberFormatCustom
-									}
+									Format={customFormats.NumberFormatCustom}
 									handleChange={handleChange}
 								/>
 							</div>
@@ -272,9 +160,7 @@ const TypesService = ({
 									setChecked={setChecked}
 									shortName={"SG"}
 									LongName={"Suministros y Gasolina"}
-									Format={
-										customFormats.LessNumberFormatCustom
-									}
+									Format={customFormats.NumberFormatCustom}
 									handleChange={handleChange}
 								/>
 							</div>
@@ -289,9 +175,7 @@ const TypesService = ({
 									setChecked={setChecked}
 									shortName={"CE"}
 									LongName={"Corriente y Encendido"}
-									Format={
-										customFormats.LessNumberFormatCustom
-									}
+									Format={customFormats.NumberFormatCustom}
 									handleChange={handleChange}
 								/>
 							</div>
@@ -306,9 +190,7 @@ const TypesService = ({
 									setChecked={setChecked}
 									shortName={"CG"}
 									LongName={"Cambio de Gomas"}
-									Format={
-										customFormats.LessNumberFormatCustom
-									}
+									Format={customFormats.NumberFormatCustom}
 									handleChange={handleChange}
 								/>
 							</div>

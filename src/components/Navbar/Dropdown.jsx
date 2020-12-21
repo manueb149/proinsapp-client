@@ -1,74 +1,104 @@
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from "react";
+// import { Link } from 'react-router-dom';
 // Conectext for DropDown menu
-import { navbarContext } from '../../contexts/NavbarContext';
+import { navbarContext } from "../../contexts/NavbarContext";
 // Import DropdownSub from sub-menus of dropdown
 import DropdownSub from "./DropdownSub";
 // Import DropdownItem for sub-items of dropdown
 import DropdownItem from "./DropdownItem";
+// Import AuthContext
+import authContext from "../../contexts/auth/authContext";
 
 const Dropdown = () => {
+	const NavbarContext = useContext(navbarContext);
+	const { menuHeight, dropdownRef } = NavbarContext;
 
-    const NavbarContext = useContext(navbarContext);
-    const { menuHeight,dropdownRef } = NavbarContext;
+	const AuthContext = useContext(authContext);
+	const { logout, user } = AuthContext;
 
-    return (
-        <div
-            className="dropdown"
-            style={{ height: menuHeight }}
-            ref={dropdownRef}
-        >
-            <DropdownSub menu={'main'} type={'primary'} >
+	return (
+		<div
+			className="dropdown"
+			style={{ height: menuHeight }}
+			ref={dropdownRef}
+		>
+			<DropdownSub menu={"main"} type={"primary"}>
+				<DropdownItem leftIcon={"fas fa-tachometer-alt"}>
+					Inicio
+				</DropdownItem>
+				{user.roles[0].find((value) => value === "service") ? (
+					<DropdownItem leftIcon={"fas fa-truck-pickup"} goToMenu="service">
+						Solicitud
+					</DropdownItem>
+				) : null}
+				{user.roles[0].find((value) => value === "report") ? (
+					<DropdownItem leftIcon={"fa fa-book"} goToMenu="report">
+						Registros
+					</DropdownItem>
+				) : null}
+				{user.roles[0].find((value) => value === "config") ? (
+					<DropdownItem leftIcon={"fa fa-cogs"} goToMenu="config">
+						Configuración
+					</DropdownItem>
+				) : null}
+				<DropdownItem leftIcon={"fas fa-toggle-off"} goToMenu="main">
+					<a href="!#" onClick={() => logout()}>
+						Cerrar Sesión
+					</a>
+				</DropdownItem>
+			</DropdownSub>
 
-                <DropdownItem
-                    leftIcon={"fas fa-tachometer-alt"}>
-                    Inicio
-                </DropdownItem>
+			<DropdownSub menu={"service"} type={"secondary"}>
+				<DropdownItem goToMenu="main" leftIcon={"fas fa-arrow-left"}>
+					Regresar
+				</DropdownItem>
+				{user.roles[1].find((value) => value === "create") ? (
+					<DropdownItem subMenu={"create"} leftIcon={"fas fa-plus"}>
+						Crear Solicitud
+					</DropdownItem>
+				) : null}
+				{/* <DropdownItem subMenu={'print'} leftIcon={'fas fa-print'}>Imprimir Solicitud</DropdownItem> */}
+				{user.roles[1].find((value) => value === "summary") ? (
+					<DropdownItem subMenu={"summary"} leftIcon={"fas fa-calculator"}>
+						Resumen
+					</DropdownItem>
+				) : null}
+			</DropdownSub>
 
-                <DropdownItem leftIcon={'fas fa-truck-pickup'} goToMenu="service">
-                    Solicitud
-                </DropdownItem>
-
-                <DropdownItem leftIcon={"fa fa-book"} goToMenu="report">
-                    Registros
-                </DropdownItem>
-
-                <DropdownItem leftIcon={"fa fa-cogs"} goToMenu="config">
-                    Configuración
-                </DropdownItem>
-
-                <DropdownItem leftIcon={"fas fa-toggle-off"} goToMenu="main">
-                <Link to='/'>Cerrar Sesión</Link>
-                </DropdownItem>
-            </DropdownSub>
-
-            <DropdownSub menu={'service'} type={'secondary'} >
+			<DropdownSub menu={"report"} type={"secondary"}>
                 <DropdownItem goToMenu="main" leftIcon={"fas fa-arrow-left"}>
-                    Regresar
-                </DropdownItem>
-                <DropdownItem subMenu={'create'} leftIcon={'fas fa-plus'}>Crear Solicitud</DropdownItem>
-                {/* <DropdownItem subMenu={'print'} leftIcon={'fas fa-print'}>Imprimir Solicitud</DropdownItem> */}
-                <DropdownItem subMenu={'summary'} leftIcon={'fas fa-calculator'}>Resumen</DropdownItem>
-            </DropdownSub>
+					Regresar
+				</DropdownItem>
+				{user.roles[1].find((value) => value === "view") ? (
+                    <DropdownItem subMenu={"view"} leftIcon={"fas fa-book-open"}>
+					    Ver Registros
+				    </DropdownItem>
+				) : null}
+				{/* <DropdownItem subMenu={'print'} leftIcon={"fas fa-print"}>Imprimir Registros</DropdownItem> */}
+			</DropdownSub>
 
-            <DropdownSub menu={'report'} type={'secondary'} >
-                <DropdownItem goToMenu="main" leftIcon={"fas fa-arrow-left"}>
-                    Regresar
-                </DropdownItem>
-                <DropdownItem subMenu={'view'} leftIcon={"fas fa-book-open"}>Ver Registros</DropdownItem>
-                {/* <DropdownItem subMenu={'print'} leftIcon={"fas fa-print"}>Imprimir Registros</DropdownItem> */}
-            </DropdownSub>
-
-            <DropdownSub menu={'config'} type={'secondary'} >
-                <DropdownItem goToMenu="main" leftIcon={"fas fa-arrow-left"}>
-                    Regresar
-                </DropdownItem>
-                <DropdownItem subMenu={'files'} leftIcon={"fas fa-table"}>Aseguradoras</DropdownItem>
-                <DropdownItem subMenu={'trucks'} leftIcon={"fas fa-truck-pickup"}>Grueros</DropdownItem>
-                <DropdownItem subMenu={'values'} leftIcon={"fas fa-database"}>Valores Fijos</DropdownItem>
-            </DropdownSub>
-        </div>
-    );
-}
+			<DropdownSub menu={"config"} type={"secondary"}>
+				<DropdownItem goToMenu="main" leftIcon={"fas fa-arrow-left"}>
+					Regresar
+				</DropdownItem>
+                {user.roles[1].find((value) => value === "files") ? (
+                    <DropdownItem subMenu={"files"} leftIcon={"fas fa-table"}>
+                        Aseguradoras
+                    </DropdownItem>
+                ) : null}
+                {user.roles[1].find((value) => value === "trucks") ? (
+                    <DropdownItem subMenu={"trucks"} leftIcon={"fas fa-truck-pickup"} >
+                        Grueros
+                    </DropdownItem>                   
+                ) : null}
+                {user.roles[1].find((value) => value === "values") ? (
+                    <DropdownItem subMenu={"values"} leftIcon={"fas fa-database"}>
+                        Valores Fijos
+                    </DropdownItem>
+                ) : null}
+			</DropdownSub>
+		</div>
+	);
+};
 
 export default Dropdown;

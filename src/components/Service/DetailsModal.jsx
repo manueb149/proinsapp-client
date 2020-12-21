@@ -1,51 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
 import Modal from "react-bootstrap/Modal";
 import CustomTextField from "../utils/CustomTextField";
 import customFormats from "../utils/customFormats";
 import { DetailsModalContainer } from "../../layout/Service/Service.style";
 
 const DetailsModal = ({
+	valuesContext,
+	values,
+	setValues,
+	checked,
+	setChecked,
 	showDetail,
-	setShowDetail,
-	detailSinister,
-	handleDetailCk,
+	setShowDetail
 }) => {
-	const [values, setValues] = useState({
-		TG: "",
-		CR: "",
-		EX: "",
-		SP: "",
-		LM: "",
-		PE: "",
-		SG: "",
-		CE: "",
-		CG: "",
-		VO: "",
-		IN: "",
-		CO: "",
-		DM: "",
-	});
-
-	const [checked, setChecked] = useState({
-		TG: false,
-		CR: false,
-		EX: false,
-		SP: false,
-		LM: false,
-		PE: false,
-		SG: false,
-		CE: false,
-		CG: false,
-		VO: false,
-		IN: false,
-		CO: false,
-		DM: false,
-	});
 
 	const handleChange = (event) => {
 		setValues({
 			...values,
-			[event.target.name]: event.target.value,
+			[event.target.name]:
+				Number(event.target.value) <= Number(valuesContext[event.target.name])
+					? event.target.value
+					: ""
 		});
 	};
 
@@ -64,55 +39,6 @@ const DetailsModal = ({
 			</Modal.Header>
 			<DetailsModalContainer>
 				<Modal.Body>
-					{/* <div className="form-row">
-					<div className="form-group form-check">
-						<input
-							type="checkbox"
-							className="form-check-input"
-							id="Volcadura"
-							checked={detailSinister.Volcadura}
-							onChange={handleDetailCk}
-						></input>
-						<label className="form-check-label" htmlFor="Volcadura">
-							Volcadura
-						</label>
-						<br></br>
-						<input
-							type="checkbox"
-							className="form-check-input"
-							id="Incedios"
-							checked={detailSinister.Incedios}
-							onChange={handleDetailCk}
-						></input>
-						<label className="form-check-label" htmlFor="Incedios">
-							Incedios
-						</label>
-						<br></br>
-						<input
-							type="checkbox"
-							className="form-check-input"
-							id="Colision"
-							checked={detailSinister.Colision}
-							onChange={handleDetailCk}
-						></input>
-						<label className="form-check-label" htmlFor="Colision">
-							Colisión
-						</label>
-						<br></br>
-						<input
-							type="checkbox"
-							className="form-check-input"
-							id="Danios"
-							checked={detailSinister.Danios}
-							onChange={handleDetailCk}
-						></input>
-						<label className="form-check-label" htmlFor="Danios">
-							Daños Mecánicos
-						</label>
-						<br></br>
-					</div>
-				</div> */}
-
 					<div className="form-row px-3">
 						<div className="col-sm-12 col-md-6 col-lg-4 mb-3 ml-1 mr-1">
 							<div className="row check-input">
@@ -125,7 +51,7 @@ const DetailsModal = ({
 									shortName={"VO"}
 									LongName={"Volcaduras"}
 									Format={
-										customFormats.LessNumberFormatCustom
+										customFormats.NumberFormatCustom
 									}
 									handleChange={handleChange}
 								/>
@@ -142,7 +68,7 @@ const DetailsModal = ({
 									shortName={"IN"}
 									LongName={"Incendios"}
 									Format={
-										customFormats.LessNumberFormatCustom
+										customFormats.NumberFormatCustom
 									}
 									handleChange={handleChange}
 								/>
@@ -159,7 +85,7 @@ const DetailsModal = ({
 									shortName={"CO"}
 									LongName={"Colisión"}
 									Format={
-										customFormats.LessNumberFormatCustom
+										customFormats.NumberFormatCustom
 									}
 									handleChange={handleChange}
 								/>
@@ -176,7 +102,7 @@ const DetailsModal = ({
 									shortName={"DM"}
 									LongName={"Daños Mecánicos"}
 									Format={
-										customFormats.LessNumberFormatCustom
+										customFormats.NumberFormatCustom
 									}
 									handleChange={handleChange}
 								/>

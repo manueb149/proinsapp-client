@@ -23,7 +23,7 @@ const SnackBar = ({ openSB, handleCloseSB, severity, notification }) => {
     <div className={classes.root}>
       <Snackbar
         open={openSB}
-        autoHideDuration={2000}
+        autoHideDuration={3000}
         onClose={handleCloseSB}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       >

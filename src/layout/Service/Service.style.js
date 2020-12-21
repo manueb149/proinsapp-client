@@ -49,6 +49,9 @@ export const CreateServiceContainer = styled.div`
     .MuiFormControl-root.date-picker{
         min-width: 100%;
     }
+    .PhoneInputInput {
+        border: none;
+    }
 `;
 
 export const SummaryContainer = styled.div`

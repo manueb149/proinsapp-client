@@ -23,6 +23,8 @@ const ServiceDataContext = ({ children }) => {
 		poliza: "",
 		cedula: "",
 		asegurado: "",
+		telAseg1: "",
+		telAseg2: "",
 		marca: "",
 		modelo: "",
 		anio: "",
@@ -42,39 +44,20 @@ const ServiceDataContext = ({ children }) => {
 		contactoGruero: "",
 		comentarioGruero: "",
 		dia: "",
-		noche: "",
+		noche: false,
 		tiempoGrua: "",
 		tiempoCliente: "",
 		distancia: "",
 		precio: "",
+		user: ""
 	});
 
-	const [servicesType, setServiceType] = useState({
-		TranGrua: false,
-		Extraccion: false,
-		Cerrageria: false,
-		CambioGomas: false,
-		CorrienteEncendido: false,
-		SuministrosGasolina: false,
-		Peaje: false,
-		ExtPeso: false,
-		SubLoma: false,
-	});
-
-	const [detailSinister, setDetailSinister] = useState({
-		Volcadura: false,
-		Incedios: false,
-		Colision: false,
-		Danios: false,
-	});
 
     return (
         <serviceDataContext.Provider
             value={{
 				data: data,
-				search: search, 
-                servicesType: servicesType,
-				detailSinister: detailSinister,
+				search: search,
 				trucks: trucks, 
 				truckAreas: truckAreas, 
 				dataTrucks: dataTrucks, 
@@ -86,8 +69,6 @@ const ServiceDataContext = ({ children }) => {
 				selectedDate: selectedDate,
 				setData: setData,
 				setSearch: setSearch,
-                setServiceType: setServiceType,
-				setDetailSinister: setDetailSinister,
 				setTrucks: setTrucks,
 				setTruckAreas: setTruckAreas,
 				setDataTrucks: setDataTrucks,

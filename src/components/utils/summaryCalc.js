@@ -12,7 +12,7 @@ const summaryCalc = (values, checked) => {
         if (checked.TN) total += total * Number(values.TN)/100;
         if (checked.FF) total += total * Number(values.FF)/100;
         if (checked.EX) total += Number(values.EX);
-        if (checked.SP) total += total * Number(values.SP)/100;
+        if (checked.SP) total += Number(values.CB) * Number(values.KmSP) * Number(values.SP)/100;
         if (checked.LM && values.KmL>0 && values.LM>0) total += (Number(values.LM) * Number(values.KmL));
     }
     return (total.toFixed(2))

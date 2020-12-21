@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { SummaryContainer } from "../../../layout/Service/Service.style";
 import PropTypes from "prop-types";
 import customFormats, { TextMaskCustom } from "../../utils/customFormats";
@@ -6,7 +6,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import summaryCalc from "../../utils/summaryCalc";
 import CustomTextField from "../../utils/CustomTextField";
-import axios from "../../../http-common";
+import axios from "../../../config/http-common";
+import { useHistory } from "react-router-dom";
+import AuthContext from "../../../contexts/auth/authContext";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -17,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ServiceSummary = () => {
+	const authContext = useContext(AuthContext);
+	const { logout } = authContext;
+	const history = useHistory();
 	const classes = useStyles();
 	const [checked, setChecked] = useState({
 		TN: false,
@@ -30,6 +35,7 @@ const ServiceSummary = () => {
 		total: "",
 		KmE: "",
 		KmL: "",
+		KmSP: "",
 		CB: "",
 		CBPKM: "",
 		CP: "",
@@ -52,7 +58,23 @@ const ServiceSummary = () => {
 						SP: res.data.values.SP,
 					});
 				})
-				.catch();
+				.catch((error) => {
+					if (error.response) {
+						// Request made and server responded
+						if (error.response.data.text === "TNV") {
+							logout();
+							history.push("/");
+						}
+						// console.log(error.response.status);
+						// console.log(error.response.headers);
+					} else if (error.request) {
+						// The request was made but no response was received
+						console.log(error.request);
+					} else {
+						// Something happened in setting up the request that triggered an Error
+						console.log("Error", error.message);
+					}
+				});
 		};
 		getValues();
 		// eslint-disable-next-line
@@ -150,6 +172,25 @@ const ServiceSummary = () => {
 											</div>
 										</div>
 									) : null}
+									{(checked.SP && values.KmE>15) ? (
+										<div className="col-12 mb-3">
+											<div className="row check-input">
+												<TextField
+													size="small"
+													variant="outlined"
+													label="Kilómetro de sobre peso"
+													value={(Number(values.KmSP) <= Number(values.KmE)) ? values.KmSP : ""}
+													onChange={handleChange}
+													name="KmSP"
+													id="KmSP"
+													InputProps={{
+														inputComponent:
+															customFormats.KmFormatCustom,
+													}}
+												/>
+											</div>
+										</div>
+									) : null}
 									<div className="col-12 mb-3">
 										<div className="row check-input">
 											<TextField
@@ -167,24 +208,6 @@ const ServiceSummary = () => {
 											/>
 										</div>
 									</div>
-									{/* <div className="col-12 mb-3">
-										<div className="row check-input">
-											<TextField
-												size="small"
-												variant="outlined"
-												label="Costo Base/Km"
-												value={values.CBPKM}
-												onChange={handleChange}
-												name="CBPKM"
-												id="CBPKM"
-												InputProps={{
-													inputComponent:
-														customFormats.NumberFormatCustom,
-												}}
-												disabled
-											/>
-										</div>
-									</div> */}
 									<div className="col-12 mb-3">
 										<div className="row check-input">
 											<TextField

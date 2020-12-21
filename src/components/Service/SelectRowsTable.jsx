@@ -11,9 +11,9 @@ const SelectRowsTable = ({options, onChange}) => {
 			<div className="row">
 				<small>CHASSIS: <em><Highlighter search={text}>{option.chassis}</Highlighter></em></small><br></br>
 				<small>, PLACA: <em><Highlighter search={text}>{option.placa}</Highlighter></em></small><br></br>
-                <small>, MARCA: {option.marca}</small>
-                <small>, MODELO: {option.modelo}</small>
-				<small>, AÑO: {option.anio}</small>
+                <small>, MARCA: <em><Highlighter search={text}>{option.marca}</Highlighter></em></small>
+                <small>, MODELO: <em><Highlighter search={text}>{option.modelo}</Highlighter></em></small>
+				<small>, AÑO: <em><Highlighter search={text}>{option.anio}</Highlighter></em></small>
 			</div>
 		</Fragment>
 	);
