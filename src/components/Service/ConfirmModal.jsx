@@ -11,6 +11,8 @@ const ConfirmModal = ({ message, closeConfirm, showConfirm, setOpenSB, setSeveri
     const authContext = useContext(AuthContext);
     const { logout } = authContext;
 
+    payload.data.fechaSiniestro = payload.selectedDate;
+
     const handleCreateService = async () => {
 		if (
 			String(payload.data.asegurado).length === 0 ||
