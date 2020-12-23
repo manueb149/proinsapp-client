@@ -49,6 +49,7 @@ const ServiceDataContext = ({ children }) => {
 		tiempoCliente: "",
 		distancia: "",
 		precio: "",
+		tarifaEspecial: "",
 		user: ""
 	});
 

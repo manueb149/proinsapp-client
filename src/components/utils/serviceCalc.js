@@ -19,7 +19,7 @@ const summaryCalc = (data, values, servicesType, servicesTypeCk, detailSinister,
         if (servicesTypeCk.LM) total = total + Number(servicesType.LM) * Number(servicesType.SL);
         if (data.noche) total += total * Number(servicesType.TN)/100;
     } else {
-        total = 1200 + ((Number(data.distancia) - 15) * Number(values.TG));
+        total = 1200 + ((Number(data.distancia) - 15) * Number(servicesType.TG));
         if (servicesTypeCk.EX) total = total + Number(servicesType.EX);
         if (servicesTypeCk.CR) total = total + Number(servicesType.CR);
         if (servicesTypeCk.CG) total = total + Number(servicesType.CG);

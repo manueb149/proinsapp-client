@@ -2,13 +2,13 @@ import React, { Fragment } from 'react';
 import TextField from "@material-ui/core/TextField";
 import Checkbox from "@material-ui/core/Checkbox";
 
-const CustomTextField = ({values, checked, setChecked, variant, size, shortName, LongName, Format, handleChange, alwaysDisabled, noValue}) => {
+const CustomTextField = ({values, checked, setChecked, variant, size, shortName, LongName, Format, handleChange, alwaysDisabled, noValue, noCheck}) => {
 
     return (
         <Fragment>
             <Checkbox
                 name={shortName}
-                checked={checked[shortName]}
+                checked={noCheck ? true : checked[shortName]}
                 onChange={(e) =>
                     setChecked({
                         ...checked,

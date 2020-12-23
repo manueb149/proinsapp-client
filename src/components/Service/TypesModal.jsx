@@ -12,15 +12,17 @@ const TypesService = ({
 	setChecked,
 	showType,
 	setShowType,
-	data
+	data,
+	multipleCarsSelect,
 }) => {
-
 	const handleChange = (event) => {
 		setValues({
 			...values,
 			[event.target.name]:
 				event.target.name === "LM"
-					? (Number(event.target.value) <= Number(data.distancia) ? event.target.value : "")
+					? Number(event.target.value) <= Number(data.distancia)
+						? event.target.value
+						: ""
 					: Number(event.target.value) <=
 					  Number(valuesContext[event.target.name])
 					? event.target.value
@@ -32,7 +34,7 @@ const TypesService = ({
 		const handleChangeCustom = () => {
 			setValues({
 				...values,
-				TG: checked.TG ? valuesContext.TG : "",
+				TG: valuesContext.TG,
 				SP: checked.SP ? valuesContext.SP : "",
 				SL: checked.LM ? valuesContext.LM : "",
 				TN: valuesContext.TN,
@@ -69,7 +71,7 @@ const TypesService = ({
 									Format={customFormats.PesoKmFormatCustom}
 									handleChange={handleChange}
 									alwaysDisabled
-									noValue
+									noCheck
 								/>
 							</div>
 						</div>

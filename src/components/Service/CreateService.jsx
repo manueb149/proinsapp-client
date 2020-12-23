@@ -136,6 +136,13 @@ const CreateService = () => {
 				celGruero: dataTrucks[0].telCelular || "",
 				contactoGruero: dataTrucks[0].contacto || "",
 			});
+			setServicesType({
+				...servicesType,
+				TG:
+					dataTrucks.length === 0
+						? values.TG
+						: dataTrucks[0].trasporteGrua,
+			});
 		};
 		if (dataTrucks[0]) {
 			setGrueroData();
@@ -202,8 +209,8 @@ const CreateService = () => {
 		getValues();
 		setData({
 			...data,
-			user: user.name
-		})
+			user: user.name,
+		});
 		// eslint-disable-next-line
 	}, []);
 
@@ -211,6 +218,16 @@ const CreateService = () => {
 		setData({
 			...data,
 			[e.target.name]: Number(e.target.value),
+		});
+	};
+
+	const handleChangeTF = (e) => {
+		setData({
+			...data,
+			[e.target.name]:
+				Number(e.target.value) < 0
+					? Number("0.00").toFixed(2)
+					: Number(e.target.value).toFixed(2),
 		});
 	};
 
@@ -358,7 +375,7 @@ const CreateService = () => {
 					detailSinisterCk,
 					servicesType,
 					servicesTypeCk,
-					selectedDate
+					selectedDate,
 				}}
 				setData={setData}
 			/>
@@ -384,6 +401,7 @@ const CreateService = () => {
 					handleServiceTypeCk={handleServiceTypeCk}
 					data={data}
 					setData={setData}
+					multipleCarsSelect={multipleCarsSelect}
 				/>
 			) : null}
 
@@ -958,7 +976,6 @@ const CreateService = () => {
 										? ""
 										: data.tiempoCliente
 								}
-								required
 							></input>
 						</div>
 						<div className="col-lg-2 mb-3">
@@ -995,6 +1012,21 @@ const CreateService = () => {
 								)}
 								onChange={handleChange}
 								disabled
+							></input>
+						</div>
+						<div className="col-lg-2 mb-3">
+							<label htmlFor="tarifaEspecial">
+								Tarifa Especial
+							</label>
+							<input
+								type="number"
+								step="0.01"
+								min="0"
+								className="form-control form-control-sm"
+								id="tarifaEspecial"
+								name="tarifaEspecial"
+								placeholder="RD$ Pesos"
+								onChange={handleChangeTF}
 							></input>
 						</div>
 					</div>

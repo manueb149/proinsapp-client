@@ -3,14 +3,24 @@ import Modal from "react-bootstrap/Modal";
 import { Button } from "react-bootstrap";
 import axios from "../../config/http-common";
 import AuthContext from "../../contexts/auth/authContext";
+import { serviceModalsContext } from "../../contexts/ServiceModalsContext";
 import { useHistory } from "react-router-dom";
 
 const ConfirmModal = ({ message, closeConfirm, showConfirm, setOpenSB, setSeverity, setNotification, payload, setData }) => {
 
     const history = useHistory();
     const authContext = useContext(AuthContext);
-    const { logout } = authContext;
+    const ServiceModalsContext = useContext(serviceModalsContext);
+    const { logout, user } = authContext;
 
+    const {
+		setDetailSinisterCk,
+		setServicesTypeCk,
+		setDetailSinister,
+		setServicesType,
+	} = ServiceModalsContext;
+
+    payload.data.user = user.name.toUpperCase();
     payload.data.fechaSiniestro = payload.selectedDate;
 
     const handleCreateService = async () => {
@@ -70,8 +80,39 @@ const ConfirmModal = ({ message, closeConfirm, showConfirm, setOpenSB, setSeveri
                         tiempoCliente: "",
                         distancia: "",
                         precio: "",
-                    })
-
+                    });
+                    setServicesType({
+                        EX: "",
+                        CR: "",
+                        CG: "",
+                        CE: "",
+                        SG: "",
+                        PE: "",
+                        LM: ""
+                    });
+                    setServicesTypeCk({
+                        TG: false,
+                        EX: false,
+                        CR: false,
+                        CG: false,
+                        CE: false,
+                        SG: false,
+                        PE: false,
+                        SP: false,
+                        LM: false
+                    });
+                    setDetailSinister({
+                        VO: "",
+                        IN: "",
+                        CO: "",
+                        DM: ""
+                    });
+                    setDetailSinisterCk({
+                        VO: false,
+                        IN: false,
+                        CO: false,
+                        DM: false
+                    });
 				})
                 .catch((error) => {
                     if (error.response) {
