@@ -32,6 +32,7 @@ const summaryCalc = (data, values, servicesType, servicesTypeCk, detailSinister,
         if (detailSinisterCk.CO) total = total + Number(detailSinister.CO);
         if (detailSinisterCk.DM) total = total + Number(detailSinister.PE);
         
+        if (data.dia==="DF") total += total * Number(values.FF)/100;
         if (servicesTypeCk.SP) total += total * Number(servicesType.SP)/100;
         if (servicesTypeCk.LM) total = total + Number(servicesType.LM) * Number(servicesType.SL);
         if (data.noche) total += total * Number(servicesType.TN)/100;

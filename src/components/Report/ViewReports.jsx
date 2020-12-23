@@ -3,6 +3,7 @@ import MUIDataTable from "mui-datatables";
 import axios from "../../config/http-common";
 import { ReportsContainer } from "../../layout/Reports/Reports.style";
 import AuthContext from "../../contexts/auth/authContext";
+import { reportContext } from "../../contexts/ReportContext";
 import { useHistory } from "react-router-dom";
 
 const columns = [
@@ -112,23 +113,67 @@ const columns = [
 	},
 ];
 
-const options = {
-	filter: true,
-	rowsPerPage: 10,
-	rowsPerPageOptions: [10, 100, 250, 500, 1000],
-	filterType: "dropdown",
-	responsive: "standard",
-	fixedHeader: true,
-	fixedSelectColumn: true,
-	tableBodyHeight: "60vh",
-};
-
 const ViewReports = () => {
 	// eslint-disable-next-line
 	const [data, setData] = useState([]);
+	// eslint-disable-next-line
 	const history = useHistory();
 	const authContext = useContext(AuthContext);
 	const { logout } = authContext;
+	const ReportContext = useContext(reportContext);
+	const { setSelectedReport } = ReportContext;
+
+	const options = {
+		filter: true,
+		rowsPerPage: 10,
+		rowsPerPageOptions: [10, 100, 250, 500, 1000],
+		filterType: "dropdown",
+		responsive: "standard",
+		fixedHeader: true,
+		fixedSelectColumn: true,
+		tableBodyHeight: "64vh",
+		selectableRows: "single",
+		selectableRowsOnClick: true,
+		selectableRowsHeader: false,
+		selectToolbarPlacement: 'none',
+		textLabels: {
+			body: {
+				noMatch: "No se ha encontrado dicho reporte",
+				toolTip: "Sort",
+				columnHeaderTooltip: (column) => `Ordernar por ${column.label}`,
+			},
+			pagination: {
+				next: "Página Siguiente",
+				previous: "Página Anterior",
+				rowsPerPage: "Filas por página:",
+				displayRows: "de",
+			},
+			toolbar: {
+				search: "Buscar",
+				downloadCsv: "Descargar CSV",
+				print: "Imprimir",
+				viewColumns: "Ver Columnas",
+				filterTable: "Tabla de Filtros",
+			},
+			filter: {
+				all: "Todos",
+				title: "FILTROS",
+				reset: "RESETEAR",
+			},
+			viewColumns: {
+				title: "Ver Columnas",
+				titleAria: "Ver/Ocultar Tablas de Columnas",
+			},
+			selectedRows: {
+				text: "fila(s) selecciona(s)",
+				delete: "Eliminar",
+				deleteAria: "Eliminar Fila",
+			},
+		},
+		onRowSelectionChange: (rowsSelectedData, allRows, rowsSelected) => {
+			setSelectedReport(data[rowsSelected]);
+		},
+	};
 
 	useEffect(() => {
 		const getReports = async () => {
@@ -160,6 +205,7 @@ const ViewReports = () => {
 			}
 		};
 		getReports();
+		setSelectedReport(null);
 		// eslint-disable-next-line
 	}, []);
 

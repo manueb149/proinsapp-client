@@ -53,7 +53,7 @@ const Login = (props) => {
 		}
 
 		// Pasarlo al action
-		login({ email, password });
+		login({ email: email.toLowerCase(), password });
 	};
 
 	const handleCloseSB = (event, reason) => {

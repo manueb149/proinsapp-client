@@ -74,7 +74,9 @@ const Dropdown = () => {
 					    Ver Registros
 				    </DropdownItem>
 				) : null}
-				{/* <DropdownItem subMenu={'print'} leftIcon={"fas fa-print"}>Imprimir Registros</DropdownItem> */}
+				<DropdownItem subMenu={'print'} leftIcon={"fas fa-print"}>
+					Imprimir Registros
+				</DropdownItem>
 			</DropdownSub>
 
 			<DropdownSub menu={"config"} type={"secondary"}>

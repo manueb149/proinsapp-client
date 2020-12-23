@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { navbarContext } from '../contexts/NavbarContext';
 import StartPage from '../components/Dashboard/Start';
 import ViewReportPage from '../components/Report/ViewReports';
+import PrintReportPage from '../components/Report/PrintReport';
 import CreateServicePage from '../components/Service/CreateService';
 import DataUploadPage from '../components/Configure/DataUpload';
 import TrucksUploadPage from '../components/Configure/TrucksUpload';
@@ -20,6 +21,7 @@ const DashboardPages = () => {
             {(activeMenu==='service' && activeSubMenu==='create') ? <CreateServicePage /> : null}
             {(activeMenu==='service' && activeSubMenu==='summary') ? <SummaryPage /> : null}
             {(activeMenu==='report' && activeSubMenu==='view') ? <ViewReportPage /> : null}
+            {(activeMenu==='report' && activeSubMenu==='print') ? <PrintReportPage /> : null}
             {(activeMenu==='config' && activeSubMenu==='files') ? <DataUploadPage /> : null}
             {(activeMenu==='config' && activeSubMenu==='trucks') ? <TrucksUploadPage /> : null}
             {(activeMenu==='config' && activeSubMenu==='values') ? <DefaultValues /> : null}
