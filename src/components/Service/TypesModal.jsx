@@ -13,7 +13,7 @@ const TypesService = ({
 	showType,
 	setShowType,
 	data,
-	multipleCarsSelect,
+	dataTrucks,
 }) => {
 	const handleChange = (event) => {
 		setValues({
@@ -34,7 +34,9 @@ const TypesService = ({
 		const handleChangeCustom = () => {
 			setValues({
 				...values,
-				TG: valuesContext.TG,
+				TG: dataTrucks[0].trasporteGrua
+					? dataTrucks[0].trasporteGrua
+					: valuesContext.TG,
 				SP: checked.SP ? valuesContext.SP : "",
 				SL: checked.LM ? valuesContext.LM : "",
 				TN: valuesContext.TN,

@@ -401,7 +401,7 @@ const CreateService = () => {
 					handleServiceTypeCk={handleServiceTypeCk}
 					data={data}
 					setData={setData}
-					multipleCarsSelect={multipleCarsSelect}
+					dataTrucks={dataTrucks}
 				/>
 			) : null}
 
