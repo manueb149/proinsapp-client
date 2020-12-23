@@ -34,7 +34,7 @@ const TypesService = ({
 		const handleChangeCustom = () => {
 			setValues({
 				...values,
-				TG: dataTrucks[0].trasporteGrua
+				TG: dataTrucks.length>0
 					? dataTrucks[0].trasporteGrua
 					: valuesContext.TG,
 				SP: checked.SP ? valuesContext.SP : "",
