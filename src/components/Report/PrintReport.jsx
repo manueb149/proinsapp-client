@@ -119,7 +119,7 @@ const MyDocument = ({ data }) => (
 						Fecha:
 						<Text style={styles.header_subtext}>
 							{" "}
-							{(data.registry).substring(0, 15)}
+							{data.registry.substring(0, 15)}
 						</Text>
 					</Text>
 				</View>
@@ -274,34 +274,34 @@ const MyDocument = ({ data }) => (
 							Grúa:
 							<Text style={styles.header_subtext}>
 								{" "}
-								{data.tipoServicios.servicesType.TG}
+								{data.tipoServicios.servicesType.TG} $/Km
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Sobre peso:
 							<Text style={styles.header_subtext}>
 								{" "}
-								{data.tipoServicios.servicesType.SP}
+								{data.tipoServicios.servicesType.SP}%
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Peaje:
 							<Text style={styles.header_subtext}>
-								{" "}
+								{" $"}
 								{data.tipoServicios.servicesType.PE}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Cerragería:
 							<Text style={styles.header_subtext}>
-								{" "}
+								{" $"}
 								{data.tipoServicios.servicesType.CR}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Extracción:
 							<Text style={styles.header_subtext}>
-								{" "}
+								{" $"}
 								{data.tipoServicios.servicesType.EX}
 							</Text>
 						</Text>
@@ -311,34 +311,34 @@ const MyDocument = ({ data }) => (
 							Loma:
 							<Text style={styles.header_subtext}>
 								{" "}
-								{data.tipoServicios.servicesType.LM}
+								{data.tipoServicios.servicesType.LM}Km
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Gomas:
 							<Text style={styles.header_subtext}>
-								{" "}
+								{" $"}
 								{data.tipoServicios.servicesType.CG}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Corriente:
 							<Text style={styles.header_subtext}>
-								{" "}
+								{" $"}
 								{data.tipoServicios.servicesType.CE}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Suministros:
 							<Text style={styles.header_subtext}>
-								{" "}
+								{" $"}
 								{data.tipoServicios.servicesType.SG}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Volcaduras:
 							<Text style={styles.header_subtext}>
-								{" "}
+								{" $"}
 								{data.detalleSiniestro.detailSinister.VO}
 							</Text>
 						</Text>
@@ -347,21 +347,21 @@ const MyDocument = ({ data }) => (
 						<Text style={styles.header_subtext_title}>
 							Colisión:
 							<Text style={styles.header_subtext}>
-								{" "}
+								{" $"}
 								{data.detalleSiniestro.detailSinister.CO}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Incendios:
 							<Text style={styles.header_subtext}>
-								{" "}
+								{" $"}
 								{data.detalleSiniestro.detailSinister.IN}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Daños Mecánicos:
 							<Text style={styles.header_subtext}>
-								{" "}
+								{" $"}
 								{data.detalleSiniestro.detailSinister.DM}
 							</Text>
 						</Text>
@@ -374,25 +374,40 @@ const MyDocument = ({ data }) => (
 					<View style={{ flexBasis: "50%", marginLeft: "20px" }}>
 						<Text style={styles.header_subtext_title}>
 							Area:
-							<Text style={styles.header_subtext}> {data.datosGruero.region}</Text>
+							<Text style={styles.header_subtext}>
+								{" "}
+								{data.datosGruero.region}
+							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Gruero:
-							<Text style={styles.header_subtext}> {data.datosGruero.gruaDeServicio}</Text>
+							<Text style={styles.header_subtext}>
+								{" "}
+								{data.datosGruero.gruaDeServicio}
+							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Contacto:
-							<Text style={styles.header_subtext}> {data.datosGruero.contacto}</Text>
+							<Text style={styles.header_subtext}>
+								{" "}
+								{data.datosGruero.contacto}
+							</Text>
 						</Text>
 					</View>
 					<View style={{ flexBasis: "50%" }}>
 						<Text style={styles.header_subtext_title}>
 							Teléfono:
-							<Text style={styles.header_subtext}> {data.datosGruero.telOficina}</Text>
+							<Text style={styles.header_subtext}>
+								{" "}
+								{data.datosGruero.telOficina}
+							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Celular:
-							<Text style={styles.header_subtext}> {data.datosGruero.telCelular}</Text>
+							<Text style={styles.header_subtext}>
+								{" "}
+								{data.datosGruero.telCelular}
+							</Text>
 						</Text>
 					</View>
 				</View>
@@ -441,15 +456,24 @@ const MyDocument = ({ data }) => (
 			>
 				<Text style={styles.header_subtext_title}>
 					Tiempo Llegada:
-					<Text style={styles.header_subtext}> {data.tiempoGrua}</Text>
+					<Text style={styles.header_subtext}>
+						{" "}
+						{data.tiempoGrua} min
+					</Text>
 				</Text>
 				<Text style={styles.header_subtext_title}>
 					Distancia:
-					<Text style={styles.header_subtext}> {data.distancia}</Text>
+					<Text style={styles.header_subtext}>
+						{" "}
+						{data.distancia} Km
+					</Text>
 				</Text>
 				<Text style={styles.header_subtext_title}>
 					Precio Aprox.:
-					<Text style={styles.header_subtext}> {data.precio}</Text>
+					<Text style={styles.header_subtext}>
+						{" $"}
+						{data.precio}
+					</Text>
 				</Text>
 			</View>
 		</Page>
