@@ -14,10 +14,16 @@ const summaryCalc = (data, values, servicesType, servicesTypeCk, detailSinister,
         if (detailSinisterCk.CO) total = total + Number(detailSinister.CO);
         if (detailSinisterCk.DM) total = total + Number(detailSinister.PE);
 
-        if (data.dia==="DF") total += total * Number(values.FF)/100;
-        if (servicesTypeCk.SP) total += total * Number(servicesType.SP)/100;
+        if (data.dia === "DF") total += total * Number(values.FF) / 100;
+        if (servicesTypeCk.SP) {
+            if (Number(servicesType.SP) >= 1) {
+                total = total + Number(servicesType.TG) * Number(servicesType.SP) * (1 + Number(servicesType.SP0 / 100));
+            } else {
+                total = total + Number(servicesType.TG) * Number(data.distancia) * (1 + Number(servicesType.SP0 / 100));
+            }
+        }
         if (servicesTypeCk.LM) total = total + Number(servicesType.LM) * Number(servicesType.SL);
-        if (data.noche) total += total * Number(servicesType.TN)/100;
+        if (data.noche) total += total * Number(servicesType.TN) / 100;
     } else {
         total = 1200 + ((Number(data.distancia) - 15) * Number(servicesType.TG));
         if (servicesTypeCk.EX) total = total + Number(servicesType.EX);
@@ -31,11 +37,17 @@ const summaryCalc = (data, values, servicesType, servicesTypeCk, detailSinister,
         if (detailSinisterCk.IN) total = total + Number(detailSinister.IN);
         if (detailSinisterCk.CO) total = total + Number(detailSinister.CO);
         if (detailSinisterCk.DM) total = total + Number(detailSinister.PE);
-        
-        if (data.dia==="DF") total += total * Number(values.FF)/100;
-        if (servicesTypeCk.SP) total += total * Number(servicesType.SP)/100;
+
+        if (data.dia === "DF") total += total * Number(values.FF) / 100;
+        if (servicesTypeCk.SP) {
+            if (Number(servicesType.SP) >= 1) {
+                total = total + (Number(servicesType.TG) * Number(servicesType.SP)) * (1 + Number(servicesType.SP0 / 100));
+            } else {
+                total = total + (Number(servicesType.TG) * Number(data.distancia)) * (1 + Number(servicesType.SP0 / 100));
+            }
+        }
         if (servicesTypeCk.LM) total = total + Number(servicesType.LM) * Number(servicesType.SL);
-        if (data.noche) total += total * Number(servicesType.TN)/100;
+        if (data.noche) total += total * Number(servicesType.TN) / 100;
     }
     data.precio = total.toFixed(2);
     return (total.toFixed(2))

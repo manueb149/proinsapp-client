@@ -19,7 +19,7 @@ const TypesService = ({
 		setValues({
 			...values,
 			[event.target.name]:
-				event.target.name === "LM"
+				(event.target.name === "LM" || event.target.name === "SP")
 					? Number(event.target.value) <= Number(data.distancia)
 						? event.target.value
 						: ""
@@ -37,8 +37,8 @@ const TypesService = ({
 				TG: dataTrucks.length>0
 					? dataTrucks[0].trasporteGrua
 					: valuesContext.TG,
-				SP: checked.SP ? valuesContext.SP : "",
-				SL: checked.LM ? valuesContext.LM : "",
+				SP0: valuesContext.SP,
+				SL: valuesContext.LM,
 				TN: valuesContext.TN,
 			});
 		};
@@ -117,10 +117,8 @@ const TypesService = ({
 									setChecked={setChecked}
 									shortName={"SP"}
 									LongName={"Sobre peso"}
-									Format={customFormats.PercentFormatCustom}
+									Format={customFormats.KmFormatCustom}
 									handleChange={handleChange}
-									alwaysDisabled
-									noValue
 								/>
 							</div>
 						</div>
