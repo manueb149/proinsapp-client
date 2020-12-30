@@ -183,7 +183,6 @@ const ViewReports = () => {
 				await axios
 					.get(`/service`)
 					.then((res) => {
-						console.log(res.data.results)
 						setData(res.data.results.filter(value => value.user===user.name.toUpperCase()));
 					})
 					.catch((error) => {

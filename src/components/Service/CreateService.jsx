@@ -223,7 +223,74 @@ const CreateService = () => {
 	};
 
 	const handleErase = () => {
-
+		setData({
+			poliza: "",
+			cedula: "",
+			asegurado: "",
+			telAseg1: "",
+			telAseg2: "",
+			marca: "",
+			modelo: "",
+			anio: "",
+			chassis: "",
+			placa: "",
+			tipoV: "",
+			color: "",
+			aseguradora: "",
+			plan: "",
+			infoSin: "",
+			estadoV: "",
+			ubicacion: "",
+			destino: "",
+			direccionGruero: "",
+			telGruero: "",
+			celGruero: "",
+			contactoGruero: "",
+			comentarioGruero: "",
+			dia: "",
+			noche: false,
+			tiempoGrua: "",
+			tiempoCliente: "",
+			distancia: "",
+			precio: "",
+			tarifaEspecial: "",
+		});
+		setServicesType({
+			EX: "",
+			CR: "",
+			CG: "",
+			CE: "",
+			SG: "",
+			PE: "",
+			LM: "",
+		});
+		setServicesTypeCk({
+			TG: false,
+			EX: false,
+			CR: false,
+			CG: false,
+			CE: false,
+			SG: false,
+			PE: false,
+			SP: false,
+			LM: false,
+		});
+		setDetailSinister({
+			VO: "",
+			IN: "",
+			CO: "",
+			DM: "",
+		});
+		setDetailSinisterCk({
+			VO: false,
+			IN: false,
+			CO: false,
+			DM: false,
+		});
+		setOpenSB(false);
+		setSeverity("warning");
+		setNotification("Campos Limpiados!");
+		setOpenSB(true);
 	}
 
 	const handleChangeTF = (e) => {
@@ -365,7 +432,7 @@ const CreateService = () => {
 			<ConfirmModal
 				message={{
 					title: "Guardar Servicio",
-					body: "Para descargar la factura del servicio, hacer click en el enlace ↓",
+					body: "Para ver la factura guardada, ir a mis servicios, hacer click en un servicio y luego ir a imprimir solicitud.",
 				}}
 				showConfirm={showConfirm}
 				setShowConfirm={setShowConfirm}

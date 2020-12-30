@@ -1,11 +1,11 @@
-import React, { Fragment, useContext, useState } from "react";
+import React, { Fragment, useContext } from "react";
 import Modal from "react-bootstrap/Modal";
 import { Button } from "react-bootstrap";
 import axios from "../../config/http-common";
 import AuthContext from "../../contexts/auth/authContext";
 import { serviceModalsContext } from "../../contexts/ServiceModalsContext";
 import { useHistory } from "react-router-dom";
-import PrintReport from "../Report/PrintReport";
+// import PrintReport from "../Report/PrintReport";
 
 const ConfirmModal = ({
 	message,
@@ -17,8 +17,8 @@ const ConfirmModal = ({
 	payload,
 	setData,
 }) => {
-	const [printService, setPrintService] = useState(null);
-	const [rendered, setRedered] = useState(false);
+	// const [printService, setPrintService] = useState(null);
+	// const [rendered, setRedered] = useState(false);
 	const history = useHistory();
 	const authContext = useContext(AuthContext);
 	const ServiceModalsContext = useContext(serviceModalsContext);
@@ -133,7 +133,7 @@ const ConfirmModal = ({
 						CO: false,
 						DM: false,
 					});
-					setPrintService(res.data.newService);
+					// setPrintService(res.data.newService);
 				})
 				.catch((error) => {
 					if (error.response) {
@@ -170,16 +170,16 @@ const ConfirmModal = ({
 				</Modal.Header>
 				<Modal.Body>
 					{message.body}
-					<div className="download-link">
+					{/* <div className="download-link">
 						{printService && rendered ? (
 							<PrintReport
 								printData={printService}
 							/>
 						) : null}
-					</div>
+					</div> */}
 				</Modal.Body>
 				<Modal.Footer>
-					{printService ? (
+					{/* {printService ? (
 						<Button
 							variant="secondary"
 							onClick={() => {
@@ -188,12 +188,12 @@ const ConfirmModal = ({
 						>
 							Imprimir
 						</Button>
-					) : null}
+					) : null} */}
 					<Button
 						variant="secondary"
 						onClick={() => {
-                            setRedered(false);
-							setPrintService(null);
+                            // setRedered(false);
+							// setPrintService(null);
 							setShowConfirm(false);
 						}}
 					>
