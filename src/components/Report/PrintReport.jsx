@@ -528,7 +528,6 @@ const PrintReport = ({ printData }) => {
 
 	return (
 		<Fragment>
-			{console.log(printData)}
 			{printData ? (
 				<>
 					<PDFDownloadLink

@@ -66,12 +66,10 @@ const ConfirmModal = ({
 			await axios
 				.post("/service/create", payload)
 				.then((res) => {
-					console.log(res);
 					setOpenSB(false);
 					setSeverity("success");
 					setNotification("Servicio Registrado!");
 					setOpenSB(true);
-					// closeConfirm();
 					setData({
 						poliza: "",
 						cedula: "",
