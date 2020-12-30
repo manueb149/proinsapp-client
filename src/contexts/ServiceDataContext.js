@@ -13,6 +13,7 @@ const ServiceDataContext = ({ children }) => {
 	const [multipleCars, setMultipleCars] = useState([]);
 	const [multipleCarsSelect, setMultipleCarsSelect] = useState([]);
 	const [selectedDate, handleDateChange] = useState(new Date());
+	const [selectedBakDate, handleBakDateChange] = useState(new Date());
 
 	const [search, setSearch] = useState({
 		id: "",
@@ -68,6 +69,7 @@ const ServiceDataContext = ({ children }) => {
 				multipleCars: multipleCars,
 				multipleCarsSelect: multipleCarsSelect,
 				selectedDate: selectedDate,
+				selectedBakDate: selectedBakDate,
 				setData: setData,
 				setSearch: setSearch,
 				setTrucks: setTrucks,
@@ -78,7 +80,8 @@ const ServiceDataContext = ({ children }) => {
 				setNotification: setNotification,
 				setMultipleCars: setMultipleCars,
 				setMultipleCarsSelect: setMultipleCarsSelect,
-				handleDateChange: handleDateChange
+				handleDateChange: handleDateChange,
+				handleBakDateChange: handleBakDateChange
 
             }}
         >

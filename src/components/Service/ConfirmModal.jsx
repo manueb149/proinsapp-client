@@ -39,7 +39,9 @@ const ConfirmModal = ({
 	// } = payload;
 
 	payload.data.user = user.name.toUpperCase();
-	payload.data.fechaSiniestro = payload.selectedDate;
+	if(payload.selectedDate){
+		payload.data.fechaSiniestro = {fecha: payload.selectedDate._d};
+	}
 
 	// useLayoutEffect(() => {
 	// 	setRedered(true);

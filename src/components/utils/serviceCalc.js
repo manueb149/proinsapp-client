@@ -42,7 +42,7 @@ const summaryCalc = (data, values, servicesType, servicesTypeCk, detailSinister,
                 total = total + Number(servicesType.TG) * Number(servicesType.SP) * (1 + Number(servicesType.SP0) / 100);
             }
         }
-        if (servicesTypeCk.LM) total = total + Number(servicesType.LM) * Number(servicesType.SL);
+        if (servicesTypeCk.LM) total = total + (Number(servicesType.SL) + Number(servicesType.TG)) * Number(servicesType.LM);
         if (data.noche) total += total * Number(servicesType.TN) / 100;
     }
     data.precio = total.toFixed(2);

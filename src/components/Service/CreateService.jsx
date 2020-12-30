@@ -71,6 +71,8 @@ const CreateService = () => {
 		setMultipleCarsSelect,
 		selectedDate,
 		handleDateChange,
+		selectedBakDate,
+		handleBakDateChange
 	} = ServiceDataContext;
 
 	useEffect(() => {
@@ -291,7 +293,7 @@ const CreateService = () => {
 		setSeverity("warning");
 		setNotification("Campos Limpiados!");
 		setOpenSB(true);
-	}
+	};
 
 	const handleChangeTF = (e) => {
 		setData({
@@ -432,7 +434,8 @@ const CreateService = () => {
 			<ConfirmModal
 				message={{
 					title: "Guardar Servicio",
-					body: "Para ver la factura guardada, ir a mis servicios, hacer click en un servicio y luego ir a imprimir solicitud.",
+					body:
+						"Para ver la factura guardada, ir a mis servicios, hacer click en un servicio y luego ir a imprimir solicitud.",
 				}}
 				showConfirm={showConfirm}
 				setShowConfirm={setShowConfirm}
@@ -512,16 +515,12 @@ const CreateService = () => {
 				size="sm"
 				// onClick={() => setShowMap(true)}
 				onClick={() => {
-					window.open('https://www.google.com/maps/', "_blank")
+					window.open("https://www.google.com/maps/", "_blank");
 				}}
 			>
 				Mostrar Mapa
 			</Button>
-			<Button
-				variant="warning"
-				size="sm"
-				onClick={handleErase}
-			>
+			<Button variant="warning" size="sm" onClick={handleErase}>
 				Limpiar
 			</Button>
 			<Button
@@ -843,6 +842,12 @@ const CreateService = () => {
 								selectedDate={selectedDate}
 								handleDateChange={handleDateChange}
 							/>
+							<div className="bakDate" style={{display: "none"}}>
+								<DateTimePicker
+									selectedDate={selectedBakDate}
+									handleDateChange={handleBakDateChange}
+								/>
+							</div>
 						</div>
 					</div>
 				</div>

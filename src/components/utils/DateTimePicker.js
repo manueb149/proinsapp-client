@@ -10,6 +10,7 @@ const MaterialUIPickers = ({ selectedDate, handleDateChange }) => {
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <DateTimePicker
+                onLoadedData={handleDateChange}
                 className="date-picker"
                 value={selectedDate}
                 onChange={handleDateChange}
