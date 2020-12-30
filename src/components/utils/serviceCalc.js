@@ -18,8 +18,6 @@ const summaryCalc = (data, values, servicesType, servicesTypeCk, detailSinister,
         if (servicesTypeCk.SP) {
             if (Number(servicesType.SP) >= 1) {
                 total = total + Number(servicesType.TG) * Number(servicesType.SP) * (1 + Number(servicesType.SP0 / 100));
-            } else {
-                total = total + Number(servicesType.TG) * Number(data.distancia) * (1 + Number(servicesType.SP0 / 100));
             }
         }
         if (servicesTypeCk.LM) total = total + Number(servicesType.LM) * Number(servicesType.SL);
@@ -42,8 +40,6 @@ const summaryCalc = (data, values, servicesType, servicesTypeCk, detailSinister,
         if (servicesTypeCk.SP) {
             if (Number(servicesType.SP) >= 1) {
                 total = total + (Number(servicesType.TG) * Number(servicesType.SP)) * (1 + Number(servicesType.SP0 / 100));
-            } else {
-                total = total + (Number(servicesType.TG) * Number(data.distancia)) * (1 + Number(servicesType.SP0 / 100));
             }
         }
         if (servicesTypeCk.LM) total = total + Number(servicesType.LM) * Number(servicesType.SL);

@@ -211,6 +211,7 @@ const CreateService = () => {
 			...data,
 			user: user.name,
 		});
+		handleDateChange();
 		// eslint-disable-next-line
 	}, []);
 
@@ -360,10 +361,10 @@ const CreateService = () => {
 			<ConfirmModal
 				message={{
 					title: "Guardar Servicio",
-					body: "Está seguro que desea guardar este registro?",
+					body: "Para descargar la factura del servicio, hacer click en el enlace ↓",
 				}}
 				showConfirm={showConfirm}
-				closeConfirm={() => setShowConfirm(false)}
+				setShowConfirm={setShowConfirm}
 				setOpenSB={setOpenSB}
 				setSeverity={setSeverity}
 				setNotification={setNotification}

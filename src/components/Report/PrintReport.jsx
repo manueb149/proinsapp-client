@@ -9,6 +9,7 @@ import {
 	View,
 	StyleSheet,
 	PDFViewer,
+	PDFDownloadLink,
 } from "@react-pdf/renderer";
 
 // Create styles
@@ -274,35 +275,47 @@ const MyDocument = ({ data }) => (
 							Grúa:
 							<Text style={styles.header_subtext}>
 								{" "}
-								{data.tipoServicios.servicesType.TG ? data.tipoServicios.servicesType.TG :0} $/Km
+								{data.tipoServicios.servicesType.TG
+									? data.tipoServicios.servicesType.TG
+									: 0}{" "}
+								$/Km
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Sobre peso:
 							<Text style={styles.header_subtext}>
 								{" "}
-								{data.tipoServicios.servicesType.SP ? data.tipoServicios.servicesType.SP :0}%
+								{data.tipoServicios.servicesType.SP
+									? data.tipoServicios.servicesType.SP
+									: 0}
+								%
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Peaje:
 							<Text style={styles.header_subtext}>
 								{" $"}
-								{data.tipoServicios.servicesType.PE ? data.tipoServicios.servicesType.PE :0}
+								{data.tipoServicios.servicesType.PE
+									? data.tipoServicios.servicesType.PE
+									: 0}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Cerragería:
 							<Text style={styles.header_subtext}>
 								{" $"}
-								{data.tipoServicios.servicesType.CR ? data.tipoServicios.servicesType.CR :0}
+								{data.tipoServicios.servicesType.CR
+									? data.tipoServicios.servicesType.CR
+									: 0}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Extracción:
 							<Text style={styles.header_subtext}>
 								{" $"}
-								{data.tipoServicios.servicesType.EX ? data.tipoServicios.servicesType.EX :0}
+								{data.tipoServicios.servicesType.EX
+									? data.tipoServicios.servicesType.EX
+									: 0}
 							</Text>
 						</Text>
 					</View>
@@ -311,35 +324,46 @@ const MyDocument = ({ data }) => (
 							Loma:
 							<Text style={styles.header_subtext}>
 								{" "}
-								{data.tipoServicios.servicesType.LM ? data.tipoServicios.servicesType.LM :0}Km
+								{data.tipoServicios.servicesType.LM
+									? data.tipoServicios.servicesType.LM
+									: 0}
+								Km
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Gomas:
 							<Text style={styles.header_subtext}>
 								{" $"}
-								{data.tipoServicios.servicesType.CG ? data.tipoServicios.servicesType.CG :0}
+								{data.tipoServicios.servicesType.CG
+									? data.tipoServicios.servicesType.CG
+									: 0}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Corriente:
 							<Text style={styles.header_subtext}>
 								{" $"}
-								{data.tipoServicios.servicesType.CE ? data.tipoServicios.servicesType.CE :0}
+								{data.tipoServicios.servicesType.CE
+									? data.tipoServicios.servicesType.CE
+									: 0}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Suministros:
 							<Text style={styles.header_subtext}>
 								{" $"}
-								{data.tipoServicios.servicesType.SG ? data.tipoServicios.servicesType.SG : 0}
+								{data.tipoServicios.servicesType.SG
+									? data.tipoServicios.servicesType.SG
+									: 0}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Volcaduras:
 							<Text style={styles.header_subtext}>
 								{" $"}
-								{data.detalleSiniestro.detailSinister.VO ? data.detalleSiniestro.detailSinister.VO : 0}
+								{data.detalleSiniestro.detailSinister.VO
+									? data.detalleSiniestro.detailSinister.VO
+									: 0}
 							</Text>
 						</Text>
 					</View>
@@ -348,21 +372,27 @@ const MyDocument = ({ data }) => (
 							Colisión:
 							<Text style={styles.header_subtext}>
 								{" $"}
-								{data.detalleSiniestro.detailSinister.CO ? data.detalleSiniestro.detailSinister.CO : 0}
+								{data.detalleSiniestro.detailSinister.CO
+									? data.detalleSiniestro.detailSinister.CO
+									: 0}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Incendios:
 							<Text style={styles.header_subtext}>
 								{" $"}
-								{data.detalleSiniestro.detailSinister.IN ? data.detalleSiniestro.detailSinister.IN : 0}
+								{data.detalleSiniestro.detailSinister.IN
+									? data.detalleSiniestro.detailSinister.IN
+									: 0}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Daños Mecánicos:
 							<Text style={styles.header_subtext}>
 								{" $"}
-								{data.detalleSiniestro.detailSinister.DM ? data.detalleSiniestro.detailSinister.DM : 0}
+								{data.detalleSiniestro.detailSinister.DM
+									? data.detalleSiniestro.detailSinister.DM
+									: 0}
 							</Text>
 						</Text>
 					</View>
@@ -376,21 +406,27 @@ const MyDocument = ({ data }) => (
 							Area:
 							<Text style={styles.header_subtext}>
 								{" "}
-								{data.datosGruero.region}
+								{data.datosGruero
+									? data.datosGruero.region
+									: ""}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Gruero:
 							<Text style={styles.header_subtext}>
 								{" "}
-								{data.datosGruero.gruaDeServicio}
+								{data.datosGruero
+									? data.datosGruero.gruaDeServicio
+									: ""}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Contacto:
 							<Text style={styles.header_subtext}>
 								{" "}
-								{data.datosGruero.contacto}
+								{data.datosGruero
+									? data.datosGruero.contacto
+									: ""}
 							</Text>
 						</Text>
 					</View>
@@ -399,14 +435,18 @@ const MyDocument = ({ data }) => (
 							Teléfono:
 							<Text style={styles.header_subtext}>
 								{" "}
-								{data.datosGruero.telOficina}
+								{data.datosGruero
+									? data.datosGruero.telOficina
+									: ""}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							Celular:
 							<Text style={styles.header_subtext}>
 								{" "}
-								{data.datosGruero.telCelular}
+								{data.datosGruero
+									? data.datosGruero.telCelular
+									: ""}
 							</Text>
 						</Text>
 					</View>
@@ -416,7 +456,7 @@ const MyDocument = ({ data }) => (
 						Dirección:
 						<Text style={styles.header_subtext}>
 							{" "}
-							{data.datosGruero.direccion}
+							{data.datosGruero ? data.datosGruero.direccion : ""}
 						</Text>
 					</Text>
 				</View>
@@ -480,13 +520,26 @@ const MyDocument = ({ data }) => (
 	</Document>
 );
 
-const PrintReport = () => {
+const PrintReport = ({ printData }) => {
 	const ReportContext = useContext(reportContext);
 	const { selectedReport } = ReportContext;
 
 	return (
 		<Fragment>
-			{selectedReport ? (
+			{console.log(printData)}
+			{printData ? (
+				<>
+					<PDFDownloadLink
+						document={<MyDocument data={printData} />}
+						fileName="Factura.pdf" 
+						style={{color: "blue", fontStyle: "italic"}}
+					>
+						{({ blob, url, loading, error }) => {
+							if (!loading) return "Descargar Factura 📄";
+						}}
+					</PDFDownloadLink>
+				</>
+			) : selectedReport && !printData ? (
 				<PDFViewer
 					style={{
 						width: "100%",

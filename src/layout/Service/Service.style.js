@@ -52,6 +52,10 @@ export const CreateServiceContainer = styled.div`
     .PhoneInputInput {
         border: none;
     }
+    a, a:hover, a:active ,a:visited {
+        text-decoration: none;
+        color: black !important;
+    }
 `;
 
 export const SummaryContainer = styled.div`
