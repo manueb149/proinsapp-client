@@ -7,6 +7,8 @@ import CreateServicePage from '../components/Service/CreateService';
 import DataUploadPage from '../components/Configure/DataUpload';
 import TrucksUploadPage from '../components/Configure/TrucksUpload';
 import SummaryPage from '../components/Service/ServiceSummary/ServiceSummary';
+import MyServicesPage from '../components/Service/Reports/ViewReports';
+import PrintMyServicesPage from '../components/Service/Reports/PrintReport';
 import DefaultValues from '../components/Configure/DefaultValues';
 // import authContext from '../contexts/auth/authContext';
 
@@ -20,6 +22,8 @@ const DashboardPages = () => {
             {(activeMenu==='main' || activeSubMenu==='') ? <StartPage /> : null}
             {(activeMenu==='service' && activeSubMenu==='create') ? <CreateServicePage /> : null}
             {(activeMenu==='service' && activeSubMenu==='summary') ? <SummaryPage /> : null}
+            {(activeMenu==='service' && activeSubMenu==='myServices') ? <MyServicesPage /> : null}
+            {(activeMenu==='service' && activeSubMenu==='printMyServices') ? <PrintMyServicesPage /> : null}
             {(activeMenu==='report' && activeSubMenu==='view') ? <ViewReportPage /> : null}
             {(activeMenu==='report' && activeSubMenu==='print') ? <PrintReportPage /> : null}
             {(activeMenu==='config' && activeSubMenu==='files') ? <DataUploadPage /> : null}

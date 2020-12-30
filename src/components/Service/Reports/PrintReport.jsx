@@ -1,6 +1,6 @@
 import React, { Fragment, useContext } from "react";
-import { reportContext } from "../../contexts/ReportContext";
-import logo from "../../assets/logo_h.png";
+import { serviceReportContext } from "../../../contexts/ServiceReportContext";
+import logo from "../../../assets/logo_h.png";
 import {
 	Document,
 	Image,
@@ -523,8 +523,8 @@ const MyDocument = ({ data }) => (
 );
 
 const PrintReport = ({ printData }) => {
-	const ReportContext = useContext(reportContext);
-	const { selectedReport } = ReportContext;
+	const ServiceReportContext = useContext(serviceReportContext);
+	const { selectedServiceReport } = ServiceReportContext;
 
 	return (
 		<Fragment>
@@ -540,7 +540,7 @@ const PrintReport = ({ printData }) => {
 						}}
 					</PDFDownloadLink>
 				</>
-			) : selectedReport && !printData ? (
+			) : selectedServiceReport && !printData ? (
 				<PDFViewer
 					style={{
 						width: "100%",
@@ -549,7 +549,7 @@ const PrintReport = ({ printData }) => {
 						borderColor: "#555555",
 					}}
 				>
-					<MyDocument data={selectedReport} />
+					<MyDocument data={selectedServiceReport} />
 				</PDFViewer>
 			) : null}
 		</Fragment>

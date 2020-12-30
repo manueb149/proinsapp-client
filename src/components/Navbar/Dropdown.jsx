@@ -57,7 +57,16 @@ const Dropdown = () => {
 						Crear Solicitud
 					</DropdownItem>
 				) : null}
-				{/* <DropdownItem subMenu={'print'} leftIcon={'fas fa-print'}>Imprimir Solicitud</DropdownItem> */}
+				{user.roles[1].find((value) => value === "myServices") ? (
+					<DropdownItem subMenu={"myServices"} leftIcon={"fas fa-book"}>
+						Mis Solicitudes
+					</DropdownItem>
+				) : null}
+				{user.roles[1].find((value) => value === "printMyServices") ? (
+					<DropdownItem subMenu={"printMyServices"} leftIcon={"fas fa-print"}>
+						Imprimir Solicitud
+					</DropdownItem>
+				) : null}
 				{user.roles[1].find((value) => value === "summary") ? (
 					<DropdownItem subMenu={"summary"} leftIcon={"fas fa-calculator"}>
 						Resumen

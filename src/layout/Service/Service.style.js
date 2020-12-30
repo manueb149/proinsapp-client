@@ -19,6 +19,25 @@ export const CreateServiceContainer = styled.div`
         margin-right: 10px;
         color: var(--text-color);
     }
+    button.btn.btn-success{
+        background-color: #2f793d;
+    }
+    button.btn.btn-success:hover{
+        color: white;
+        background-color: #28a745;
+        transition: .15s ease-out;
+        transform: scale(1.01);
+    }
+    button.btn.btn-warning{
+        background-color: #b18606;
+        color: var(--text-color);
+    }
+    button.btn.btn-warning:hover{
+        color: white;
+        background-color: #e2ab05;
+        transition: .15s ease-out;
+        transform: scale(1.01);
+    }
     .form-check-input{
         margin-top: 0.2rem !important;
     }

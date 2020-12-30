@@ -203,7 +203,7 @@ const ServiceSummary = () => {
 												id="CB"
 												InputProps={{
 													inputComponent:
-														customFormats.NumberFormatCustom,
+														customFormats.PesoKmFormatCustom,
 												}}
 											/>
 										</div>
@@ -304,7 +304,6 @@ const ServiceSummary = () => {
 													customFormats.PercentFormatCustom
 												}
 												handleChange={handleChange}
-												alwaysDisabled
 											/>
 										</div>
 									</div>

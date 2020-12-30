@@ -39,7 +39,7 @@ const summaryCalc = (data, values, servicesType, servicesTypeCk, detailSinister,
         if (data.dia === "DF") total += total * Number(values.FF) / 100;
         if (servicesTypeCk.SP) {
             if (Number(servicesType.SP) >= 1) {
-                total = total + (Number(servicesType.TG) * Number(servicesType.SP)) * (1 + Number(servicesType.SP0 / 100));
+                total = total + (Number(servicesType.TG) * Number(servicesType.SP)) * (1 + Number(servicesType.SP0)/100);
             }
         }
         if (servicesTypeCk.LM) total = total + Number(servicesType.LM) * Number(servicesType.SL);

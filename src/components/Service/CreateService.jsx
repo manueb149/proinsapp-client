@@ -222,6 +222,10 @@ const CreateService = () => {
 		});
 	};
 
+	const handleErase = () => {
+
+	}
+
 	const handleChangeTF = (e) => {
 		setData({
 			...data,
@@ -439,12 +443,22 @@ const CreateService = () => {
 			<Button
 				variant="primary"
 				size="sm"
-				onClick={() => setShowMap(true)}
+				// onClick={() => setShowMap(true)}
+				onClick={() => {
+					window.open('https://www.google.com/maps/', "_blank")
+				}}
 			>
 				Mostrar Mapa
 			</Button>
 			<Button
-				variant="primary"
+				variant="warning"
+				size="sm"
+				onClick={handleErase}
+			>
+				Limpiar
+			</Button>
+			<Button
+				variant="success"
 				size="sm"
 				onClick={() => setShowConfirm(true)}
 			>
