@@ -5,6 +5,8 @@ import { ReportsContainer } from "../../layout/Reports/Reports.style";
 import AuthContext from "../../contexts/auth/authContext";
 import { reportContext } from "../../contexts/ReportContext";
 import { useHistory } from "react-router-dom";
+import moment from "moment-timezone"
+moment().tz("America/Santo_Domingo").format();
 
 const columns = [
 	{

@@ -176,15 +176,6 @@ const ConfirmModal = ({
 						{printService && rendered ? (
 							<PrintReport
 								printData={printService}
-								// printData={{
-								// 	...payload.data,
-								// 	detalleSiniestro: {
-								// 		detailSinister,
-								// 		detailSinisterCk,
-								// 	},
-								// 	tipoServicios: { servicesType, servicesTypeCk },
-								// 	datosGruero: payload.dataTrucks[0],
-								// }}
 							/>
 						) : null}
 					</div>

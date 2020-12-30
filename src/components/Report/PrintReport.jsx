@@ -11,6 +11,8 @@ import {
 	PDFViewer,
 	PDFDownloadLink,
 } from "@react-pdf/renderer";
+import moment from "moment-timezone"
+moment().tz("America/Santo_Domingo").format();
 
 // Create styles
 const styles = StyleSheet.create({
