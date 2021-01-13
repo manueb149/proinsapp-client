@@ -88,11 +88,11 @@ const Dropdown = () => {
 						Imprimir Registro
 					</DropdownItem>
 				) : null}
-				{/* {user.roles[1].find((value) => value === "edit") ? (
+				{user.roles[1].find((value) => value === "edit") ? (
 					<DropdownItem subMenu={'edit'} leftIcon={"fas fa-edit"}>
 						Editar Registro
 					</DropdownItem>
-				) : null} */}
+				) : null}
 				{user.roles[1].find((value) => value === "delete") ? (
 					<DropdownItem subMenu={'delete'} leftIcon={"fas fa-trash"}>
 						Eliminar Registro

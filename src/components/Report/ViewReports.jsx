@@ -145,6 +145,14 @@ const columns = [
 			sort: true,
 		},
 	},
+	{
+		name: "user",
+		label: "Usuario",
+		options: {
+			filter: true,
+			sort: true,
+		},
+	},
 ];
 
 const ViewReports = () => {

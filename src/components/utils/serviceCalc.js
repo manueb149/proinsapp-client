@@ -12,7 +12,7 @@ const summaryCalc = (data, values, servicesType, servicesTypeCk, detailSinister,
         if (detailSinisterCk.VO) total = total + Number(detailSinister.VO);
         if (detailSinisterCk.IN) total = total + Number(detailSinister.IN);
         if (detailSinisterCk.CO) total = total + Number(detailSinister.CO);
-        if (detailSinisterCk.DM) total = total + Number(detailSinister.PE);
+        if (detailSinisterCk.DM) total = total + Number(detailSinister.DM);
 
         if (data.dia === "DF") total += total * Number(values.FF) / 100;
         if (servicesTypeCk.SP) {
@@ -34,7 +34,7 @@ const summaryCalc = (data, values, servicesType, servicesTypeCk, detailSinister,
         if (detailSinisterCk.VO) total = total + Number(detailSinister.VO);
         if (detailSinisterCk.IN) total = total + Number(detailSinister.IN);
         if (detailSinisterCk.CO) total = total + Number(detailSinister.CO);
-        if (detailSinisterCk.DM) total = total + Number(detailSinister.PE);
+        if (detailSinisterCk.DM) total = total + Number(detailSinister.DM);
 
         if (data.dia === "DF") total += total * Number(values.FF) / 100;
         if (servicesTypeCk.SP) {

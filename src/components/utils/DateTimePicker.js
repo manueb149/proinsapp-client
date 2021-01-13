@@ -6,7 +6,7 @@ import {
 } from '@material-ui/pickers';
 import "moment/locale/es-do";
 
-const MaterialUIPickers = ({ selectedDate, handleDateChange }) => {
+const MaterialUIPickers = ({ selectedDate, handleDateChange, label }) => {
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <DateTimePicker
@@ -14,7 +14,7 @@ const MaterialUIPickers = ({ selectedDate, handleDateChange }) => {
                 className="date-picker"
                 value={selectedDate}
                 onChange={handleDateChange}
-                label="Fecha del incidente"
+                label={label ? `Fecha del incidente: ${label}` : "Fecha del incidente"}
             />
         </MuiPickersUtilsProvider>
     );

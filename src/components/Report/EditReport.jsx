@@ -20,6 +20,8 @@ import { useHistory } from "react-router-dom";
 import serviceCalc from "../utils/serviceCalc";
 
 const EditReport = () => {
+	const [severity, setSeverity] = useState("info");
+	const [notification, setNotification] = useState("");
 	const [showType, setShowType] = useState(false);
 	const [showDetail, setShowDetail] = useState(false);
 	const [showMap, setShowMap] = useState(false);
@@ -91,17 +93,25 @@ const EditReport = () => {
 
 	const [trucks, setTrucks] = useState([]);
 	const [truckAreas, setTruckAreas] = useState([]);
-	const [severity, setSeverity] = useState("info");
-	const [notification, setNotification] = useState("");
-	const [dataTrucks, setDataTrucks] = useState([]);
-	const [areaTruckSelect, SetAreaTruckSelect] = useState([]);
+	const [dataTrucks, setDataTrucks] = useState(
+		selectedReport ? [selectedReport.datosGruero] : []
+	);
+	const [areaTruckSelect, SetAreaTruckSelect] = useState(
+		selectedReport ? [selectedReport.datosGruero.region] : []
+	);
 	const [selectedDate, handleDateChange] = useState(
-		selectedReport ? Date.parse(selectedReport.fechaSiniestro) : new Date()
+		selectedReport ? selectedReport.fechaSiniestro : new Date()
 	);
 
 	const [data, setData] = useState(
 		selectedReport
-			? selectedReport
+			? {
+					...selectedReport,
+					direccionGruero: selectedReport.datosGruero.direccion || "",
+					telGruero: selectedReport.datosGruero.telOficina || "",
+					celGruero: selectedReport.datosGruero.telCelular || "",
+					contactoGruero: selectedReport.datosGruero.contacto || "",
+			  }
 			: {
 					poliza: "",
 					cedula: "",
@@ -160,6 +170,31 @@ const EditReport = () => {
 					}
 				});
 		};
+		const getValues = async () => {
+			await axios
+				.get("values")
+				.then((res) => {
+					setValues(res.data.values);
+				})
+				.catch((error) => {
+					if (error.response) {
+						// Request made and server responded
+						if (error.response.data.text === "TNV") {
+							logout();
+							history.push("/");
+						}
+						// console.log(error.response.status);
+						// console.log(error.response.headers);
+					} else if (error.request) {
+						// The request was made but no response was received
+						console.log(error.request);
+					} else {
+						// Something happened in setting up the request that triggered an Error
+						console.log("Error", error.message);
+					}
+				});
+		};
+		getValues();
 		getTrucksAreas();
 		// eslint-disable-next-line
 	}, []);
@@ -199,6 +234,7 @@ const EditReport = () => {
 				telGruero: dataTrucks[0].telOficina || "",
 				celGruero: dataTrucks[0].telCelular || "",
 				contactoGruero: dataTrucks[0].contacto || "",
+				datosGruero: dataTrucks[0],
 			});
 			setServicesType({
 				...servicesType,
@@ -223,33 +259,13 @@ const EditReport = () => {
 	}, [dataTrucks]);
 
 	useEffect(() => {
-		const getValues = async () => {
-			await axios
-				.get("values")
-				.then((res) => {
-					setValues(res.data.values);
-				})
-				.catch((error) => {
-					if (error.response) {
-						// Request made and server responded
-						if (error.response.data.text === "TNV") {
-							logout();
-							history.push("/");
-						}
-						// console.log(error.response.status);
-						// console.log(error.response.headers);
-					} else if (error.request) {
-						// The request was made but no response was received
-						console.log(error.request);
-					} else {
-						// Something happened in setting up the request that triggered an Error
-						console.log("Error", error.message);
-					}
-				});
-		};
-		getValues();
+		setData({
+			...data,
+			detalleSiniestro: { detailSinister, detailSinisterCk },
+			tipoServicios: { servicesType, detailSinisterCk },
+		});
 		// eslint-disable-next-line
-	}, []);
+	}, [servicesType, servicesTypeCk, detailSinister, detailSinisterCk]);
 
 	const handleChange = (e) => {
 		setData({
@@ -643,6 +659,7 @@ const EditReport = () => {
 						</div>
 						<div className="col-lg-12 mb-3">
 							<DateTimePicker
+                                label={selectedReport.fechaSiniestro}
 								selectedDate={selectedDate}
 								handleDateChange={handleDateChange}
 							/>
