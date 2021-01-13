@@ -13,7 +13,7 @@ const ConfirmDelete = ({
 	setSeverity,
 	setNotification,
 	selectedReport,
-	setSelectedReport
+	setSelectedReport,
 }) => {
 	const history = useHistory();
 	const authContext = useContext(AuthContext);
@@ -63,7 +63,19 @@ const ConfirmDelete = ({
 				<Modal.Header closeButton>
 					<Modal.Title>{message.title}</Modal.Title>
 				</Modal.Header>
-				<Modal.Body>{message.body}</Modal.Body>
+				<Modal.Body>
+					{message.body}
+					<p
+						style={{
+							marginBottom: "0px",
+							fontWeight: "lighter",
+							fontSize: "12px",
+							fontStyle: "italic",
+						}}
+					>
+						Nota: hacer doble click en Confirmar para aceptar
+					</p>
+				</Modal.Body>
 				<Modal.Footer>
 					<Button
 						variant="secondary"

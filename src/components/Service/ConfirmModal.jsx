@@ -16,7 +16,7 @@ const ConfirmModal = ({
 	payload,
 	setData,
 	handleDateChange,
-	handleBakDateChange
+	handleBakDateChange,
 }) => {
 	const history = useHistory();
 	const authContext = useContext(AuthContext);
@@ -176,13 +176,16 @@ const ConfirmModal = ({
 				</Modal.Header>
 				<Modal.Body>
 					{message.body}
-					{/* <div className="download-link">
-						{printService && rendered ? (
-							<PrintReport
-								printData={printService}
-							/>
-						) : null}
-					</div> */}
+					<p
+						style={{
+							marginBottom: "0px",
+							fontWeight: "lighter",
+							fontSize: "12px",
+							fontStyle: "italic",
+						}}
+					>
+						Nota: hacer doble click en Confirmar para aceptar
+					</p>
 				</Modal.Body>
 				<Modal.Footer>
 					{/* {printService ? (
