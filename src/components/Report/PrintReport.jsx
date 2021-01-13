@@ -1,6 +1,7 @@
 import React, { Fragment, useContext } from "react";
 import { reportContext } from "../../contexts/ReportContext";
 import logo from "../../assets/logo_h.png";
+import printDate from "../utils/printReportDate";
 import {
 	Document,
 	Image,
@@ -11,7 +12,7 @@ import {
 	PDFViewer,
 	PDFDownloadLink,
 } from "@react-pdf/renderer";
-import moment from "moment-timezone"
+import moment from "moment-timezone";
 moment().tz("America/Santo_Domingo").format();
 
 // Create styles
@@ -122,7 +123,7 @@ const MyDocument = ({ data }) => (
 						Fecha:
 						<Text style={styles.header_subtext}>
 							{" "}
-							{data.registry.substring(0, 15)}
+							{printDate(data.registry)}
 						</Text>
 					</Text>
 				</View>

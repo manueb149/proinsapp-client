@@ -83,9 +83,21 @@ const Dropdown = () => {
 					    Ver Registros
 				    </DropdownItem>
 				) : null}
-				<DropdownItem subMenu={'print'} leftIcon={"fas fa-print"}>
-					Imprimir Registros
-				</DropdownItem>
+				{user.roles[1].find((value) => value === "print") ? (
+					<DropdownItem subMenu={'print'} leftIcon={"fas fa-print"}>
+						Imprimir Registro
+					</DropdownItem>
+				) : null}
+				{user.roles[1].find((value) => value === "edit") ? (
+					<DropdownItem subMenu={'edit'} leftIcon={"fas fa-edit"}>
+						Editar Registro
+					</DropdownItem>
+				) : null}
+				{user.roles[1].find((value) => value === "delete") ? (
+					<DropdownItem subMenu={'delete'} leftIcon={"fas fa-trash"}>
+						Eliminar Registro
+					</DropdownItem>
+				) : null}
 			</DropdownSub>
 
 			<DropdownSub menu={"config"} type={"secondary"}>

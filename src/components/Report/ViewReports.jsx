@@ -18,6 +18,14 @@ const columns = [
 		},
 	},
 	{
+		name: "serviceNo",
+		label: "Servicio",
+		options: {
+			filter: true,
+			sort: true,
+		},
+	},
+	{
 		name: "poliza",
 		label: "Póliza",
 		options: {
@@ -106,8 +114,32 @@ const columns = [
 		},
 	},
 	{
+		name: "precio",
+		label: "Precio (RD$)",
+		options: {
+			filter: true,
+			sort: true,
+		},
+	},
+	{
+		name: "distancia",
+		label: "Distancia (Km)",
+		options: {
+			filter: true,
+			sort: true,
+		},
+	},
+	{
 		name: "registry",
 		label: "Fecha",
+		options: {
+			filter: true,
+			sort: true,
+		},
+	},
+	{
+		name: "created_at",
+		label: "Fecha2",
 		options: {
 			filter: true,
 			sort: true,
@@ -127,7 +159,7 @@ const ViewReports = () => {
 
 	const options = {
 		filter: true,
-		rowsPerPage: 10,
+		rowsPerPage: 100,
 		rowsPerPageOptions: [10, 100, 250, 500, 1000],
 		filterType: "dropdown",
 		responsive: "standard",

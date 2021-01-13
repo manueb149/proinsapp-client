@@ -5,7 +5,6 @@ import axios from "../../config/http-common";
 import AuthContext from "../../contexts/auth/authContext";
 import { serviceModalsContext } from "../../contexts/ServiceModalsContext";
 import { useHistory } from "react-router-dom";
-// import PrintReport from "../Report/PrintReport";
 
 const ConfirmModal = ({
 	message,
@@ -16,9 +15,9 @@ const ConfirmModal = ({
 	setNotification,
 	payload,
 	setData,
+	handleDateChange,
+	handleBakDateChange
 }) => {
-	// const [printService, setPrintService] = useState(null);
-	// const [rendered, setRedered] = useState(false);
 	const history = useHistory();
 	const authContext = useContext(AuthContext);
 	const ServiceModalsContext = useContext(serviceModalsContext);
@@ -31,21 +30,7 @@ const ConfirmModal = ({
 		setServicesType,
 	} = ServiceModalsContext;
 
-	// const {
-	// 	detailSinister,
-	// 	detailSinisterCk,
-	// 	servicesType,
-	// 	servicesTypeCk,
-	// } = payload;
-
 	payload.data.user = user.name.toUpperCase();
-	if(payload.selectedDate){
-		payload.data.fechaSiniestro = {fecha: payload.selectedDate._d};
-	}
-
-	// useLayoutEffect(() => {
-	// 	setRedered(true);
-	// }, []);
 
 	const handleCreateService = async () => {
 		if (
@@ -65,6 +50,22 @@ const ConfirmModal = ({
 			setOpenSB(true);
 			return;
 		} else {
+			if (payload.selectedDate) {
+				if (payload.selectedDate._d) {
+					payload.data.fechaSiniestro = payload.selectedDate._d.toLocaleString(
+						"es-DO"
+					);
+				} else {
+					payload.data.fechaSiniestro = payload.selectedDate.toLocaleString(
+						"es-DO"
+					);
+				}
+			}
+			if (payload.selectedBakDate) {
+				payload.data.registry = payload.selectedBakDate.toLocaleString(
+					"es-DO"
+				);
+			}
 			await axios
 				.post("/service/create", payload)
 				.then((res) => {
@@ -135,6 +136,9 @@ const ConfirmModal = ({
 						CO: false,
 						DM: false,
 					});
+					setShowConfirm(false);
+					handleDateChange(new Date());
+					handleBakDateChange(new Date());
 					// setPrintService(res.data.newService);
 				})
 				.catch((error) => {
@@ -194,7 +198,7 @@ const ConfirmModal = ({
 					<Button
 						variant="secondary"
 						onClick={() => {
-                            // setRedered(false);
+							// setRedered(false);
 							// setPrintService(null);
 							setShowConfirm(false);
 						}}
@@ -203,7 +207,8 @@ const ConfirmModal = ({
 					</Button>
 					<Button
 						variant="primary"
-						onClick={() => {
+						onDoubleClick={() => {
+							handleBakDateChange(new Date());
 							handleCreateService();
 						}}
 					>

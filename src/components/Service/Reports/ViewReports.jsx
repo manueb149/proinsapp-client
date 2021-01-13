@@ -5,13 +5,21 @@ import { ReportsContainer } from "../../../layout/Reports/Reports.style";
 import AuthContext from "../../../contexts/auth/authContext";
 import { serviceReportContext } from "../../../contexts/ServiceReportContext";
 import { useHistory } from "react-router-dom";
-import moment from "moment-timezone"
+import moment from "moment-timezone";
 moment().tz("America/Santo_Domingo").format();
 
 const columns = [
 	{
 		name: "asegurado",
 		label: "Asegurado",
+		options: {
+			filter: true,
+			sort: true,
+		},
+	},
+	{
+		name: "serviceNo",
+		label: "Servicio",
 		options: {
 			filter: true,
 			sort: true,
@@ -127,7 +135,7 @@ const ViewReports = () => {
 
 	const options = {
 		filter: true,
-		rowsPerPage: 10,
+		rowsPerPage: 100,
 		rowsPerPageOptions: [10, 100, 250, 500, 1000],
 		filterType: "dropdown",
 		responsive: "standard",
@@ -137,7 +145,7 @@ const ViewReports = () => {
 		selectableRows: "single",
 		selectableRowsOnClick: true,
 		selectableRowsHeader: false,
-		selectToolbarPlacement: 'none',
+		selectToolbarPlacement: "none",
 		textLabels: {
 			body: {
 				noMatch: "No se ha encontrado dicho reporte",
@@ -183,7 +191,12 @@ const ViewReports = () => {
 				await axios
 					.get(`/service`)
 					.then((res) => {
-						setData(res.data.results.filter(value => value.user===user.name.toUpperCase()));
+						setData(
+							res.data.results.filter(
+								(value) =>
+									value.user === user.name.toUpperCase()
+							)
+						);
 					})
 					.catch((error) => {
 						if (error.response) {

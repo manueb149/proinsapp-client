@@ -1,7 +1,12 @@
-import React, { Fragment, useContext } from "react";
-import { serviceReportContext } from "../../../contexts/ServiceReportContext";
-import logo from "../../../assets/logo_h.png";
-import printDate from "../../utils/printReportDate";
+import React, { Fragment, useContext, useState } from "react";
+import { Button } from "react-bootstrap";
+import { reportContext } from "../../contexts/ReportContext";
+import { serviceDataContext } from "../../contexts/ServiceDataContext";
+import { DeleteReportContainer } from "../../layout/Reports/Reports.style";
+import ConfirmDelete from "./ConfirmDelete";
+import SnackBar from "../utils/SnackBar";
+import logo from "../../assets/logo_h.png";
+import printDate from "../utils/printReportDate";
 import {
 	Document,
 	Image,
@@ -12,7 +17,7 @@ import {
 	PDFViewer,
 	PDFDownloadLink,
 } from "@react-pdf/renderer";
-import moment from "moment-timezone"
+import moment from "moment-timezone";
 moment().tz("America/Santo_Domingo").format();
 
 // Create styles
@@ -523,38 +528,91 @@ const MyDocument = ({ data }) => (
 	</Document>
 );
 
-const PrintReport = ({ printData }) => {
-	const ServiceReportContext = useContext(serviceReportContext);
-	const { selectedServiceReport } = ServiceReportContext;
+const DeleteReport = ({ printData }) => {
+	const [openSB, setOpenSB] = useState(false);
+	const [showConfirm, setShowConfirm] = useState(false);
+
+	const ReportContext = useContext(reportContext);
+	const { selectedReport, setSelectedReport } = ReportContext;
+
+	const ServiceDataContext = useContext(serviceDataContext);
+	const {
+		severity,
+		notification,
+		setSeverity,
+		setNotification,
+	} = ServiceDataContext;
+
+	const handleCloseSB = (event, reason) => {
+		if (reason === "clickaway") {
+			return;
+		}
+		setOpenSB(false);
+	};
 
 	return (
 		<Fragment>
+			<DeleteReportContainer>
+				<SnackBar
+					severity={severity}
+					notification={notification}
+					openSB={openSB}
+					handleOpenSB={() => setOpenSB(true)}
+					handleCloseSB={handleCloseSB}
+				/>
+			</DeleteReportContainer>
+			{selectedReport && !printData ? (
+				<DeleteReportContainer>
+					<ConfirmDelete
+						message={{
+							title: "Eliminar Servicio",
+							body:
+								"¿Está seguro que desea eliminar este servicio?",
+						}}
+						showConfirm={showConfirm}
+						setShowConfirm={setShowConfirm}
+						setOpenSB={setOpenSB}
+						setSeverity={setSeverity}
+						setNotification={setNotification}
+						selectedReport={selectedReport}
+						setSelectedReport={setSelectedReport}
+					/>
+
+					<Button
+						variant="danger"
+						size="sm"
+						onClick={() => setShowConfirm(true)}
+					>
+						Eliminar Registro
+					</Button>
+				</DeleteReportContainer>
+			) : null}
 			{printData ? (
 				<>
 					<PDFDownloadLink
 						document={<MyDocument data={printData} />}
-						fileName="Factura.pdf" 
-						style={{color: "blue", fontStyle: "italic"}}
+						fileName="Factura.pdf"
+						style={{ color: "blue", fontStyle: "italic" }}
 					>
 						{({ blob, url, loading, error }) => {
 							if (!loading) return "Descargar Factura 📄";
 						}}
 					</PDFDownloadLink>
 				</>
-			) : selectedServiceReport && !printData ? (
+			) : selectedReport && !printData ? (
 				<PDFViewer
 					style={{
 						width: "100%",
-						height: "84vh",
+						height: "78vh",
 						borderRadius: "10px",
 						borderColor: "#555555",
 					}}
 				>
-					<MyDocument data={selectedServiceReport} />
+					<MyDocument data={selectedReport} />
 				</PDFViewer>
 			) : null}
 		</Fragment>
 	);
 };
 
-export default PrintReport;
+export default DeleteReport;

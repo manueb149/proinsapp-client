@@ -213,7 +213,8 @@ const CreateService = () => {
 			...data,
 			user: user.name,
 		});
-		handleDateChange();
+		handleDateChange(new Date());
+		handleBakDateChange(new Date());
 		// eslint-disable-next-line
 	}, []);
 
@@ -451,8 +452,11 @@ const CreateService = () => {
 					servicesType,
 					servicesTypeCk,
 					selectedDate,
+					selectedBakDate
 				}}
 				setData={setData}
+				handleDateChange={handleDateChange}
+				handleBakDateChange={handleBakDateChange}
 			/>
 
 			<SnackBar

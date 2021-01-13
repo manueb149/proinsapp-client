@@ -3,6 +3,8 @@ import { navbarContext } from '../contexts/NavbarContext';
 import StartPage from '../components/Dashboard/Start';
 import ViewReportPage from '../components/Report/ViewReports';
 import PrintReportPage from '../components/Report/PrintReport';
+import EditReportPage from '../components/Report/EditReport';
+import DeleteReportPage from '../components/Report/DeleteReport';
 import CreateServicePage from '../components/Service/CreateService';
 import DataUploadPage from '../components/Configure/DataUpload';
 import TrucksUploadPage from '../components/Configure/TrucksUpload';
@@ -26,6 +28,8 @@ const DashboardPages = () => {
             {(activeMenu==='service' && activeSubMenu==='printMyServices') ? <PrintMyServicesPage /> : null}
             {(activeMenu==='report' && activeSubMenu==='view') ? <ViewReportPage /> : null}
             {(activeMenu==='report' && activeSubMenu==='print') ? <PrintReportPage /> : null}
+            {(activeMenu==='report' && activeSubMenu==='edit') ? <EditReportPage /> : null}
+            {(activeMenu==='report' && activeSubMenu==='delete') ? <DeleteReportPage /> : null}
             {(activeMenu==='config' && activeSubMenu==='files') ? <DataUploadPage /> : null}
             {(activeMenu==='config' && activeSubMenu==='trucks') ? <TrucksUploadPage /> : null}
             {(activeMenu==='config' && activeSubMenu==='values') ? <DefaultValues /> : null}
