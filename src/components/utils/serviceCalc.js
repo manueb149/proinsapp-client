@@ -9,10 +9,10 @@ const summaryCalc = (data, values, servicesType, servicesTypeCk, detailSinister,
         if (servicesTypeCk.SG && Number(servicesType.SG)>=0) total = total + Number(servicesType.SG);
         if (servicesTypeCk.PE && Number(servicesType.PE)>=0) total = total + Number(servicesType.PE);
 
-        if (detailSinisterCk.VO && Number(servicesType.VO)>=0) total = total + Number(detailSinister.VO);
-        if (detailSinisterCk.IN && Number(servicesType.IN)>=0) total = total + Number(detailSinister.IN);
-        if (detailSinisterCk.CO && Number(servicesType.CO)>=0) total = total + Number(detailSinister.CO);
-        if (detailSinisterCk.DM && Number(servicesType.DM)>=0) total = total + Number(detailSinister.DM);
+        if (detailSinisterCk.VO && Number(detailSinister.VO)>=0) total = total + Number(detailSinister.VO);
+        if (detailSinisterCk.IN && Number(detailSinister.IN)>=0) total = total + Number(detailSinister.IN);
+        if (detailSinisterCk.CO && Number(detailSinister.CO)>=0) total = total + Number(detailSinister.CO);
+        if (detailSinisterCk.DM && Number(detailSinister.DM)>=0) total = total + Number(detailSinister.DM);
 
         if (data.dia === "DF") total += total * Number(values.FF) / 100;
         if (servicesTypeCk.SP) {
@@ -31,10 +31,10 @@ const summaryCalc = (data, values, servicesType, servicesTypeCk, detailSinister,
         if (servicesTypeCk.SG && Number(servicesType.SG)>=0) total = total + Number(servicesType.SG);
         if (servicesTypeCk.PE && Number(servicesType.PE)>=0) total = total + Number(servicesType.PE);
 
-        if (detailSinisterCk.VO && Number(servicesType.VO)>=0) total = total + Number(detailSinister.VO);
-        if (detailSinisterCk.IN && Number(servicesType.IN)>=0) total = total + Number(detailSinister.IN);
-        if (detailSinisterCk.CO && Number(servicesType.CO)>=0) total = total + Number(detailSinister.CO);
-        if (detailSinisterCk.DM && Number(servicesType.DM)>=0) total = total + Number(detailSinister.DM);
+        if (detailSinisterCk.VO && Number(detailSinister.VO)>=0) total = total + Number(detailSinister.VO);
+        if (detailSinisterCk.IN && Number(detailSinister.IN)>=0) total = total + Number(detailSinister.IN);
+        if (detailSinisterCk.CO && Number(detailSinister.CO)>=0) total = total + Number(detailSinister.CO);
+        if (detailSinisterCk.DM && Number(detailSinister.DM)>=0) total = total + Number(detailSinister.DM);
 
         if (data.dia === "DF") total += total * Number(values.FF) / 100;
         if (servicesTypeCk.SP) {
