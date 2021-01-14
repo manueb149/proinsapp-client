@@ -9,7 +9,7 @@ import "react-phone-number-input/style.css";
 import MapModal from "../Service/MapModal";
 import DetailsModal from "../Service/DetailsModal";
 import TypesModal from "../Service/TypesModal";
-import ConfirmModal from "../Service/ConfirmModal";
+import ConfirmEdit from "./ConfirmEdit";
 import axios from "../../config/http-common";
 import { Form } from "react-bootstrap";
 import SnackBar from "../utils/SnackBar";
@@ -33,7 +33,7 @@ const EditReport = () => {
 	const authContext = useContext(AuthContext);
 	const ReportContext = useContext(reportContext);
 
-	const { selectedReport } = ReportContext;
+	const { selectedReport, setSelectedReport } = ReportContext;
 	const { logout } = authContext;
 	const { values, setValues } = DefaultValuesContext;
 
@@ -99,9 +99,7 @@ const EditReport = () => {
 	const [areaTruckSelect, SetAreaTruckSelect] = useState(
 		selectedReport ? [selectedReport.datosGruero.region] : []
 	);
-	const [selectedDate, handleDateChange] = useState(
-		selectedReport ? selectedReport.fechaSiniestro : new Date()
-	);
+	const [selectedDate, handleDateChange] = useState(new Date());
 
 	const [data, setData] = useState(
 		selectedReport
@@ -262,7 +260,7 @@ const EditReport = () => {
 		setData({
 			...data,
 			detalleSiniestro: { detailSinister, detailSinisterCk },
-			tipoServicios: { servicesType, detailSinisterCk },
+			tipoServicios: { servicesType, servicesTypeCk },
 		});
 		// eslint-disable-next-line
 	}, [servicesType, servicesTypeCk, detailSinister, detailSinisterCk]);
@@ -329,11 +327,10 @@ const EditReport = () => {
 
 	return (
 		<CreateServiceContainer>
-			<ConfirmModal
+			<ConfirmEdit
 				message={{
-					title: "Guardar Servicio",
-					body:
-						"Para ver la factura guardada, ir a mis servicios, hacer click en un servicio y luego ir a imprimir solicitud.",
+					title: `Editar Servicio #${selectedReport ? selectedReport.serviceNo : ""}`,
+					body: "¿Está seguro que desea actulizar este servicio?",
 				}}
 				showConfirm={showConfirm}
 				setShowConfirm={setShowConfirm}
@@ -342,16 +339,11 @@ const EditReport = () => {
 				setNotification={setNotification}
 				payload={{
 					data,
-					dataTrucks,
-					areaTruckSelect,
-					detailSinister,
-					detailSinisterCk,
-					servicesType,
-					servicesTypeCk,
 					selectedDate,
+					areaTruckSelect,
+					dataTrucks
 				}}
-				setData={setData}
-				handleDateChange={handleDateChange}
+				setSelectedReport={setSelectedReport}
 			/>
 
 			<SnackBar
@@ -419,7 +411,13 @@ const EditReport = () => {
 			>
 				Mostrar Mapa
 			</Button>
-			<Button variant="success" size="sm" onClick={() => {}}>
+			<Button
+				variant="success"
+				size="sm"
+				onClick={() => {
+					setShowConfirm(true);
+				}}
+			>
 				Actualizar
 			</Button>
 
@@ -453,7 +451,7 @@ const EditReport = () => {
 								type="text"
 								className="form-control form-control-sm"
 								id="tipo"
-								value={data.tipoV || ""}
+								value={data.tipoVehiculo || ""}
 								disabled
 							></input>
 						</div>
@@ -659,7 +657,7 @@ const EditReport = () => {
 						</div>
 						<div className="col-lg-12 mb-3">
 							<DateTimePicker
-                                label={selectedReport.fechaSiniestro}
+								label={selectedReport ? selectedReport.fechaSiniestro : ''}
 								selectedDate={selectedDate}
 								handleDateChange={handleDateChange}
 							/>

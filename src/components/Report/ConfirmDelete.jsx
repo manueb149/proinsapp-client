@@ -80,8 +80,6 @@ const ConfirmDelete = ({
 					<Button
 						variant="secondary"
 						onClick={() => {
-							// setRedered(false);
-							// setPrintService(null);
 							setShowConfirm(false);
 						}}
 					>
