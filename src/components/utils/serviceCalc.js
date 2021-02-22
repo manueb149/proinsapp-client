@@ -1,7 +1,7 @@
 const summaryCalc = (data, values, servicesType, servicesTypeCk, detailSinister, detailSinisterCk) => {
     let total = 0;
     if (Number(data.distancia) <= 15) {
-        total = 1200;
+        if (servicesTypeCk.TG && Number(servicesType.TG)>=0) total = 1200;
         if (servicesTypeCk.EX && Number(servicesType.EX)>=0) total = total + Number(servicesType.EX);
         if (servicesTypeCk.CR && Number(servicesType.CR)>=0) total = total + Number(servicesType.CR);
         if (servicesTypeCk.CG && Number(servicesType.CG)>=0) total = total + Number(servicesType.CG);
@@ -21,9 +21,9 @@ const summaryCalc = (data, values, servicesType, servicesTypeCk, detailSinister,
             }
         }
         if (servicesTypeCk.LM && Number(servicesType.LM)>=0) total = total + Number(servicesType.LM) * Number(servicesType.SL);
-        if (data.noche) total += total * Number(servicesType.TN) / 100;
+        if (data.noche && servicesTypeCk.TG) total += total * Number(servicesType.TN) / 100;
     } else {
-        total = 1200 + ((Number(data.distancia) - 15) * Number(servicesType.TG));
+        if (servicesTypeCk.TG && Number(servicesType.TG)>=0) {total = 1200 + ((Number(data.distancia) - 15) * Number(servicesType.TG));}
         if (servicesTypeCk.EX && Number(servicesType.EX)>=0) total = total + Number(servicesType.EX);
         if (servicesTypeCk.CR && Number(servicesType.CR)>=0) total = total + Number(servicesType.CR);
         if (servicesTypeCk.CG && Number(servicesType.CG)>=0) total = total + Number(servicesType.CG);
@@ -43,7 +43,7 @@ const summaryCalc = (data, values, servicesType, servicesTypeCk, detailSinister,
             }
         }
         if (servicesTypeCk.LM && Number(servicesType.LM)>=0) total = total + (Number(servicesType.SL) + Number(servicesType.TG)) * Number(servicesType.LM);
-        if (data.noche) total += total * Number(servicesType.TN) / 100;
+        if (data.noche && servicesTypeCk.TG) total += total * Number(servicesType.TN) / 100;
     }
     data.precio = total.toFixed(2);
     return (total.toFixed(2))

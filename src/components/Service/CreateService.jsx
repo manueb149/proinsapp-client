@@ -290,6 +290,8 @@ const CreateService = () => {
 			CO: false,
 			DM: false,
 		});
+		SetAreaTruckSelect([]);
+		setDataTrucks([]);
 		setOpenSB(false);
 		setSeverity("warning");
 		setNotification("Campos Limpiados!");

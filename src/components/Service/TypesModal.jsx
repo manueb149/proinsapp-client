@@ -72,8 +72,8 @@ const TypesService = ({
 									LongName={"Tansporte de Grúa"}
 									Format={customFormats.PesoKmFormatCustom}
 									handleChange={handleChange}
-									alwaysDisabled
-									noCheck
+									// alwaysDisabled
+									// noCheck
 								/>
 							</div>
 						</div>

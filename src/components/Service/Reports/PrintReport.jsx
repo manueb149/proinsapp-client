@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
 		borderColor: "#000",
 		borderStyle: "solid",
 		paddingLeft: "20px",
-		fontSize: 16,
+		fontSize: 13,
 		fontWeight: "heavy",
 		backgroundColor: "#f5f5f5",
 	},
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
 		marginBottom: "10px",
 	},
 	header_subtext_title: {
-		fontSize: 14,
+		fontSize: 11,
 		color: "#000",
 		letterSpacing: 1.5,
 		fontWeight: "bold",
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
 		marginRight: "30px",
 	},
 	header_subtext: {
-		fontSize: 12,
+		fontSize: 9.5,
 		letterSpacing: 0.5,
 		color: "#5b5b5b",
 		fontWeight: "light",
@@ -492,6 +492,7 @@ const MyDocument = ({ data }) => (
 			<View
 				style={{
 					display: "flex",
+					flexWrap: "wrap",
 					flexDirection: "row",
 					marginLeft: "30px",
 					marginTop: "5px",
@@ -516,6 +517,13 @@ const MyDocument = ({ data }) => (
 					<Text style={styles.header_subtext}>
 						{" $"}
 						{data.precio ? data.precio : 0}
+					</Text>
+				</Text>
+				<Text style={styles.header_subtext_title}>
+					Tarifa Especial:
+					<Text style={styles.header_subtext}>
+						{" $"}
+						{data.tarifaEspecial!=="" ? data.tarifaEspecial : 0}
 					</Text>
 				</Text>
 			</View>
