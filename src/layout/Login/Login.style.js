@@ -1,10 +1,14 @@
 import styled from 'styled-components';
-import backgroundImg from '../../assets/bg_login3.jpg';
+import backgroundImg from '../../assets/bg_loginn.png';
 
 export const LoginContainer = styled.div`
+/* background: url(${backgroundImg}) no-repeat fixed; */
     .container-fluid{
         min-height: 100vh;
-        background: url(${backgroundImg}) no-repeat fixed center;
+        background: url(${backgroundImg}) no-repeat center center fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
         background-size: cover;
         position: relative;
         z-index: 0;
@@ -19,6 +23,10 @@ export const LoginContainer = styled.div`
         bottom: 0;
         left: 0;
         z-index: -1;
+        img{
+            width: 100%;
+            height: 100%;
+        }
     }    
 `;
 
@@ -75,7 +83,8 @@ export const LoginForm = styled.div`
     position: relative;
     border: 5px solid rgba(255,255,255,0.2);
     border-radius: 10px;
-    background-color: white;
+    background-color: rgba(0,0,0,1);
+    opacity: 0.94;
     z-index: 0;
     box-shadow: 0 0 10px 10px rgba(30, 50, 55, 0.4),0 0 10px rgba(81,203,238,0.6);
     .login-title{

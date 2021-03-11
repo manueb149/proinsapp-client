@@ -8,7 +8,7 @@ const NavbarDashboard = styled.div`
         position: relative;
         /* height: 100%; */
         height: 87vh;
-        overflow-x: scroll;
+        /* overflow-x: scroll; */
         padding: 0 15px;
         color: var(--text-color);
         display: flex;

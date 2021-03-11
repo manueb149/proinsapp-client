@@ -1,9 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Image } from "react-bootstrap";
 import { LoginForm, LoginContainer } from "../../layout/Login/Login.style";
 import AlertContext from "../../contexts/alerts/alertContext";
 import AuthContext from "../../contexts/auth/authContext";
 import SnackBar from "../utils/SnackBar";
+import img from "../../assets/bg_loginn.png";
 
 const Login = (props) => {
 	// Definir state para iniciar sesión
@@ -74,8 +75,8 @@ const Login = (props) => {
 				/>
 			) : null}
 
-			<div className="container-fluid">
-				<div className="overlay"></div>
+			<div className="container-fluid login">
+				<div className="overlay"><Image src={img} /></div>
 				<div className="row my-auto justify-content-center">
 					<div className="col-lg-4 col-md-6 col-sm-12">
 						<LoginForm>
