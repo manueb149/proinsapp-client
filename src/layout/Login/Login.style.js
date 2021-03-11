@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import backgroundImg from '../../assets/bg_loginn.png';
+import backgroundImg from '../../assets/bg_login.jpg';
 
 export const LoginContainer = styled.div`
 /* background: url(${backgroundImg}) no-repeat fixed; */
