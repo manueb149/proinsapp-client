@@ -4,7 +4,7 @@ import { LoginForm, LoginContainer } from "../../layout/Login/Login.style";
 import AlertContext from "../../contexts/alerts/alertContext";
 import AuthContext from "../../contexts/auth/authContext";
 import SnackBar from "../utils/SnackBar";
-import img from "../../assets/bg_loginn.png";
+import img from "../../assets/bg_login.jpg";
 
 const Login = (props) => {
 	// Definir state para iniciar sesión
