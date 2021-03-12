@@ -123,7 +123,14 @@ const MyDocument = ({ data }) => (
 						Fecha:
 						<Text style={styles.header_subtext}>
 							{" "}
-							{printDate(data.registry)}
+							{printDate(data.registry)[0]}
+						</Text>
+					</Text>
+					<Text style={styles.header_subtext_title}>
+						Hora:
+						<Text style={styles.header_subtext}>
+							{" "}
+							{printDate(data.registry)[1]}
 						</Text>
 					</Text>
 				</View>
