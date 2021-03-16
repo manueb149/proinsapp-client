@@ -98,6 +98,11 @@ const Dropdown = () => {
 						Eliminar Registro
 					</DropdownItem>
 				) : null}
+				{user.roles[1].find((value) => value === "balance") ? (
+					<DropdownItem subMenu={'balance'} leftIcon={"fas fa-file-invoice-dollar"}>
+						Cuadrar Registros
+					</DropdownItem>
+				) : null}
 			</DropdownSub>
 
 			<DropdownSub menu={"config"} type={"secondary"}>

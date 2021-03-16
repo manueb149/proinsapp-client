@@ -13,6 +13,9 @@ export const DefaultContainer = styled.div`
     .col-mn{
         padding: 0 2vh 2vh 2vh;
     }
+    .row.header{
+        border-bottom: none;
+    }
 `;
 
 export default DefaultContainer;

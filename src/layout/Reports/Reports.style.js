@@ -4,6 +4,16 @@ export const ReportsContainer = styled.div`
     .MuiTableCell-paddingCheckbox{
         background-color: #fff;
     }
+    div.MuiFormControl-root.MuiTextField-root.date-picker{
+        margin-right: 10px;
+    }
+    .MuiTableCell-root{
+        padding: 10px !important;
+        line-height: 1 !important;
+    }
+    .MuiTablePagination-toolbar{
+        min-height: 100% !important;
+    }
 `;
 
 export const DeleteReportContainer = styled.div`

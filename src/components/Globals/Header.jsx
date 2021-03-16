@@ -12,7 +12,7 @@ const Header = (props) => {
 	const { user } = authContext;
 
 	return (
-		<div className='row'>
+		<div className='row header'>
 			<HeaderContainer>
 				<div className='col-12'>
 					<div className="header-inner">

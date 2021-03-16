@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import MUIDataTable from "mui-datatables";
+import { Button } from "react-bootstrap";
+import DatePicker from "../utils/DatePicker";
 import axios from "../../config/http-common";
+import filterReportsByDate from "../utils/filterReportsByDate";
 import { ReportsContainer } from "../../layout/Reports/Reports.style";
 import AuthContext from "../../contexts/auth/authContext";
 import { reportContext } from "../../contexts/ReportContext";
 import { useHistory } from "react-router-dom";
-import moment from "moment-timezone"
+import moment from "moment-timezone";
 moment().tz("America/Santo_Domingo").format();
 
 const columns = [
@@ -159,11 +162,15 @@ const ViewReports = () => {
 	// eslint-disable-next-line
 	const [data, setData] = useState([]);
 	// eslint-disable-next-line
+	const [selectedDateStart, handleDateChangeStart] = useState(new Date());
+	const [selectedDateEnd, handleDateChangeEnd] = useState(new Date());
+	const [filtering, setFiltering] = useState(false);
+	const [cleaning, setCleaning] = useState(false);
 	const history = useHistory();
 	const authContext = useContext(AuthContext);
 	const { logout } = authContext;
 	const ReportContext = useContext(reportContext);
-	const { setSelectedReport } = ReportContext;
+	const { setSelectedReport, setFilteredReports, setFilteredDates } = ReportContext;
 
 	const options = {
 		filter: true,
@@ -173,11 +180,11 @@ const ViewReports = () => {
 		responsive: "standard",
 		fixedHeader: true,
 		fixedSelectColumn: true,
-		tableBodyHeight: "64vh",
+		tableBodyHeight: "55vh",
 		selectableRows: "single",
 		selectableRowsOnClick: true,
 		selectableRowsHeader: false,
-		selectToolbarPlacement: 'none',
+		selectToolbarPlacement: "none",
 		textLabels: {
 			body: {
 				noMatch: "No se ha encontrado dicho reporte",
@@ -248,11 +255,123 @@ const ViewReports = () => {
 		};
 		getReports();
 		setSelectedReport(null);
+		setFilteredDates([]);
+		setFilteredReports([]);
 		// eslint-disable-next-line
 	}, []);
 
+	const handleFilter = () => {
+		setFiltering(true);
+		setSelectedReport(null);
+		const getReports = () => {
+			try {
+				axios
+					.get(`/service`)
+					.then((res) => {
+						const data = filterReportsByDate(
+							res.data.results,
+							selectedDateStart,
+							selectedDateEnd
+						);
+						setData(data);
+						setFilteredReports(data);
+						setFilteredDates([selectedDateStart, selectedDateEnd]);
+						setFiltering(false);
+					})
+					.catch((error) => {
+						if (error.response) {
+							// Request made and server responded
+							if (error.response.data.text === "TNV") {
+								logout();
+								history.push("/");
+							}
+							// console.log(error.response.status);
+							// console.log(error.response.headers);
+						} else if (error.request) {
+							// The request was made but no response was received
+							console.log(error.request);
+						} else {
+							// Something happened in setting up the request that triggered an Error
+							console.log("Error", error.message);
+						}
+					});
+			} catch (error) {
+				console.log(error.response.data);
+			}
+		};
+		getReports();
+	};
+
+	const handleClear = () => {
+		setCleaning(true);
+		const getReports = async () => {
+			try {
+				await axios
+					.get(`/service`)
+					.then((res) => {
+						setData(res.data.results);
+						setFilteredReports(null);
+						setFilteredDates([]);
+						setFilteredReports([]);
+						setCleaning(false);
+					})
+					.catch((error) => {
+						if (error.response) {
+							// Request made and server responded
+							if (error.response.data.text === "TNV") {
+								logout();
+								history.push("/");
+							}
+							// console.log(error.response.status);
+							// console.log(error.response.headers);
+						} else if (error.request) {
+							// The request was made but no response was received
+							console.log(error.request);
+						} else {
+							// Something happened in setting up the request that triggered an Error
+							console.log("Error", error.message);
+						}
+					});
+			} catch (error) {
+				console.log(error.response.data);
+			}
+		};
+		getReports();
+	};
+
 	return (
 		<ReportsContainer>
+			<div className="date-picker">
+				<div className="col-lg-12 mb-3">
+					<DatePicker
+						MaxDate
+						label="Fecha Inicial"
+						selectedDate={selectedDateStart}
+						handleDateChange={handleDateChangeStart}
+					/>
+					<DatePicker
+						MaxDate
+						label="Fecha Final"
+						selectedDate={selectedDateEnd}
+						handleDateChange={handleDateChangeEnd}
+					/>
+					<Button
+						style={{ marginTop: "5px" }}
+						onClick={handleFilter}
+						disabled={filtering}
+					>
+						{filtering ? "Filtrando" : "Filtrar"}
+					</Button>
+					<Button
+						variant="warning"
+						style={{ marginTop: "5px", marginLeft: "5px" }}
+						onClick={handleClear}
+						disabled={cleaning}
+					>
+						{cleaning ? "Limpiando" : "Limpiar"}
+					</Button>
+				</div>
+			</div>
 			<MUIDataTable
 				title={"Reportes registrados"}
 				data={data}
