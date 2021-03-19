@@ -18,6 +18,14 @@ export default function getActiveMenu(user) {
             menu[0] = 'service';
             menu[1] = 'create'
             break;
+        case 'LA INTERNACIONAL':
+            menu[0] = 'insurers';
+            menu[1] = 'insurerServices'
+            break;
+        case 'FIHOGAR':
+            menu[0] = 'insurers';
+            menu[1] = 'insurerServices'
+            break;
         default:
             menu[0] = 'main';
             menu[1] = ''

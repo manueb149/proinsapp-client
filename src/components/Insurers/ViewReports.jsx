@@ -6,23 +6,16 @@ import axios from "../../config/http-common";
 import filterReportsByDate from "../utils/filterReportsByDate";
 import { ReportsContainer } from "../../layout/Reports/Reports.style";
 import AuthContext from "../../contexts/auth/authContext";
-import { reportContext } from "../../contexts/ReportContext";
+import { insurersContext } from "../../contexts/InsurersContext";
 import { useHistory } from "react-router-dom";
 import moment from "moment-timezone";
+import getServiceType from "../utils/getServiceType";
 moment().tz("America/Santo_Domingo").format();
 
 const columns = [
 	{
 		name: "asegurado",
 		label: "Asegurado",
-		options: {
-			filter: true,
-			sort: true,
-		},
-	},
-	{
-		name: "serviceNo",
-		label: "Servicio",
 		options: {
 			filter: true,
 			sort: true,
@@ -37,120 +30,32 @@ const columns = [
 		},
 	},
 	{
-		name: "cedula",
-		label: "Cédula",
-		options: {
-			filter: true,
-			sort: true,
-		},
-	},
-	{
-		name: "marca",
-		label: "Marca",
-		options: {
-			filter: true,
-			sort: true,
-		},
-	},
-	{
-		name: "modelo",
-		label: "Modelo",
-		options: {
-			filter: true,
-			sort: true,
-		},
-	},
-	{
-		name: "anio",
-		label: "Año",
-		options: {
-			filter: true,
-			sort: true,
-		},
-	},
-	{
-		name: "chassis",
-		label: "Chassis",
-		options: {
-			filter: true,
-			sort: true,
-		},
-	},
-	{
-		name: "placa",
-		label: "Placa",
-		options: {
-			filter: true,
-			sort: true,
-		},
-	},
-	{
-		name: "tipoVehiculo",
-		label: "Vehículo",
-		options: {
-			filter: true,
-			sort: true,
-		},
-	},
-	{
 		name: "aseguradora",
 		label: "Aseguradora",
 		options: {
-			filter: true,
-			sort: true,
+			filter: false,
+			sort: false,
 		},
 	},
 	{
-		name: "plan",
-		label: "Plan",
+		name: "ubicacion",
+		label: "Origen",
 		options: {
-			filter: true,
-			sort: true,
+			filter: false,
+			sort: false,
 		},
 	},
 	{
-		name: "color",
-		label: "Color",
+		name: "destino",
+		label: "Destino",
 		options: {
-			filter: true,
-			sort: true,
+			filter: false,
+			sort: false,
 		},
 	},
 	{
-		name: "precio",
-		label: "Precio (RD$)",
-		options: {
-			filter: true,
-			sort: true,
-		},
-	},
-	{
-		name: "distancia",
-		label: "Distancia (Km)",
-		options: {
-			filter: true,
-			sort: true,
-		},
-	},
-	{
-		name: "registry",
-		label: "Fecha",
-		options: {
-			filter: true,
-			sort: true,
-		},
-	},
-	{
-		name: "created_at",
-		label: "Fecha2",
-		options: {
-			filter: true,
-			sort: true,
-		},
-	},
-	{
-		name: "user",
-		label: "Usuario",
+		name: "servicios",
+		label: "Servicios",
 		options: {
 			filter: true,
 			sort: true,
@@ -168,9 +73,13 @@ const ViewReports = () => {
 	const [cleaning, setCleaning] = useState(false);
 	const history = useHistory();
 	const authContext = useContext(AuthContext);
-	const { logout } = authContext;
-	const ReportContext = useContext(reportContext);
-	const { setSelectedReport, setFilteredReports, setFilteredDates } = ReportContext;
+	const { logout, user } = authContext;
+	const InsurersContext = useContext(insurersContext);
+
+	const {
+		setFilteredInsurersReports,
+		setFilteredInsurersDates,
+	} = InsurersContext;
 
 	const options = {
 		filter: true,
@@ -179,10 +88,10 @@ const ViewReports = () => {
 		filterType: "dropdown",
 		responsive: "standard",
 		fixedHeader: true,
-		fixedSelectColumn: true,
+		fixedSelectColumn: false,
 		tableBodyHeight: "55vh",
-		selectableRows: "single",
-		selectableRowsOnClick: true,
+		selectableRows: "none",
+		selectableRowsOnClick: false,
 		selectableRowsHeader: false,
 		selectToolbarPlacement: "none",
 		textLabels: {
@@ -219,9 +128,9 @@ const ViewReports = () => {
 				deleteAria: "Eliminar Fila",
 			},
 		},
-		onRowSelectionChange: (rowsSelectedData, allRows, rowsSelected) => {
-			setSelectedReport(data[rowsSelected]);
-		},
+		// onRowSelectionChange: (rowsSelectedData, allRows, rowsSelected) => {
+		// 	setSelectedReport(data[rowsSelected]);
+		// },
 	};
 
 	useEffect(() => {
@@ -230,7 +139,21 @@ const ViewReports = () => {
 				await axios
 					.get(`/service`)
 					.then((res) => {
-						setData(res.data.results);
+						const newData = res.data.results.map(
+							(value, index) => ({
+								...value,
+								servicios: getServiceType(
+									value["tipoServicios"]
+								)
+							})
+						);
+						setData(
+							newData.filter(
+								(value) =>
+									value.aseguradora ===
+									String(user.name).toUpperCase()
+							)
+						);
 					})
 					.catch((error) => {
 						if (error.response) {
@@ -254,28 +177,44 @@ const ViewReports = () => {
 			}
 		};
 		getReports();
-		setSelectedReport(null);
-		setFilteredDates([]);
-		setFilteredReports([]);
+		// setSelectedReport(null);
+		setFilteredInsurersDates([]);
+		setFilteredInsurersReports([]);
 		// eslint-disable-next-line
 	}, []);
 
 	const handleFilter = () => {
 		setFiltering(true);
-		setSelectedReport(null);
+		// setSelectedReport(null);
 		const getReports = () => {
 			try {
 				axios
 					.get(`/service`)
 					.then((res) => {
+						const newData = res.data.results.map(
+							(value, index) => ({
+								...value,
+								servicios: getServiceType(
+									value["tipoServicios"]
+								)
+							})
+						);
+						const filteredData = newData.filter(
+							(value) =>
+								value.aseguradora ===
+								String(user.name).toUpperCase()
+						);
 						const data = filterReportsByDate(
-							res.data.results,
+							filteredData,
 							selectedDateStart,
 							selectedDateEnd
 						);
 						setData(data);
-						setFilteredReports(data);
-						setFilteredDates([selectedDateStart, selectedDateEnd]);
+						setFilteredInsurersReports(data);
+						setFilteredInsurersDates([
+							selectedDateStart,
+							selectedDateEnd,
+						]);
 						setFiltering(false);
 					})
 					.catch((error) => {
@@ -309,10 +248,23 @@ const ViewReports = () => {
 				await axios
 					.get(`/service`)
 					.then((res) => {
-						setData(res.data.results);
-						setFilteredReports(null);
-						setFilteredDates([]);
-						setFilteredReports([]);
+						const newData = res.data.results.map(
+							(value, index) => ({
+								...value,
+								servicios: getServiceType(
+									value["tipoServicios"]
+								)
+							})
+						);
+						setData(
+							newData.filter(
+								(value) =>
+									value.aseguradora ===
+									String(user.name).toUpperCase()
+							)
+						);
+						setFilteredInsurersDates([]);
+						setFilteredInsurersReports([]);
 						setCleaning(false);
 					})
 					.catch((error) => {

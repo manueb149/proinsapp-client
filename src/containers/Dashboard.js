@@ -11,6 +11,7 @@ import ServiceDataContext from '../contexts/ServiceDataContext';
 import ServiceModelsContext from "../contexts/ServiceModalsContext";
 import ServiceReportContext from "../contexts/ServiceReportContext";
 import AuthContext from "../contexts/auth/authContext";
+import InsurersContext from "../contexts/InsurersContext";
 // Default container styled-component
 import DefaultContainer from "../layout/Globals/Container.style";
 import Pages from './DashboardPages';
@@ -37,16 +38,18 @@ const Dashboard = () => {
 						<ServiceDataContext>
 							<ServiceModelsContext>
 								<ServiceReportContext>
-									<NavbarContext>
-										<ReportContext>
-											<Default.Sidebar>
-												{(user && authenticated) ? <Navbar /> : ""}
-											</Default.Sidebar>
-											<Default.Main>
-												<Pages />
-											</Default.Main>
-										</ReportContext>
-									</NavbarContext>
+									<InsurersContext>
+										<NavbarContext>
+											<ReportContext>
+												<Default.Sidebar>
+													{(user && authenticated) ? <Navbar /> : ""}
+												</Default.Sidebar>
+												<Default.Main>
+													<Pages />
+												</Default.Main>
+											</ReportContext>
+										</NavbarContext>
+									</InsurersContext>
 								</ServiceReportContext>
 							</ServiceModelsContext>
 						</ServiceDataContext>

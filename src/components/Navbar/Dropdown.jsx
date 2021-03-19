@@ -36,6 +36,11 @@ const Dropdown = () => {
 						Registros
 					</DropdownItem>
 				) : null}
+				{user.roles[0].find((value) => value === "insurers") ? (
+					<DropdownItem leftIcon={"fab fa-angular"} goToMenu="insurers">
+						Aseguradoras
+					</DropdownItem>
+				) : null}
 				{user.roles[0].find((value) => value === "config") ? (
 					<DropdownItem leftIcon={"fa fa-cogs"} goToMenu="config">
 						Configuración
@@ -46,6 +51,22 @@ const Dropdown = () => {
 						Cerrar Sesión
 					</a>
 				</DropdownItem>
+			</DropdownSub>
+
+			<DropdownSub menu={"insurers"} type={"secondary"}>
+				<DropdownItem goToMenu="main" leftIcon={"fas fa-arrow-left"}>
+					Regresar
+				</DropdownItem>
+				{user.roles[1].find((value) => value === "insurerServices") ? (
+					<DropdownItem subMenu={"insurerServices"} leftIcon={"fas fa-book"}>
+						Servicios
+					</DropdownItem>
+				) : null}
+				{user.roles[1].find((value) => value === "printInsurerServices") ? (
+					<DropdownItem subMenu={"printInsurerServices"} leftIcon={"fas fa-print"}>
+						Imprimir Servicios
+					</DropdownItem>
+				) : null}
 			</DropdownSub>
 
 			<DropdownSub menu={"service"} type={"secondary"}>
