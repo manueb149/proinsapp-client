@@ -34,12 +34,24 @@ const ConfirmModal = ({
 
 	const handleCreateService = async () => {
 		if (
+			payload.servicesTypeCk.TG &&
+			(Number(payload.data.tiempoGrua) === 0 ||
+				Number(payload.data.distancia) <= 0 ||
+				Number(payload.data.precio) <= 0)
+		) {
+			setOpenSB(false);
+			setSeverity("warning");
+			setNotification("Faltan campos por completar!");
+			setOpenSB(true);
+			return;
+		}
+		if (
 			String(payload.data.asegurado).length === 0 ||
 			String(payload.data.dia).length === 0 ||
 			String(payload.data.ubicacion).length === 0 ||
 			String(payload.data.destino).length === 0 ||
-			Number(payload.data.tiempoGrua) === 0 ||
-			Number(payload.data.distancia) <= 0 ||
+			// Number(payload.data.tiempoGrua) === 0 ||
+			// Number(payload.data.distancia) <= 0 ||
 			Number(payload.data.precio) <= 0 ||
 			payload.areaTruckSelect.length === 0 ||
 			payload.dataTrucks.length === 0
@@ -50,6 +62,7 @@ const ConfirmModal = ({
 			setOpenSB(true);
 			return;
 		} else {
+			if(Number(payload.data.distancia) <= 0) payload.data.distancia = 0;
 			if (payload.selectedDate) {
 				if (payload.selectedDate._d) {
 					payload.data.fechaSiniestro = payload.selectedDate._d.toLocaleString(

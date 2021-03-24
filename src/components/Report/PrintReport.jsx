@@ -120,10 +120,17 @@ const MyDocument = ({ data }) => (
 						<Text style={styles.header_subtext}> {data.user}</Text>
 					</Text>
 					<Text style={styles.header_subtext_title}>
-						Fecha:
+						Fecha Registro:
 						<Text style={styles.header_subtext}>
 							{" "}
 							{printDate(data.registry)[0]}
+						</Text>
+					</Text>
+					<Text style={styles.header_subtext_title}>
+						Fecha Siniestro:
+						<Text style={styles.header_subtext}>
+							{" "}
+							{printDate(data.fechaSiniestro)[0]}
 						</Text>
 					</Text>
 					<Text style={styles.header_subtext_title}>
