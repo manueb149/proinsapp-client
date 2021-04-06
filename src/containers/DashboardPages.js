@@ -14,8 +14,6 @@ import DefaultValues from '../components/Configure/DefaultValues';
 import DataUploadPage from '../components/Configure/DataUpload';
 import TrucksUploadPage from '../components/Configure/TrucksUpload';
 import InsurersViewReports from '../components/Insurers/ViewReports';
-import InsurersPrintReports from '../components/Insurers/PrintReport';
-// import authContext from '../contexts/auth/authContext';
 
 const DashboardPages = () => {
 
@@ -24,12 +22,15 @@ const DashboardPages = () => {
 
     return (
         <div>
+            {/* MAIN MODULE */}
             {(activeMenu==='main' || activeSubMenu==='') ? <StartPage /> : null}
+
             {/* SERVICES MODULE */}
             {(activeMenu==='service' && activeSubMenu==='create') ? <CreateServicePage /> : null}
             {(activeMenu==='service' && activeSubMenu==='summary') ? <SummaryPage /> : null}
             {(activeMenu==='service' && activeSubMenu==='myServices') ? <MyServicesPage /> : null}
             {(activeMenu==='service' && activeSubMenu==='printMyServices') ? <PrintMyServicesPage /> : null}
+            
             {/* REPORTS MODULE */}
             {(activeMenu==='report' && activeSubMenu==='view') ? <ViewReportPage /> : null}
             {(activeMenu==='report' && activeSubMenu==='print') ? <PrintReportPage /> : null}
@@ -37,14 +38,15 @@ const DashboardPages = () => {
             {(activeMenu==='report' && activeSubMenu==='delete') ? <DeleteReportPage /> : null}
             {(activeMenu==='report' && activeSubMenu==='balance') ? <PrintBalancePage /> : null}
             {(activeMenu==='report' && activeSubMenu==='balance') ? <PrintBalancePage /> : null}
+
             {/* INSURERS MODULE */}
             {(activeMenu==='insurers' && activeSubMenu==='insurerServices') ? <InsurersViewReports /> : null}
-            {(activeMenu==='insurers' && activeSubMenu==='printInsurerServices') ? <InsurersPrintReports /> : null}
+            {/* {(activeMenu==='insurers' && activeSubMenu==='printInsurerServices') ? <InsurersPrintReports /> : null} */}
+
             {/* CONFIG MODULE*/}
             {(activeMenu==='config' && activeSubMenu==='files') ? <DataUploadPage /> : null}
             {(activeMenu==='config' && activeSubMenu==='trucks') ? <TrucksUploadPage /> : null}
-            {(activeMenu==='config' && activeSubMenu==='values') ? <DefaultValues /> : null}
-            
+            {(activeMenu==='config' && activeSubMenu==='values') ? <DefaultValues /> : null} 
         </div>
     )
 }

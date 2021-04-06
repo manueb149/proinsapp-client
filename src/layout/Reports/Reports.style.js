@@ -14,6 +14,9 @@ export const ReportsContainer = styled.div`
     .MuiTablePagination-toolbar{
         min-height: 100% !important;
     }
+    .canvasjs-chart-credit{
+        opacity: 0.1;
+    }
 `;
 
 export const DeleteReportContainer = styled.div`

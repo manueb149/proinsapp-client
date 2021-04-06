@@ -249,6 +249,7 @@ const MyDocument = ({ data, dates }) => (
 	</Document>
 );
 
+// Print Data from Document
 const PrintBalanceReport = () => {
 	const InsurersContext = useContext(insurersContext);
 	const {
@@ -276,5 +277,7 @@ const PrintBalanceReport = () => {
 		</Fragment>
 	);
 };
+
+
 
 export default PrintBalanceReport;

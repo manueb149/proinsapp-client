@@ -58,15 +58,15 @@ const Dropdown = () => {
 					Regresar
 				</DropdownItem>
 				{user.roles[1].find((value) => value === "insurerServices") ? (
-					<DropdownItem subMenu={"insurerServices"} leftIcon={"fas fa-book"}>
-						Servicios
+					<DropdownItem subMenu={"insurerServices"} leftIcon={"fas fa-chart-bar"}>
+						Indicadores
 					</DropdownItem>
 				) : null}
-				{user.roles[1].find((value) => value === "printInsurerServices") ? (
+				{/* {user.roles[1].find((value) => value === "printInsurerServices") ? (
 					<DropdownItem subMenu={"printInsurerServices"} leftIcon={"fas fa-print"}>
 						Imprimir Servicios
 					</DropdownItem>
-				) : null}
+				) : null} */}
 			</DropdownSub>
 
 			<DropdownSub menu={"service"} type={"secondary"}>
