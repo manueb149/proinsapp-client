@@ -17,6 +17,41 @@ export const ReportsContainer = styled.div`
     .canvasjs-chart-credit{
         opacity: 0.1;
     }
+    .VictoryContainer{
+        height: 70vh !important;
+    }
+`;
+
+export const GraphReportsContainer = styled.div`
+    .VictoryContainer{
+        height: 70vh !important;
+    }
+    div.MuiFormControl-root.MuiTextField-root.date-picker{
+        margin-right: 10px;
+    }
+    button{
+        border-radius: var(--border-radius);
+        margin-bottom: 10px;
+        margin-right: 10px;
+    }
+    button.close.rbt-close.rbt-token-remove-button{
+        padding: 0px;
+        top: 0px;
+        transform: translate(50%,32%);
+        -webkit-transform: translate(50%,32%);
+        -ms-transform: translate(50%,32%);
+        border-radius: 50%;
+        width: 13px;
+        height: 13px;
+    }
+    button.close{
+        line-height: 0.9;
+        color: white;
+    }
+    .MuiIconButton-root.MuiIconButton-root{
+        transform: translate(5%,20%);
+        border-radius: 50%
+    }
 `;
 
 export const DeleteReportContainer = styled.div`

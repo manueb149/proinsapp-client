@@ -173,3 +173,73 @@ export const DetailsModalContainer = styled.div`
         justify-content: center;
     }
 `;
+
+export const LegendModalContainer = styled.div`
+    .leyend{
+        width: 100%;
+        height: 100%;
+    }
+    .legend-inner{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+    }
+    .legend-line{
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 5px;
+        padding-bottom: 3px;
+    }
+    .dot{
+        height: 20px;
+        width: 20px;
+        border-radius: 50%;
+        margin-right: 5px;
+        border-bottom: 1px solid black;
+    }
+    .label{
+        text-transform: uppercase;
+        padding-right: 5px;
+        border-bottom: 1px solid black;
+    }
+    .description{
+        border-bottom: 1px solid black;
+    }
+    .serv > .dot{
+        background-color: gold;
+    }
+    .svl > .dot{
+        background-color: teal;
+    }
+    .svp > .dot{
+        background-color: blue;
+    }
+    .spv > .dot{
+        background-color: green;
+    }
+    .spb > .dot{
+        background-color: chocolate;
+    }
+    .spm > .dot{
+        background-color: orange;
+    }
+    .kmr > .dot{
+        background-color: purple;
+    }
+    .sd > .dot{
+        background-color: gray;
+    }
+    .sn > .dot{
+        background-color: silver;
+    }
+    .sf > .dot{
+        background-color: salmon;
+    }
+`;

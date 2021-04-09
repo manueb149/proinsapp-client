@@ -1,35 +1,50 @@
 import React from "react";
 // import { CanvasJSChart } from "canvasjs-react-charts";
-import Paper from "@material-ui/core/Paper";
+// import Paper from "@material-ui/core/Paper";
+// import {
+// 	Chart,
+// 	BarSeries,
+// 	Title,
+// 	ArgumentAxis,
+// 	ValueAxis,
+// } from "@devexpress/dx-react-chart-material-ui";
+// import { Animation } from "@devexpress/dx-react-chart";
 import {
-	Chart,
-	BarSeries,
-	Title,
-	ArgumentAxis,
-	ValueAxis,
-} from "@devexpress/dx-react-chart-material-ui";
-import { Animation } from "@devexpress/dx-react-chart";
+	VictoryChart,
+	VictoryBar,
+	VictoryAxis,
+} from "victory";
 
-const GraphReport = () => {
-	const chartData = [
-		{ label: "Servicios", number: 10 },
-		{ label: "SVL", number: 15 },
-		{ label: "SVP", number: 15 },
-		{ label: "SPV", number: 15 },
-		{ label: "SPB", number: 15 },
-	];
+const GraphReport = ({graphData}) => {
 
 	return (
-		<Paper>
-			<Chart data={chartData}>
-				<ArgumentAxis />
-				<ValueAxis max={50} />
-				
-				<BarSeries valueField="number" argumentField="label" />
-				<Title text="Indicadores" />
-				<Animation />
-			</Chart>
-		</Paper>
+		<VictoryChart
+			domainPadding={{ y: 0, x: 20 }}
+		>
+			<VictoryAxis
+				tickValues={[
+					...Array.from(
+						{ length: graphData.length },
+						(_, i) => i + 1
+					),
+				]}
+				tickFormat={graphData.map((value, key) => value.name)}
+			/>
+			<VictoryAxis dependentAxis />
+			<VictoryBar
+				barRatio={0.5}
+				style={{
+					data: { fill: ({ datum }) => datum.fill },
+					labels: { fill: "black" },
+				}}
+				data={graphData}
+				fill={({ datum }) => datum.fill}
+				labels={({ datum }) => datum.y}
+				// labelComponent={<VictoryLabel dy={5} />}
+				x="x"
+				y="y"
+			/>
+		</VictoryChart>
 	);
 };
 

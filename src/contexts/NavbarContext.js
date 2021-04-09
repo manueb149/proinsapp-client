@@ -15,6 +15,7 @@ const NavbarContext = (props) => {
     const [menuHeight, setMenuHeight] = useState(null);
     const dropdownRef = useRef(null);
 
+    // Inicializar ventana de entrada principal
     useEffect(() => {
         const setMenu = () => {
             if(user){
