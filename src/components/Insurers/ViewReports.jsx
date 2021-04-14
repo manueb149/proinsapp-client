@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, Fragment } from "react";
 import { useHistory } from "react-router-dom";
 import { insurersContext } from "../../contexts/InsurersContext";
 import { serviceDataContext } from "../../contexts/ServiceDataContext";
@@ -13,6 +13,7 @@ import getServiceType from "../utils/getServiceType";
 import GraphViewer from "./GraphReport";
 import LegendModal from "./LegendModal";
 import SnackBar from "../utils/SnackBar";
+import getUserPrivileges from "../utils/getActiveMenu";
 moment().tz("America/Santo_Domingo").format();
 
 
@@ -52,7 +53,8 @@ const ViewReport = () => {
 								servicios: getServiceType(value["tipoServicios"]),
 							})
 						);
-						const filteredData = newData.filter((value) => value.aseguradora === String(user.name).toUpperCase());
+						// const filteredData = newData.filter((value) => value.aseguradora === String(user.name).toUpperCase());
+						const filteredData = newData.filter((value) => value.aseguradora === String("la internacional").toUpperCase());
 						setDataGraph(filteredData);
 
 						const SERV = dataGraph.length === 0 ? filteredData.length : dataGraph.length
@@ -141,10 +143,15 @@ const ViewReport = () => {
 				axios
 					.get(`/service`)
 					.then((res) => {
+						// const filteredData = res.data.results.filter(
+						// 	(value) =>
+						// 		value.aseguradora ===
+						// 		String(user.name).toUpperCase()
+						// );
 						const filteredData = res.data.results.filter(
 							(value) =>
 								value.aseguradora ===
-								String(user.name).toUpperCase()
+								String("la internacional").toUpperCase()
 						);
 						const filteredDataDate = filterReportsByDate(
 							filteredData,
@@ -254,7 +261,8 @@ const ViewReport = () => {
 								),
 							})
 						);
-						const filteredData = newData.filter((value) => value.aseguradora === String(user.name).toUpperCase());
+						// const filteredData = newData.filter((value) => value.aseguradora === String(user.name).toUpperCase());
+						const filteredData = newData.filter((value) => value.aseguradora === String("la internacional").toUpperCase());
 						setDataGraph(filteredData);
 						setCleaning(false);
 
@@ -415,7 +423,23 @@ const ViewReport = () => {
 					</Button>
 				</div>
 			</div>
-			<GraphViewer graphData={result} />
+
+			{getUserPrivileges(user.name)[0] === 'main'
+				? (
+					<Fragment>
+						<h4 style={{ textAlign: "center", marginTop: "40px", marginBottom: "-30px", color: "#0042a3" }}>Gráfico General</h4>
+						<GraphViewer padding={{ y: 0, x: 20 }} graphData={result} />
+					</Fragment>
+				)
+				: null}
+			<h4 style={{ textAlign: "center", marginTop: "20px", marginBottom: "-20px", color: "#0042a3" }}>Servicios por plan</h4>
+			<GraphViewer padding={{ y: 0, x: 30 }} graphData={result.filter(value => ["SERV", "SPV", "SPB", "SPM"].includes(value.name))} />
+
+			<h4 style={{ textAlign: "center", marginTop: "20px", marginBottom: "-20px", color: "#0042a3" }}>Servicios por tipo de vehículo</h4>
+			<GraphViewer padding={{ y: 0, x: 30 }} graphData={result.filter(value => ["SVL", "SVP"].includes(value.name))} />
+
+			<h4 style={{ textAlign: "center", marginTop: "20px", marginBottom: "-20px", color: "#0042a3" }}>Servicios por tandas</h4>
+			<GraphViewer padding={{ y: 0, x: 30 }} graphData={result.filter(value => ["SN", "SD", "SF"].includes(value.name))} />
 		</GraphReportsContainer>
 	);
 };

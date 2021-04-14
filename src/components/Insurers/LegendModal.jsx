@@ -50,11 +50,11 @@ const TypesService = ({showLegend,setShowLegend}) => {
 								<div className="label">SPM{" ->"}</div>
 								<div className="description">Cantidad de Servicios Plan Minibus</div>
 							</div>
-							<div className="kmr legend-line">
+							{/* <div className="kmr legend-line">
 								<div className="dot"></div>
 								<div className="label">KMR{" ->"}</div>
 								<div className="description">Cantidad de Km recorridos (Km/1000)</div>
-							</div>
+							</div> */}
 							<div className="sd legend-line">
 								<div className="dot"></div>
 								<div className="label">SD{" ->"}</div>
@@ -68,7 +68,7 @@ const TypesService = ({showLegend,setShowLegend}) => {
 							<div className="sf legend-line">
 								<div className="dot"></div>
 								<div className="label">SF{" ->"}</div>
-								<div className="description">Cantidad de Servicios Feriados</div>
+								<div className="description">Cantidad de Servicios Fines de Semana y Feriados</div>
 							</div>
 						</div>
 					</div>

@@ -13,7 +13,7 @@ import PrintBalancePage from '../components/Balance';
 import DefaultValues from '../components/Configure/DefaultValues';
 import DataUploadPage from '../components/Configure/DataUpload';
 import TrucksUploadPage from '../components/Configure/TrucksUpload';
-import InsurersViewReports from '../components/Insurers/ViewReports';
+import InsurersGraphs from '../components/Insurers/ViewReports';
 
 const DashboardPages = () => {
 
@@ -40,8 +40,7 @@ const DashboardPages = () => {
             {(activeMenu==='report' && activeSubMenu==='balance') ? <PrintBalancePage /> : null}
 
             {/* INSURERS MODULE */}
-            {(activeMenu==='insurers' && activeSubMenu==='insurerServices') ? <InsurersViewReports /> : null}
-            {/* {(activeMenu==='insurers' && activeSubMenu==='printInsurerServices') ? <InsurersPrintReports /> : null} */}
+            {(activeMenu==='insurers' && activeSubMenu==='insurerServices') ? <InsurersGraphs /> : null}
 
             {/* CONFIG MODULE*/}
             {(activeMenu==='config' && activeSubMenu==='files') ? <DataUploadPage /> : null}
