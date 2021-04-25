@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
 import FileUpload from "../utils/fileUpload";
+import SelectOptions from "./DataUploadOptions";
 import { Table, Card } from "react-bootstrap";
 import File from "./File";
 
@@ -10,6 +11,8 @@ const DataUpload = () => {
 	const [message, setMessage] = useState("");
 	const [fileInfos, setFileInfos] = useState([]);
 	const [updateList, setUpdateList] = useState(false);
+	const [aseguradora, setAseguradora] = useState('');
+    const [plan, setPlan] = useState('');
 
 	useEffect(() => {
 		FileUpload.getFiles().then((response) => {
@@ -26,13 +29,19 @@ const DataUpload = () => {
 
 		setProgress(0);
 		setCurrentFile(file);
+
+		if(!aseguradora || !plan){
+			setMessage("Seleccione correctamente las opciones");
+			return;
+		}
 		try {
 			FileUpload.upload(
 				file,
 				(event) => {
 					setProgress(Math.round((100 * event.loaded) / event.total));
 				},
-				"files"
+				"files",
+				{aseguradora, plan}
 			)
 				.then((response) => {
 					setMessage(response.data.message);
@@ -52,6 +61,8 @@ const DataUpload = () => {
 			console.log(err);
 		}
 		setSelectedFiles(undefined);
+		setAseguradora('');
+		setPlan('');
 	};
 
 	return (
@@ -81,6 +92,15 @@ const DataUpload = () => {
 					<label className="btn btn-default">
 						<input type="file" onChange={selectFile} />
 					</label>
+					<Card.Title style={{marginTop: "20px"}}>
+						Favor seleccionar Aseguradora y Plan
+					</Card.Title>
+					<SelectOptions 
+						aseguradora={aseguradora}
+						setAseguradora={setAseguradora}
+						plan={plan}
+						setPlan={setPlan}
+					/>
 				</Card.Body>
 				<Card.Footer className="text-muted">
 					<button

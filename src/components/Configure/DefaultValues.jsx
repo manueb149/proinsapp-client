@@ -88,6 +88,7 @@ const DefaultValues = () => {
 		DM: false,
 		TN: false,
 		FF: false,
+		TH: true,
 	});
 
 	useEffect(() => {
@@ -154,6 +155,10 @@ const DefaultValues = () => {
 			setOpenSB(true);
 			return;
 		}
+		setValues({
+			...values,
+			TH: checked.TH
+		});
 		await axios
 			.post("values/upload", {
 				values,
@@ -467,6 +472,22 @@ const DefaultValues = () => {
 										Format={
 											customFormats.PercentFormatCustom
 										}
+										handleChange={handleChange}
+									/>
+								</div>
+							</div>
+							<div className="col-sm-12 col-md-6 col-lg-4 mb-3">
+								<div className="row check-input">
+									<CustomTextField
+										alwaysDisabled
+										size="small"
+										variant="outlined"
+										values={values}
+										setValues={setValues}
+										checked={checked}
+										setChecked={setChecked}
+										shortName={"TH"}
+										LongName={"24 Horas"}
 										handleChange={handleChange}
 									/>
 								</div>

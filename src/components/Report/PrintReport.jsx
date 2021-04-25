@@ -1,7 +1,9 @@
 import React, { Fragment, useContext } from "react";
 import { reportContext } from "../../contexts/ReportContext";
+import { defaultValuesContext } from "../../contexts/DefaultValuesContext";
 import logo from "../../assets/logo_h.png";
 import printDate from "../utils/printReportDate";
+import convertToTH from "../utils/convertHoursToTH";
 import {
 	Document,
 	Image,
@@ -97,7 +99,7 @@ const styles = StyleSheet.create({
 });
 
 // Create Document Component
-const MyDocument = ({ data }) => (
+const MyDocument = ({ data, timeFormat }) => (
 	<Document>
 		<Page size="LETTER" style={styles.page}>
 			<View style={styles.header}>
@@ -137,7 +139,7 @@ const MyDocument = ({ data }) => (
 						Hora:
 						<Text style={styles.header_subtext}>
 							{" "}
-							{printDate(data.registry)[1]}
+							{convertToTH(data.registry, timeFormat)}
 						</Text>
 					</Text>
 				</View>
@@ -548,6 +550,8 @@ const MyDocument = ({ data }) => (
 const PrintReport = ({ printData }) => {
 	const ReportContext = useContext(reportContext);
 	const { selectedReport } = ReportContext;
+	const DefaultValuesContext = useContext(defaultValuesContext);
+	const { values } = DefaultValuesContext;
 
 	return (
 		<Fragment>
@@ -572,7 +576,7 @@ const PrintReport = ({ printData }) => {
 						borderColor: "#555555",
 					}}
 				>
-					<MyDocument data={selectedReport} />
+					<MyDocument data={selectedReport} timeFormat={values.TH} />
 				</PDFViewer>
 			) : null}
 		</Fragment>

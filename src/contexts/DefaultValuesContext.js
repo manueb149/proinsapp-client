@@ -28,6 +28,7 @@ const DefaultValuesContext = (props) => {
         DM: "",
         TN: "",
         FF: "",
+        TH: true
     });
 
     useEffect(() => {
