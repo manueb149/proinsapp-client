@@ -211,6 +211,7 @@ export const LegendModalContainer = styled.div`
     }
     .description{
         border-bottom: 1px solid black;
+        white-space: pre-wrap;
     }
     .serv > .dot{
         background-color: gold;
@@ -241,5 +242,35 @@ export const LegendModalContainer = styled.div`
     }
     .sf > .dot{
         background-color: salmon;
+    }
+    .est > .dot{
+        background-color: red;
+    }
+    .sur > .dot{
+        background-color: gold;
+    }
+    .cib > .dot{
+        background-color: purple;
+    }
+    .sdo > .dot{
+        background-color: teal;
+    }
+    .mao > .dot{
+        background-color: blue;
+    }
+    .ppl > .dot{
+        background-color: green;
+    }
+    .moc > .dot{
+        background-color: silver;
+    }
+    .ns > .dot{
+        background-color: chocolate;
+    }
+    .sfs > .dot{
+        background-color: orange;
+    }
+    .as > .dot{
+        background-color: gray;
     }
 `;

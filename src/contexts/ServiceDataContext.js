@@ -1,4 +1,5 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState , useEffect} from 'react';
+import axios from '../config/http-common';
 
 export const serviceDataContext = createContext();
 
@@ -53,6 +54,33 @@ const ServiceDataContext = ({ children }) => {
 		tarifaEspecial: "",
 		user: ""
 	});
+
+	useEffect(() => {
+		const getTrucksAreas = async () => {
+			await axios
+				.get("/trucksData/areas")
+				.then((res) => setTruckAreas(res.data.areas))
+				.catch((error) => {
+					if (error.response) {
+						// Request made and server responded
+						if (error.response.data.text === "TNV") {
+							// logout();
+							// history.push("/");
+						}
+						// console.log(error.response.status);
+						// console.log(error.response.headers);
+					} else if (error.request) {
+						// The request was made but no response was received
+						console.log(error.request);
+					} else {
+						// Something happened in setting up the request that triggered an Error
+						console.log("Error", error.message);
+					}
+				});
+		};
+		getTrucksAreas();
+		// eslint-disable-next-line
+	}, []);
 
 
     return (

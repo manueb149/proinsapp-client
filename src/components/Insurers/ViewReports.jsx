@@ -29,17 +29,24 @@ const ViewReport = () => {
 	const history = useHistory();
 
 	const ServiceDataContext = useContext(serviceDataContext);
-	const { severity, setSeverity, notification, setNotification, } = ServiceDataContext;
+	const { severity, setSeverity, notification, setNotification } = ServiceDataContext;
 	const authContext = useContext(AuthContext);
 	const { logout, user } = authContext;
 	const InsurersContext = useContext(insurersContext);
 	const {
 		graphData,
+		graphShiftData,
+		graphRegionsData,
 		dataGraph,
 		result,
+		resultShifts,
+		resultRegions,
 		setResult,
+		setResultShifts,
+		setResultRegions,
 		setDataGraph,
 	} = InsurersContext;
+
 
 	useEffect(() => {
 		const getReports = async () => {
@@ -48,7 +55,7 @@ const ViewReport = () => {
 					.get(`/service`)
 					.then((res) => {
 						const newData = res.data.results.map(
-							(value, index) => ({
+							(value) => ({
 								...value,
 								servicios: getServiceType(value["tipoServicios"]),
 							})
@@ -60,12 +67,12 @@ const ViewReport = () => {
 						const SERV = dataGraph.length === 0 ? filteredData.length : dataGraph.length
 
 						const SVL = dataGraph.length === 0
-							? filteredData.reduce((acc, cur) => (cur.tipoVehiculo === "AUTOMOVIL" ? ++acc : acc), 0)
-							: dataGraph.reduce((acc, cur) => (cur.tipoVehiculo === "AUTOMOVIL" ? ++acc : acc), 0)
+							? filteredData.reduce((acc, cur) => (["AUTOMOVIL", "JEEP"].includes(cur.tipoVehiculo) ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (["AUTOMOVIL", "JEEP"].includes(cur.tipoVehiculo) ? ++acc : acc), 0)
 
 						const SVP = dataGraph.length === 0
-							? filteredData.reduce((acc, cur) => (cur.tipoVehiculo !== "AUTOMOVIL" ? ++acc : acc), 0)
-							: dataGraph.reduce((acc, cur) => (cur.tipoVehiculo !== "AUTOMOVIL" ? ++acc : acc), 0)
+							? filteredData.reduce((acc, cur) => (!["AUTOMOVIL", "JEEP"].includes(cur.tipoVehiculo) ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (!["AUTOMOVIL", "JEEP"].includes(cur.tipoVehiculo) ? ++acc : acc), 0)
 
 						const SPV = dataGraph.length === 0
 							? filteredData.reduce((acc, cur) => (cur.plan === "PLAN VIP" ? ++acc : acc), 0)
@@ -87,28 +94,95 @@ const ViewReport = () => {
 							? filteredData.reduce((acc, cur) => (cur.dia === "DN" ? ++acc : acc), 0)
 							: dataGraph.reduce((acc, cur) => (cur.dia === "DN" ? ++acc : acc), 0)
 
-						const SN = dataGraph.length === 0
-							? filteredData.reduce((acc, cur) => (cur.noche ? ++acc : acc), 0)
-							: dataGraph.reduce((acc, cur) => (cur.noche ? ++acc : acc), 0)
+						const SND = dataGraph.length === 0
+							? filteredData.reduce((acc, cur) => (cur.noche && cur.dia === "DN" ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (cur.noche && cur.dia === "DN" ? ++acc : acc), 0)
 
 						const SF = dataGraph.length === 0
 							? filteredData.reduce((acc, cur) => (cur.dia === "DF" ? ++acc : acc), 0)
 							: dataGraph.reduce((acc, cur) => (cur.dia === "DF" ? ++acc : acc), 0)
 
-						const graphDataUpd = graphData.map((value, index) => {
+						const SNF = dataGraph.length === 0
+							? filteredData.reduce((acc, cur) => (cur.noche && cur.dia === "DF" ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (cur.noche && cur.dia === "DF" ? ++acc : acc), 0)
+
+						const EST = dataGraph.length === 0
+							? filteredData.reduce((acc, cur) => (cur.datosGruero.region === "REGION ESTE" ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "REGION ESTE" ? ++acc : acc), 0)
+
+						const SUR = dataGraph.length === 0
+							? filteredData.reduce((acc, cur) => (cur.datosGruero.region === "REGION SUR" ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "REGION SUR" ? ++acc : acc), 0)
+
+						const CIB = dataGraph.length === 0
+							? filteredData.reduce((acc, cur) => (cur.datosGruero.region === "REGION CIBAO" ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "REGION CIBAO" ? ++acc : acc), 0)
+
+						const SDO = dataGraph.length === 0
+							? filteredData.reduce((acc, cur) => (cur.datosGruero.region === "SANTO DOMINGO" ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "SANTO DOMINGO" ? ++acc : acc), 0)
+
+						const MAO = dataGraph.length === 0
+							? filteredData.reduce((acc, cur) => (cur.datosGruero.region === "MAO" ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "MAO" ? ++acc : acc), 0)
+
+						const PPL = dataGraph.length === 0
+							? filteredData.reduce((acc, cur) => (cur.datosGruero.region === "PUERTO PLATA" ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "PUERTO PLATA" ? ++acc : acc), 0)
+
+						const MOC = dataGraph.length === 0
+							? filteredData.reduce((acc, cur) => (cur.datosGruero.region === "MOCA" ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "MOCA" ? ++acc : acc), 0)
+
+						const NS = dataGraph.length === 0
+							? filteredData.reduce((acc, cur) => (cur.datosGruero.region === "NAGUA-SAMANA" ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "NAGUA-SAMANA" ? ++acc : acc), 0)
+
+						const SFS = dataGraph.length === 0
+							? filteredData.reduce((acc, cur) => (cur.datosGruero.region === "SAN FRANCISCO-SALCEDO" ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "SAN FRANCISCO-SALCEDO" ? ++acc : acc), 0)
+
+						const AS = dataGraph.length === 0
+							? filteredData.reduce((acc, cur) => (cur.datosGruero.region === "ASISTENCIAS" ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "ASISTENCIAS" ? ++acc : acc), 0)
+
+
+
+						const graphDataUpd = graphData.map(value => {
 							if (value.x === 1) { return { ...value, y: SERV } }
-							else if (value.x === 2) { return { ...value, y: SVL } }
-							else if (value.x === 3) { return { ...value, y: SVP } }
-							else if (value.x === 4) { return { ...value, y: SPV } }
-							else if (value.x === 5) { return { ...value, y: SPB } }
-							else if (value.x === 6) { return { ...value, y: SPM } }
-							else if (value.x === 7) { return { ...value, y: Number((KMR / 1000).toFixed(3)), label: Number((KMR / 1000).toFixed(3)) + 'k' } }
+							else if (value.x === 2) { return { ...value, y: Number((KMR / 1000).toFixed(3)), label: Number((KMR / 1000).toFixed(3)) + 'k' } }
+							else if (value.x === 3) { return { ...value, y: SVL } }
+							else if (value.x === 4) { return { ...value, y: SVP } }
+							else if (value.x === 5) { return { ...value, y: SPV } }
+							else if (value.x === 6) { return { ...value, y: SPB } }
+							else if (value.x === 7) { return { ...value, y: SPM } }
 							else if (value.x === 8) { return { ...value, y: SD } }
-							else if (value.x === 9) { return { ...value, y: SN } }
-							else if (value.x === 10) { return { ...value, y: SF } }
+							else if (value.x === 9) { return { ...value, y: SF } }
+							else { return { ...value } }
+						});
+						const graphShiftDataUpd = graphShiftData.map(value => {
+							if (value.x === 1) { return { ...value, y: SD } }
+							else if (value.x === 2) { return { ...value, y: SND } }
+							else if (value.x === 3) { return { ...value, y: SF } }
+							else if (value.x === 4) { return { ...value, y: SNF } }
+							else { return { ...value } }
+						});
+						const graphRegionsDataUpd = graphRegionsData.map(value => {
+							if (value.x === 1) { return { ...value, y: EST } }
+							else if (value.x === 2) { return { ...value, y: SUR } }
+							else if (value.x === 3) { return { ...value, y: CIB } }
+							else if (value.x === 4) { return { ...value, y: SDO } }
+							else if (value.x === 5) { return { ...value, y: MAO } }
+							else if (value.x === 6) { return { ...value, y: PPL } }
+							else if (value.x === 7) { return { ...value, y: MOC } }
+							else if (value.x === 8) { return { ...value, y: NS } }
+							else if (value.x === 9) { return { ...value, y: SFS } }
+							else if (value.x === 10) { return { ...value, y: AS } }
 							else { return { ...value } }
 						});
 						setResult(graphDataUpd);
+						setResultShifts(graphShiftDataUpd);
+						setResultRegions(graphRegionsDataUpd);
 
 					})
 					.catch((error) => {
@@ -171,12 +245,12 @@ const ViewReport = () => {
 						const SERV = filteredDataDate.length !== 0 ? filteredDataDate.length : dataGraph.length
 
 						const SVL = filteredDataDate.length !== 0
-							? filteredDataDate.reduce((acc, cur) => (cur.tipoVehiculo === "AUTOMOVIL" ? ++acc : acc), 0)
-							: dataGraph.reduce((acc, cur) => (cur.tipoVehiculo === "AUTOMOVIL" ? ++acc : acc), 0)
+							? filteredDataDate.reduce((acc, cur) => (["AUTOMOVIL", "JEEP"].includes(cur.tipoVehiculo) ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (["AUTOMOVIL", "JEEP"].includes(cur.tipoVehiculo) ? ++acc : acc), 0)
 
 						const SVP = filteredDataDate.length !== 0
-							? filteredDataDate.reduce((acc, cur) => (cur.tipoVehiculo !== "AUTOMOVIL" ? ++acc : acc), 0)
-							: dataGraph.reduce((acc, cur) => (cur.tipoVehiculo !== "AUTOMOVIL" ? ++acc : acc), 0)
+							? filteredDataDate.reduce((acc, cur) => (!["AUTOMOVIL", "JEEP"].includes(cur.tipoVehiculo) ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (!["AUTOMOVIL", "JEEP"].includes(cur.tipoVehiculo) ? ++acc : acc), 0)
 
 						const SPV = filteredDataDate.length !== 0
 							? filteredDataDate.reduce((acc, cur) => (cur.plan === "PLAN VIP" ? ++acc : acc), 0)
@@ -198,28 +272,93 @@ const ViewReport = () => {
 							? filteredDataDate.reduce((acc, cur) => (cur.dia === "DN" ? ++acc : acc), 0)
 							: dataGraph.reduce((acc, cur) => (cur.dia === "DN" ? ++acc : acc), 0)
 
-						const SN = filteredDataDate.length !== 0
-							? filteredDataDate.reduce((acc, cur) => (cur.noche ? ++acc : acc), 0)
-							: dataGraph.reduce((acc, cur) => (cur.noche ? ++acc : acc), 0)
+						const SND = filteredDataDate.length !== 0
+							? filteredDataDate.reduce((acc, cur) => (cur.noche && cur.dia === "DN" ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (cur.noche && cur.dia === "DN" ? ++acc : acc), 0)
 
 						const SF = filteredDataDate.length !== 0
 							? filteredDataDate.reduce((acc, cur) => (cur.dia === "DF" ? ++acc : acc), 0)
 							: dataGraph.reduce((acc, cur) => (cur.dia === "DF" ? ++acc : acc), 0)
 
-						const graphDataUpd = graphData.map((value, index) => {
+						const SNF = filteredDataDate.length !== 0
+							? filteredDataDate.reduce((acc, cur) => (cur.noche && cur.dia === "DF" ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (cur.noche && cur.dia === "DF" ? ++acc : acc), 0)
+
+						const EST = filteredDataDate.length !== 0
+							? filteredDataDate.reduce((acc, cur) => (cur.datosGruero.region === "REGION ESTE" ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "REGION ESTE" ? ++acc : acc), 0)
+
+						const SUR = filteredDataDate.length !== 0
+							? filteredDataDate.reduce((acc, cur) => (cur.datosGruero.region === "REGION SUR" ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "REGION SUR" ? ++acc : acc), 0)
+
+						const CIB = filteredDataDate.length !== 0
+							? filteredDataDate.reduce((acc, cur) => (cur.datosGruero.region === "REGION CIBAO" ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "REGION CIBAO" ? ++acc : acc), 0)
+
+						const SDO = filteredDataDate.length !== 0
+							? filteredDataDate.reduce((acc, cur) => (cur.datosGruero.region === "SANTO DOMINGO" ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "SANTO DOMINGO" ? ++acc : acc), 0)
+
+						const MAO = filteredDataDate.length !== 0
+							? filteredDataDate.reduce((acc, cur) => (cur.datosGruero.region === "MAO" ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "MAO" ? ++acc : acc), 0)
+
+						const PPL = filteredDataDate.length !== 0
+							? filteredDataDate.reduce((acc, cur) => (cur.datosGruero.region === "PUERTO PLATA" ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "PUERTO PLATA" ? ++acc : acc), 0)
+
+						const MOC = filteredDataDate.length !== 0
+							? filteredDataDate.reduce((acc, cur) => (cur.datosGruero.region === "MOCA" ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "MOCA" ? ++acc : acc), 0)
+
+						const NS = filteredDataDate.length !== 0
+							? filteredDataDate.reduce((acc, cur) => (cur.datosGruero.region === "NAGUA-SAMANA" ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "NAGUA-SAMANA" ? ++acc : acc), 0)
+
+						const SFS = filteredDataDate.length !== 0
+							? filteredDataDate.reduce((acc, cur) => (cur.datosGruero.region === "SAN FRANCISCO-SALCEDO" ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "SAN FRANCISCO-SALCEDO" ? ++acc : acc), 0)
+
+						const AS = filteredDataDate.length !== 0
+							? filteredDataDate.reduce((acc, cur) => (cur.datosGruero.region === "ASISTENCIAS" ? ++acc : acc), 0)
+							: dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "RASISTENCIAS" ? ++acc : acc), 0)
+
+						const graphDataUpd = graphData.map(value => {
 							if (value.x === 1) { return { ...value, y: SERV } }
-							else if (value.x === 2) { return { ...value, y: SVL } }
-							else if (value.x === 3) { return { ...value, y: SVP } }
-							else if (value.x === 4) { return { ...value, y: SPV } }
-							else if (value.x === 5) { return { ...value, y: SPB } }
-							else if (value.x === 6) { return { ...value, y: SPM } }
-							else if (value.x === 7) { return { ...value, y: Number((KMR / 1000).toFixed(3)), label: Number((KMR / 1000).toFixed(3)) + 'k' } }
+							else if (value.x === 2) { return { ...value, y: Number((KMR / 1000).toFixed(3)), label: Number((KMR / 1000).toFixed(3)) + 'k' } }
+							else if (value.x === 3) { return { ...value, y: SVL } }
+							else if (value.x === 4) { return { ...value, y: SVP } }
+							else if (value.x === 5) { return { ...value, y: SPV } }
+							else if (value.x === 6) { return { ...value, y: SPB } }
+							else if (value.x === 7) { return { ...value, y: SPM } }
 							else if (value.x === 8) { return { ...value, y: SD } }
-							else if (value.x === 9) { return { ...value, y: SN } }
-							else if (value.x === 10) { return { ...value, y: SF } }
+							else if (value.x === 9) { return { ...value, y: SF } }
+							else { return { ...value } }
+						});
+						const graphShiftDataUpd = graphShiftData.map(value => {
+							if (value.x === 1) { return { ...value, y: SD } }
+							else if (value.x === 2) { return { ...value, y: SND } }
+							else if (value.x === 3) { return { ...value, y: SF } }
+							else if (value.x === 4) { return { ...value, y: SNF } }
+							else { return { ...value } }
+						});
+						const graphRegionsDataUpd = graphRegionsData.map(value => {
+							if (value.x === 1) { return { ...value, y: EST } }
+							else if (value.x === 2) { return { ...value, y: SUR } }
+							else if (value.x === 3) { return { ...value, y: CIB } }
+							else if (value.x === 4) { return { ...value, y: SDO } }
+							else if (value.x === 5) { return { ...value, y: MAO } }
+							else if (value.x === 6) { return { ...value, y: PPL } }
+							else if (value.x === 7) { return { ...value, y: MOC } }
+							else if (value.x === 8) { return { ...value, y: NS } }
+							else if (value.x === 9) { return { ...value, y: SFS } }
+							else if (value.x === 10) { return { ...value, y: AS } }
 							else { return { ...value } }
 						});
 						setResult(graphDataUpd);
+						setResultShifts(graphShiftDataUpd);
+						setResultRegions(graphRegionsDataUpd);
 
 					})
 					.catch((error) => {
@@ -267,30 +406,62 @@ const ViewReport = () => {
 						setCleaning(false);
 
 						const SERV = filteredData.length
-						const SVL = filteredData.reduce((acc, cur) => (cur.tipoVehiculo === "AUTOMOVIL" ? ++acc : acc), 0)
-						const SVP = filteredData.reduce((acc, cur) => (cur.tipoVehiculo !== "AUTOMOVIL" ? ++acc : acc), 0)
+						const SVL = filteredData.reduce((acc, cur) => (["AUTOMOVIL", "JEEP"].includes(cur.tipoVehiculo) ? ++acc : acc), 0)
+						const SVP = filteredData.reduce((acc, cur) => (!["AUTOMOVIL", "JEEP"].includes(cur.tipoVehiculo) ? ++acc : acc), 0)
 						const SPV = filteredData.reduce((acc, cur) => (cur.plan === "PLAN VIP" ? ++acc : acc), 0)
 						const SPB = filteredData.reduce((acc, cur) => (cur.plan === "PLAN BASICO" ? ++acc : acc), 0)
 						const SPM = filteredData.reduce((acc, cur) => (cur.plan === "PLAN MINIBUS" ? ++acc : acc), 0)
 						const KMR = filteredData.reduce((acc, cur) => (cur.distancia >= 0 ? acc += cur.distancia : acc), 0)
 						const SD = filteredData.reduce((acc, cur) => (cur.dia === "DN" ? ++acc : acc), 0)
-						const SN = filteredData.reduce((acc, cur) => (cur.noche ? ++acc : acc), 0)
+						const SND = filteredData.reduce((acc, cur) => (cur.noche && cur.dia === "DN" ? ++acc : acc), 0)
 						const SF = filteredData.reduce((acc, cur) => (cur.dia === "DF" ? ++acc : acc), 0)
+						const SNF = filteredData.reduce((acc, cur) => (cur.noche && cur.dia === "DF" ? ++acc : acc), 0)
+						const EST = filteredData.reduce((acc, cur) => (cur.datosGruero.region === "REGION ESTE" ? ++acc : acc), 0)
+						const SUR = filteredData.reduce((acc, cur) => (cur.datosGruero.region === "REGION SUR" ? ++acc : acc), 0)
+						const CIB = filteredData.reduce((acc, cur) => (cur.datosGruero.region === "REGION CIBAO" ? ++acc : acc), 0)
+						const SDO = filteredData.reduce((acc, cur) => (cur.datosGruero.region === "SANTO DOMINGO" ? ++acc : acc), 0)
+						const MAO = filteredData.reduce((acc, cur) => (cur.datosGruero.region === "MAO" ? ++acc : acc), 0)
+						const PPL = filteredData.reduce((acc, cur) => (cur.datosGruero.region === "PUERTO PLATA" ? ++acc : acc), 0)
+						const MOC = filteredData.reduce((acc, cur) => (cur.datosGruero.region === "MOCA" ? ++acc : acc), 0)
+						const NS = filteredData.reduce((acc, cur) => (cur.datosGruero.region === "NAGUA-SAMANA" ? ++acc : acc), 0)
+						const SFS = filteredData.reduce((acc, cur) => (cur.datosGruero.region === "SAN FRANCISCO-SALCEDO" ? ++acc : acc), 0)
+						const AS = filteredData.reduce((acc, cur) => (cur.datosGruero.region === "ASISTENCIAS" ? ++acc : acc), 0)
 
 						const graphDataUpd = graphData.map((value, index) => {
 							if (value.x === 1) { return { ...value, y: SERV } }
-							else if (value.x === 2) { return { ...value, y: SVL } }
-							else if (value.x === 3) { return { ...value, y: SVP } }
-							else if (value.x === 4) { return { ...value, y: SPV } }
-							else if (value.x === 5) { return { ...value, y: SPB } }
-							else if (value.x === 6) { return { ...value, y: SPM } }
-							else if (value.x === 7) { return { ...value, y: Number((KMR / 1000).toFixed(3)), label: Number((KMR / 1000).toFixed(3)) + 'k' } }
+							else if (value.x === 2) { return { ...value, y: Number((KMR / 1000).toFixed(3)), label: Number((KMR / 1000).toFixed(3)) + 'k' } }
+							else if (value.x === 3) { return { ...value, y: SVL } }
+							else if (value.x === 4) { return { ...value, y: SVP } }
+							else if (value.x === 5) { return { ...value, y: SPV } }
+							else if (value.x === 6) { return { ...value, y: SPB } }
+							else if (value.x === 7) { return { ...value, y: SPM } }
 							else if (value.x === 8) { return { ...value, y: SD } }
-							else if (value.x === 9) { return { ...value, y: SN } }
-							else if (value.x === 10) { return { ...value, y: SF } }
+							else if (value.x === 9) { return { ...value, y: SF } }
+							else { return { ...value } }
+						});
+						const graphShiftDataUpd = graphShiftData.map(value => {
+							if (value.x === 1) { return { ...value, y: SD } }
+							else if (value.x === 2) { return { ...value, y: SND } }
+							else if (value.x === 3) { return { ...value, y: SF } }
+							else if (value.x === 4) { return { ...value, y: SNF } }
+							else { return { ...value } }
+						});
+						const graphRegionsDataUpd = graphRegionsData.map(value => {
+							if (value.x === 1) { return { ...value, y: EST } }
+							else if (value.x === 2) { return { ...value, y: SUR } }
+							else if (value.x === 3) { return { ...value, y: CIB } }
+							else if (value.x === 4) { return { ...value, y: SDO } }
+							else if (value.x === 5) { return { ...value, y: MAO } }
+							else if (value.x === 6) { return { ...value, y: PPL } }
+							else if (value.x === 7) { return { ...value, y: MOC } }
+							else if (value.x === 8) { return { ...value, y: NS } }
+							else if (value.x === 9) { return { ...value, y: SFS } }
+							else if (value.x === 10) { return { ...value, y: AS } }
 							else { return { ...value } }
 						});
 						setResult(graphDataUpd);
+						setResultShifts(graphShiftDataUpd);
+						setResultRegions(graphRegionsDataUpd);
 						handleDateChangeStart(new Date());
 						handleDateChangeEnd(new Date());
 
@@ -329,30 +500,62 @@ const ViewReport = () => {
 	const handleUpdate = () => {
 		setUpdating(true);
 		const SERV = dataGraph.length;
-		const SVL = dataGraph.reduce((acc, cur) => (cur.tipoVehiculo === "AUTOMOVIL" ? ++acc : acc), 0);
-		const SVP = dataGraph.reduce((acc, cur) => (cur.tipoVehiculo !== "AUTOMOVIL" ? ++acc : acc), 0);
+		const SVL = dataGraph.reduce((acc, cur) => (["AUTOMOVIL", "JEEP"].includes(cur.tipoVehiculo) ? ++acc : acc), 0);
+		const SVP = dataGraph.reduce((acc, cur) => (!["AUTOMOVIL", "JEEP"].includes(cur.tipoVehiculo) ? ++acc : acc), 0);
 		const SPV = dataGraph.reduce((acc, cur) => (cur.plan === "PLAN VIP" ? ++acc : acc), 0);
 		const SPB = dataGraph.reduce((acc, cur) => (cur.plan === "PLAN BASICO" ? ++acc : acc), 0);
 		const SPM = dataGraph.reduce((acc, cur) => (cur.plan === "PLAN MINIBUS" ? ++acc : acc), 0);
 		const KMR = dataGraph.reduce((acc, cur) => (cur.distancia >= 0 ? acc += cur.distancia : acc), 0);
 		const SD = dataGraph.reduce((acc, cur) => (cur.dia === "DN" ? ++acc : acc), 0);
-		const SN = dataGraph.reduce((acc, cur) => (cur.noche ? ++acc : acc), 0);
+		const SND = dataGraph.reduce((acc, cur) => (cur.noche && cur.dia === "DN" ? ++acc : acc), 0);
 		const SF = dataGraph.reduce((acc, cur) => (cur.dia === "DF" ? ++acc : acc), 0);
+		const SNF = dataGraph.reduce((acc, cur) => (cur.noche && cur.dia === "DF" ? ++acc : acc), 0);
+		const EST = dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "REGION ESTE" ? ++acc : acc), 0)
+		const SUR = dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "REGION SUR" ? ++acc : acc), 0)
+		const CIB = dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "REGION CIBAO" ? ++acc : acc), 0)
+		const SDO = dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "SANTO DOMINGO" ? ++acc : acc), 0)
+		const MAO = dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "MAO" ? ++acc : acc), 0)
+		const PPL = dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "PUERTO PLATA" ? ++acc : acc), 0)
+		const MOC = dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "MOCA" ? ++acc : acc), 0)
+		const NS = dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "NAGUA-SAMANA" ? ++acc : acc), 0)
+		const SFS = dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "SAN FRANCISCO-SALCEDO" ? ++acc : acc), 0)
+		const AS = dataGraph.reduce((acc, cur) => (cur.datosGruero.region === "ASISTENCIAS" ? ++acc : acc), 0)
 
-		const graphDataUpd = graphData.map((value, index) => {
+		const graphDataUpd = graphData.map(value => {
 			if (value.x === 1) { return { ...value, y: SERV } }
-			else if (value.x === 2) { return { ...value, y: SVL } }
-			else if (value.x === 3) { return { ...value, y: SVP } }
-			else if (value.x === 4) { return { ...value, y: SPV } }
-			else if (value.x === 5) { return { ...value, y: SPB } }
-			else if (value.x === 6) { return { ...value, y: SPM } }
-			else if (value.x === 7) { return { ...value, y: Number((KMR / 1000).toFixed(3)), label: Number((KMR / 1000).toFixed(3)) + 'k' } }
+			else if (value.x === 2) { return { ...value, y: Number((KMR / 1000).toFixed(3)), label: Number((KMR / 1000).toFixed(3)) + 'k' } }
+			else if (value.x === 3) { return { ...value, y: SVL } }
+			else if (value.x === 4) { return { ...value, y: SVP } }
+			else if (value.x === 5) { return { ...value, y: SPV } }
+			else if (value.x === 6) { return { ...value, y: SPB } }
+			else if (value.x === 7) { return { ...value, y: SPM } }
 			else if (value.x === 8) { return { ...value, y: SD } }
-			else if (value.x === 9) { return { ...value, y: SN } }
-			else if (value.x === 10) { return { ...value, y: SF } }
+			else if (value.x === 9) { return { ...value, y: SF } }
+			else { return { ...value } }
+		});
+		const graphShiftDataUpd = graphShiftData.map(value => {
+			if (value.x === 1) { return { ...value, y: SD } }
+			else if (value.x === 2) { return { ...value, y: SND } }
+			else if (value.x === 3) { return { ...value, y: SF } }
+			else if (value.x === 4) { return { ...value, y: SNF } }
+			else { return { ...value } }
+		});
+		const graphRegionsDataUpd = graphRegionsData.map(value => {
+			if (value.x === 1) { return { ...value, y: EST } }
+			else if (value.x === 2) { return { ...value, y: SUR } }
+			else if (value.x === 3) { return { ...value, y: CIB } }
+			else if (value.x === 4) { return { ...value, y: SDO } }
+			else if (value.x === 5) { return { ...value, y: MAO } }
+			else if (value.x === 6) { return { ...value, y: PPL } }
+			else if (value.x === 7) { return { ...value, y: MOC } }
+			else if (value.x === 8) { return { ...value, y: NS } }
+			else if (value.x === 9) { return { ...value, y: SFS } }
+			else if (value.x === 10) { return { ...value, y: AS } }
 			else { return { ...value } }
 		});
 		setResult(graphDataUpd);
+		setResultShifts(graphShiftDataUpd);
+		setResultRegions(graphRegionsDataUpd);
 		setUpdating(false);
 	};
 
@@ -439,7 +642,10 @@ const ViewReport = () => {
 			<GraphViewer padding={{ y: 0, x: 30 }} graphData={result.filter(value => ["SVL", "SVP"].includes(value.name))} />
 
 			<h4 style={{ textAlign: "center", marginTop: "20px", marginBottom: "-20px", color: "#0042a3" }}>Servicios por tandas</h4>
-			<GraphViewer padding={{ y: 0, x: 30 }} graphData={result.filter(value => ["SN", "SD", "SF"].includes(value.name))} />
+			<GraphViewer padding={{ y: 0, x: 30 }} graphData={resultShifts} />
+
+			<h4 style={{ textAlign: "center", marginTop: "20px", marginBottom: "-20px", color: "#0042a3" }}>Servicios por región</h4>
+			<GraphViewer padding={{ y: 0, x: 30 }} graphData={resultRegions} />
 		</GraphReportsContainer>
 	);
 };
