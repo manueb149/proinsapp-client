@@ -24,7 +24,7 @@ export const ReportsContainer = styled.div`
 
 export const GraphReportsContainer = styled.div`
     .VictoryContainer{
-        height: 70vh !important;
+        height: 100% !important;
     }
     div.MuiFormControl-root.MuiTextField-root.date-picker{
         margin-right: 10px;

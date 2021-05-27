@@ -4,7 +4,7 @@ import {
     DatePicker,
     MuiPickersUtilsProvider,
 } from '@material-ui/pickers';
-import "moment/locale/es-do";
+// import "moment/locale/es-do";
 
 const MaterialUIPickers = ({ selectedDate, handleDateChange, label, MaxDate, MinDate }) => {
     return (

@@ -37,7 +37,6 @@ const DashboardPages = () => {
             {(activeMenu==='report' && activeSubMenu==='edit') ? <EditReportPage /> : null}
             {(activeMenu==='report' && activeSubMenu==='delete') ? <DeleteReportPage /> : null}
             {(activeMenu==='report' && activeSubMenu==='balance') ? <PrintBalancePage /> : null}
-            {(activeMenu==='report' && activeSubMenu==='balance') ? <PrintBalancePage /> : null}
 
             {/* INSURERS MODULE */}
             {(activeMenu==='insurers' && activeSubMenu==='insurerServices') ? <InsurersGraphs /> : null}

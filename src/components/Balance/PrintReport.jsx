@@ -20,6 +20,7 @@ moment().tz("America/Santo_Domingo").format();
 const styles = StyleSheet.create({
 	page: {
 		backgroundColor: "#ffffff",
+		paddingBottom: 30
 	},
 	logo: {
 		width: "180px",
@@ -30,6 +31,10 @@ const styles = StyleSheet.create({
 		fontSize: 11,
 		fontWeight: "thin",
 		color: "#4f4f4f",
+	},
+	table: {
+		backgroundColor: "#b47f7f",
+		display: "flex",
 	},
 	table_header: {
 		marginTop: 20,
@@ -82,7 +87,7 @@ const styles = StyleSheet.create({
 	},
 
 	table_body_row: {
-		marginTop: 5,
+		marginTop: 8,
 		marginLeft: 20,
 		marginRight: 20,
 		paddingHorizontal: 10,
@@ -211,72 +216,73 @@ let TotalPrice = 0;
 const MyDocument = ({ data, dates }) => (
 	<Document>
 		<Page size="LETTER" orientation="landscape" style={styles.page}>
-			<View style={styles.header}>
-				<View wrap>
-					<Image src={logo} style={styles.logo}></Image>
-					<Text style={styles.logo_text}>Pablo Pumarol No. 13</Text>
-					<Text style={styles.logo_text}>(809)-565-7740</Text>
-				</View>
-				<View wrap>
-					<Text style={styles.header_text}>Cuadre de Servicios</Text>
-					<Text style={styles.header_subtext_title}>
-						Desde:{" "}{dates[0] ? getDateString(dates[0],1) : ""}
-						<Text style={styles.header_subtext}> </Text>
-					</Text>
-					<Text style={styles.header_subtext_title}>
-						Hasta:{" "}{dates[1] ? getDateString(dates[1],0) : ""}
-						<Text style={styles.header_subtext}> </Text>
-					</Text>
-				</View>
-			</View>
-			{/* HEADER */}
-			<View style={styles.table_header} fixed>
-				<Text style={styles.table_header_pol}>Póliza</Text>
-				<Text style={styles.table_header_aseg}>Asegurado</Text>
-				<Text style={styles.table_header_ope}>Operador</Text>
-				<Text style={styles.table_header_date}>Fecha</Text>
-				<Text style={styles.table_header_dist}>Distancia (Km)</Text>
-				<Text style={styles.table_header_pre}>Precio (RD$)</Text>
-			</View>
-			{/* BODY*/}
-			{data.map((report, index) => {
-				TotalPrice += report.precio
-				return (
-					<View key={report.serviceNo} style={styles.table_body_row} wrap>
-						<Text style={styles.table_body_pol}>
-							{report.poliza ? report.poliza : ""}
+			{/* <View style={styles.table}> */}
+				<View style={styles.header}>
+					<View wrap>
+						<Image src={logo} style={styles.logo}></Image>
+						<Text style={styles.logo_text}>Pablo Pumarol No. 13</Text>
+						<Text style={styles.logo_text}>(809)-565-7740</Text>
+					</View>
+					<View wrap>
+						<Text style={styles.header_text}>Cuadre de Servicios</Text>
+						<Text style={styles.header_subtext_title}>
+							Desde:{" "}{dates[0] ? getDateString(dates[0]) : ""}
+							<Text style={styles.header_subtext}> </Text>
 						</Text>
-						<Text style={styles.table_body_aseg}>
-							{report.asegurado ? report.asegurado : ""}
-						</Text>
-						<Text style={styles.table_body_ope}>
-							{report.datosGruero.gruaDeServicio
-								? report.datosGruero.gruaDeServicio
-								: ""}
-						</Text>
-						<Text style={styles.table_body_date}>
-							{report.fechaSiniestro ? report.fechaSiniestro : ""}
-						</Text>
-						<Text style={styles.table_body_dist}>
-							{report.distancia ? report.distancia : ""}
-						</Text>
-						<Text style={styles.table_body_pre}>
-							{report.precio ? Number(report.precio).toLocaleString(undefined, {maximumFractionDigits:2}) : ""}
+						<Text style={styles.header_subtext_title}>
+							Hasta:{" "}{dates[1] ? getDateString(dates[1]) : ""}
+							<Text style={styles.header_subtext}> </Text>
 						</Text>
 					</View>
-				);
-			})}
-			{/* FOOTER */}
-			<View style={styles.table_footer}>
-				<Text style={styles.table_header_pol}> </Text>
-				<Text style={styles.table_header_aseg}> </Text>
-				<Text style={styles.table_header_ope}> </Text>
-				<Text style={styles.table_header_date}> </Text>
-				<Text style={styles.table_footer_dist}>TOTAL</Text>
-				<Text style={styles.table_footer_pre}>
-					{Number(TotalPrice).toLocaleString(undefined, {maximumFractionDigits:2})}
-				</Text>
-			</View>
+				</View>
+				{/* HEADER */}
+				<View style={styles.table_header} fixed>
+					<Text style={styles.table_header_pol}>Póliza</Text>
+					<Text style={styles.table_header_aseg}>Asegurado</Text>
+					<Text style={styles.table_header_ope}>Operador</Text>
+					<Text style={styles.table_header_date}>Fecha</Text>
+					<Text style={styles.table_header_dist}>Distancia (Km)</Text>
+					<Text style={styles.table_header_pre}>Precio (RD$)</Text>
+				</View>
+				{/* BODY*/}
+				{data.map((report, index) => {
+					TotalPrice += report.precio
+					return (
+						<View key={report.serviceNo} style={styles.table_body_row} wrap={false}>
+							<Text style={styles.table_body_pol}>
+								{report.poliza ? report.poliza : ""}
+							</Text>
+							<Text style={styles.table_body_aseg}>
+								{report.asegurado ? report.asegurado : ""}
+							</Text>
+							<Text style={styles.table_body_ope}>
+								{report.datosGruero.gruaDeServicio
+									? report.datosGruero.gruaDeServicio
+									: ""}
+							</Text>
+							<Text style={styles.table_body_date}>
+								{report.fechaSiniestro ? report.fechaSiniestro : ""}
+							</Text>
+							<Text style={styles.table_body_dist}>
+								{report.distancia ? report.distancia : ""}
+							</Text>
+							<Text style={styles.table_body_pre}>
+								{report.precio ? Number(report.precio).toLocaleString(undefined, { maximumFractionDigits: 2 }) : ""}
+							</Text>
+						</View>
+					);
+				})}
+				{/* FOOTER */}
+				<View style={styles.table_footer}>
+					<Text style={styles.table_header_pol}>TOTAL POLIZAS:</Text>
+					<Text style={styles.table_header_aseg}>{data.length}</Text>
+					<Text style={styles.table_header_ope}> </Text>
+					<Text style={styles.table_header_date}> </Text>
+					<Text style={styles.table_footer_dist}>TOTAL RD$:</Text>
+					<Text style={styles.table_footer_pre}>
+						{Number(TotalPrice).toLocaleString(undefined, { maximumFractionDigits: 2 })}
+					</Text>
+				</View>
 			{/* </View> */}
 		</Page>
 	</Document>

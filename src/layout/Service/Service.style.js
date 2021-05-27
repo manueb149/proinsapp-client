@@ -191,6 +191,28 @@ export const LegendModalContainer = styled.div`
         width: 100%;
         height: 100%;
         display: flex;
+        font-size: 0.7rem;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        margin-bottom: 5px;
+        padding-bottom: 3px;
+    }
+    .legend-inner-view{
+        /* width: 100%; */
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .legend-line-view{
+        /* width: 100%; */
+        height: 100%;
+        margin-left: 5px;
+        display: flex;
+        font-size: 0.7rem;
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
@@ -210,7 +232,14 @@ export const LegendModalContainer = styled.div`
         border-bottom: 1px solid black;
     }
     .description{
+        white-space: pre-wrap;
         border-bottom: 1px solid black;
+    }
+    .label-view{
+        text-transform: uppercase;
+        padding-right: 5px;
+    }
+    .description-view{
         white-space: pre-wrap;
     }
     .serv > .dot{

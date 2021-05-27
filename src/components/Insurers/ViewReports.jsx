@@ -14,6 +14,7 @@ import GraphViewer from "./GraphReport";
 import LegendModal from "./LegendModal";
 import SnackBar from "../utils/SnackBar";
 import getUserPrivileges from "../utils/getActiveMenu";
+import { LegendModalContainer } from "../../layout/Service/Service.style";
 moment().tz("America/Santo_Domingo").format();
 
 
@@ -626,26 +627,202 @@ const ViewReport = () => {
 					</Button>
 				</div>
 			</div>
+			<div style={{ padding: "0 5vw" }}>
+				{getUserPrivileges(user.name)[0] === 'main'
+					? (
+						<Fragment>
+							<h4 style={{ textAlign: "center", marginTop: "40px", marginBottom: "-30px", color: "#0042a3" }}>Gráfico General</h4>
+							<GraphViewer padding={{ y: 0, x: 20 }} graphData={result} />
+							<div style={{
+								width: "100%", height: "100%", paddingBottom: "30px", display: "flex", flexDirection: "row",
+								justifyContent: "center", alignItems: "center", borderBottom: "2px solid black"
+							}}>
+								<LegendModalContainer>
+									<div className="legend">
+										<div className="legend-inner-view">
+											<div className="serv legend-line-view">
+												<div className="label-view">SERV{":"}</div>
+												<div className="description-view">Cantidad de servicios,</div>
+											</div>
+											<div className="svl legend-line-view">
+												<div className="label-view">SVL{":"}</div>
+												<div className="description-view">Cantidad de Servicios de Vehículos Livianos,</div>
+											</div>
+											<div className="svp legend-line-view">
+												<div className="label-view">SVP{":"}</div>
+												<div className="description-view">Cantidad de Servicio de Vehículos Pesados,</div>
+											</div>
+											<div className="spv legend-line-view">
+												<div className="label-view">SPV{":"}</div>
+												<div className="description-view">Cantidad de Servicios Plan VIP,</div>
+											</div>
+											<div className="spb legend-line-view">
+												<div className="label-view">SPB{":"}</div>
+												<div className="description-view">Cantidad de Servicios Plan Básico,</div>
+											</div>
+											<div className="spm legend-line-view">
+												<div className="label-view">SPM{":"}</div>
+												<div className="description-view">Cantidad de Servicios Plan Minibus,</div>
+											</div>
+											<div className="sd legend-line-view">
+												<div className="label-view">SD{":"}</div>
+												<div className="description-view">Cantidad de Servicios Diurnos,</div>
+											</div>
+											<div className="sn legend-line-view">
+												<div className="label-view">SND{":"}</div>
+												<div className="description-view">Cantidad de Servicios Nocturnos,</div>
+											</div>
+											<div className="sf legend-line-view">
+												<div className="label-view">SF{":"}</div>
+												<div className="description-view">Cantidad de Servicios Fines de Semana y Feriados,</div>
+											</div>
+											<div className="sn legend-line-view">
+												<div className="label-view">SNF{":"}</div>
+												<div className="description-view">Cantidad de Servicios Nocturnos Fines de Semana y Feriados</div>
+											</div>
+										</div>
+									</div>
+								</LegendModalContainer>
+							</div>
+						</Fragment>
+					)
+					: null}
+				<h4 style={{ textAlign: "center", marginTop: "20px", marginBottom: "-20px", color: "#0042a3" }}>Servicios por plan</h4>
+				<GraphViewer padding={{ y: 0, x: 30 }} graphData={result.filter(value => ["SERV", "SPV", "SPB", "SPM"].includes(value.name))} />
+				<div style={{
+					width: "100%", height: "100%", paddingBottom: "30px", display: "flex", flexDirection: "row",
+					justifyContent: "center", alignItems: "center", borderBottom: "2px solid black"
+				}}>
+					<LegendModalContainer>
+						<div className="legend">
+							<div className="legend-inner-view">
+								<div className="serv legend-line-view">
+									<div className="label-view">SERV{":"}</div>
+									<div className="description-view">Cantidad de servicios,</div>
+								</div>
+								<div className="spv legend-line-view">
+									<div className="label-view">SPV{":"}</div>
+									<div className="description-view">Cantidad de Servicios Plan VIP,</div>
+								</div>
+								<div className="spb legend-line-view">
+									<div className="label-view">SPB{":"}</div>
+									<div className="description-view">Cantidad de Servicios Plan Básico,</div>
+								</div>
+								<div className="spm legend-line-view">
+									<div className="label-view">SPM{":"}</div>
+									<div className="description-view">Cantidad de Servicios Plan Minibus</div>
+								</div>
+							</div>
+						</div>
+					</LegendModalContainer>
+				</div>
 
-			{getUserPrivileges(user.name)[0] === 'main'
-				? (
-					<Fragment>
-						<h4 style={{ textAlign: "center", marginTop: "40px", marginBottom: "-30px", color: "#0042a3" }}>Gráfico General</h4>
-						<GraphViewer padding={{ y: 0, x: 20 }} graphData={result} />
-					</Fragment>
-				)
-				: null}
-			<h4 style={{ textAlign: "center", marginTop: "20px", marginBottom: "-20px", color: "#0042a3" }}>Servicios por plan</h4>
-			<GraphViewer padding={{ y: 0, x: 30 }} graphData={result.filter(value => ["SERV", "SPV", "SPB", "SPM"].includes(value.name))} />
+				<h4 style={{ textAlign: "center", marginTop: "40px", marginBottom: "-20px", color: "#0042a3" }}>Servicios por tipo de vehículo</h4>
+				<GraphViewer padding={{ y: 0, x: 30 }} graphData={result.filter(value => ["SVL", "SVP"].includes(value.name))} />
+				<div style={{
+					width: "100%", height: "100%", paddingBottom: "30px", display: "flex", flexDirection: "row",
+					justifyContent: "center", alignItems: "center", borderBottom: "2px solid black"
+				}}>
+					<LegendModalContainer>
+						<div className="legend">
+							<div className="legend-inner-view">
+								<div className="svl legend-line-view">
+									<div className="label-view">SVL{":"}</div>
+									<div className="description-view">Cantidad de Servicios de Vehículos Livianos,</div>
+								</div>
+								<div className="svp legend-line-view">
+									<div className="label-view">SVP{":"}</div>
+									<div className="description-view">Cantidad de Servicio de Vehículos Pesados,</div>
+								</div>
+							</div>
+						</div>
+					</LegendModalContainer>
+				</div>
 
-			<h4 style={{ textAlign: "center", marginTop: "20px", marginBottom: "-20px", color: "#0042a3" }}>Servicios por tipo de vehículo</h4>
-			<GraphViewer padding={{ y: 0, x: 30 }} graphData={result.filter(value => ["SVL", "SVP"].includes(value.name))} />
+				<h4 style={{ textAlign: "center", marginTop: "20px", marginBottom: "-20px", color: "#0042a3" }}>Servicios por tandas</h4>
+				<GraphViewer padding={{ y: 0, x: 30 }} graphData={resultShifts} />
+				<div style={{
+					width: "100%", height: "100%", paddingBottom: "30px", display: "flex", flexDirection: "row",
+					justifyContent: "center", alignItems: "center", borderBottom: "2px solid black"
+				}}>
+					<LegendModalContainer>
+						<div className="legend">
+							<div className="legend-inner-view">
+								<div className="sd legend-line-view">
+									<div className="label-view">SD{":"}</div>
+									<div className="description-view">Cantidad de Servicios Diurnos,</div>
+								</div>
+								<div className="sn legend-line-view">
+									<div className="label-view">SND{":"}</div>
+									<div className="description-view">Cantidad de Servicios Nocturnos,</div>
+								</div>
+								<div className="sf legend-line-view">
+									<div className="label-view">SF{":"}</div>
+									<div className="description-view">Cantidad de Servicios Fines de Semana y Feriados,</div>
+								</div>
+								<div className="sn legend-line-view">
+									<div className="label-view">SNF{":"}</div>
+									<div className="description-view">Cantidad de Servicios Nocturnos Fines de Semana y Feriados</div>
+								</div>
+							</div>
+						</div>
+					</LegendModalContainer>
+				</div>
 
-			<h4 style={{ textAlign: "center", marginTop: "20px", marginBottom: "-20px", color: "#0042a3" }}>Servicios por tandas</h4>
-			<GraphViewer padding={{ y: 0, x: 30 }} graphData={resultShifts} />
-
-			<h4 style={{ textAlign: "center", marginTop: "20px", marginBottom: "-20px", color: "#0042a3" }}>Servicios por región</h4>
-			<GraphViewer padding={{ y: 0, x: 30 }} graphData={resultRegions} />
+				<h4 style={{ textAlign: "center", marginTop: "20px", marginBottom: "-20px", color: "#0042a3" }}>Servicios por región</h4>
+				<GraphViewer padding={{ y: 0, x: 30 }} graphData={resultRegions} />
+				<div style={{
+					width: "100%", height: "100%", paddingBottom: "30px", display: "flex", flexDirection: "row",
+					justifyContent: "center", alignItems: "center", borderBottom: "2px solid black"
+				}}>
+					<LegendModalContainer>
+						<div className="legend">
+							<div className="legend-inner-view">
+								<div className="est legend-line-view">
+									<div className="label-view">EST{":"}</div>
+									<div className="description-view">Región Este,</div>
+								</div>
+								<div className="sur legend-line-view">
+									<div className="label-view">SUR{":"}</div>
+									<div className="description-view">Región Sur,</div>
+								</div>
+								<div className="cib legend-line-view">
+									<div className="label-view">CIB{":"}</div>
+									<div className="description-view">Región Cibao,</div>
+								</div>
+								<div className="sdo legend-line-view">
+									<div className="label-view">SDO{":"}</div>
+									<div className="description-view">Santo Domingo,</div>
+								</div>
+								<div className="mao legend-line-view">
+									<div className="label-view">MAO{":"}</div>
+									<div className="description-view">Mao,</div>
+								</div>
+								<div className="ppl legend-line-view">
+									<div className="label-view">PPL{":"}</div>
+									<div className="description-view">Puerto Plata,</div>
+								</div>
+								<div className="moc legend-line-view">
+									<div className="label-view">MOC{":"}</div>
+									<div className="description-view">Moca,</div>
+								</div>
+								<div className="ns legend-line-view">
+									<div className="label-view">NS{":"}</div>
+									<div className="description-view">Nagua - Samaná,</div>
+								</div>
+								<div className="sfs legend-line-view">
+									<div className="label-view">SFS{":"}</div>
+									<div className="description-view">San Francisco - Salcedo,</div>
+								</div>
+								<div className="as legend-line-view">
+									<div className="label-view">AS{":"}</div>
+									<div className="description-view">Asistencias</div>
+								</div>
+							</div>
+						</div>
+					</LegendModalContainer>
+				</div>
+			</div>
 		</GraphReportsContainer>
 	);
 };

@@ -1,6 +1,6 @@
 import { isDate } from "moment";
 
-export default function filterReportByDate(date, n) {
+export default function filterReportByDate(date, n=0) {
     let nDate = date;
     
     if(!isDate(date)){
