@@ -3,8 +3,8 @@ import axios from '../../config/http-common';
 const upload = async (file, onUploadProgress, type, fileName) => {
   let formData = new FormData();
   formData.append("file", file);
-  formData.append("aseg", fileName.aseguradora)
-  formData.append("plan", fileName.plan)
+  if(fileName) formData.append("aseg", fileName.aseguradora)
+  if(fileName) formData.append("plan", fileName.plan)
 
   return await axios.post(`/${type}/upload`, formData, {
     headers: {

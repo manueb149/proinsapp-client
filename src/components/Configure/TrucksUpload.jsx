@@ -37,7 +37,8 @@ const TrucksUpload = () => {
 				.then((files) => {
 					setFileInfos(files.data);
 				})
-				.catch(() => {
+				.catch((error) => {
+					console.log(error);
 					setProgress(0);
 					setMessage(
 						"No se pudo cargar el archivo, verifique si ya esta cargado."
