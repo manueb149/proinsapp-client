@@ -106,7 +106,7 @@ const ServiceSummary = () => {
 								<div className="card-header">
 									<TextField
 										disabled
-										label="Total"
+										label="Subtotal+Servicios+Arranque"
 										value={summaryCalc(values, checked)}
 										onChange={handleTotal}
 										name="total"
@@ -131,17 +131,14 @@ const ServiceSummary = () => {
 											<TextField
 												size="small"
 												variant="outlined"
-												label={`${
-													Number(values.KmE) > 15
-														? `${
-																values.KmE
-														  }Km - 15Km = ${
-																Number(
-																	values.KmE
-																) - 15
-														  }Km`
+												label={`${Number(values.KmE) > 15
+														? `${values.KmE
+														}Km - 15Km = ${Number(
+															values.KmE
+														) - 15
+														}Km`
 														: "Kilómetro Estipulado"
-												}`}
+													}`}
 												value={values.KmE}
 												onChange={handleChange}
 												name="KmE"
@@ -172,7 +169,7 @@ const ServiceSummary = () => {
 											</div>
 										</div>
 									) : null}
-									{(checked.SP && values.KmE>15) ? (
+									{/* {(checked.SP && values.KmE>15) ? (
 										<div className="col-12 mb-3">
 											<div className="row check-input">
 												<TextField
@@ -190,13 +187,17 @@ const ServiceSummary = () => {
 												/>
 											</div>
 										</div>
-									) : null}
+									) : null} */}
 									<div className="col-12 mb-3">
 										<div className="row check-input">
 											<TextField
 												size="small"
 												variant="outlined"
-												label="Costo Base Km"
+												// label="Costo Base Km"
+												label={`${Number(values.KmE) > 15 && Number(values.CB) > 0
+														? `Subtotal = $${(Number(values.KmE) - 15) * Number(values.CB)}`
+														: "Costo Base Km"
+													}`}
 												value={values.CB}
 												onChange={handleChange}
 												name="CB"
