@@ -212,6 +212,7 @@ const styles = StyleSheet.create({
 
 // Total sum
 let TotalPrice = 0;
+let newFilteredReports = [];
 // Create Document Component
 const MyDocument = ({ data, dates }) => (
 	<Document>
@@ -296,8 +297,18 @@ const PrintBalanceReport = () => {
 	} = ReportContext;
 
 	useEffect(() => {
+		newFilteredReports = [];
 		TotalPrice = 0;
 	}, [])
+
+	if(filteredReports) {
+		const polizas = filteredReports.map(value => value.poliza);
+		const uniquePolizas = Array.from(new Set(polizas));
+		newFilteredReports = filteredReports.map((value, index) => ({
+			...value,
+			poliza : `(${uniquePolizas.indexOf(value.poliza)}) ${value.poliza}`
+		}))
+	}
 
 	return (
 		<Fragment>
@@ -311,7 +322,7 @@ const PrintBalanceReport = () => {
 					}}
 				>
 					<MyDocument
-						data={filteredReports}
+						data={newFilteredReports}
 						dates={filteredDates}
 					/>
 				</PDFViewer>
