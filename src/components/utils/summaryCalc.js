@@ -86,7 +86,6 @@ const summaryCalc = (values, checked) => {
             vars.subTotalFeriado +
             vars.arranque
     }
-    console.log(vars);
     return (vars.total.toFixed(2))
 }
 
