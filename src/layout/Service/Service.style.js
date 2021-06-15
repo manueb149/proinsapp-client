@@ -88,7 +88,15 @@ export const SummaryContainer = styled.div`
         padding: 1rem 0rem 1rem 0rem;
     }
     div.card-body.datos-viaje {
-        padding: 1rem 0rem 1rem 1rem;
+        padding: 1rem;
+    }
+    div.separator {
+        margin-top: 1rem;
+        opacity: 0.5;
+        border-radius: 5px;
+        height: 1px;
+        width: 100%;
+        background-color: gray;
     }
     .MuiCheckbox-colorSecondary.Mui-checked {
         color: var(--bg-icon);
@@ -103,6 +111,48 @@ export const SummaryContainer = styled.div`
     }
     .MuiFormLabel-root{
         color: rgba(0, 0, 0, 0.70);
+    }
+    .title > h5{
+        margin-bottom: 0;
+        line-height: unset;
+        margin-right: 1rem;
+    }
+    .title-flex{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .icon-button {
+        width: 35px;
+        height: 35px;
+        background-color: var(--bg-icon);
+        border-radius: 50%;
+        display: -webkit-inline-box;
+        display: -webkit-inline-flex;
+        display: -ms-inline-flexbox;
+        display: inline-flex;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-align-items: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        margin-right: 8px;
+    }
+    .icon-button:hover{
+        cursor: pointer;
+    }
+    .fa, 
+    .fas,
+    .far {
+        color: var(--icon-color);
     }
 `;
 

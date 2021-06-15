@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import './serviceSummary.scss';
 import { SummaryContainer } from "../../../layout/Service/Service.style";
 import PropTypes from "prop-types";
 import customFormats, { TextMaskCustom } from "../../utils/customFormats";
@@ -98,7 +99,17 @@ const ServiceSummary = () => {
 			<div className={classes.root}>
 				<div className="card mb-3">
 					<div className="card-header mb-3">
-						<h5 className="mb-0">Cálculo Resumen de Servicio</h5>
+						<div className="title-flex">
+							<span className="title mb-2 mt-2">
+								<h5>Cálculo Resumen de Servicio</h5>
+							</span>
+							<span
+								className="icon-button"
+								onClick={() => window.print()}
+							>
+								<i className="fas fa-print"></i>
+							</span>
+						</div>
 					</div>
 					<div className="form-row px-3">
 						<div className="col-lg-12 mb-1">
@@ -106,7 +117,7 @@ const ServiceSummary = () => {
 								<div className="card-header">
 									<TextField
 										disabled
-										label="Subtotal+Servicios+Arranque"
+										label="TOTAL SERVICIO"
 										value={summaryCalc(values, checked)}
 										onChange={handleTotal}
 										name="total"
@@ -126,38 +137,139 @@ const ServiceSummary = () => {
 									<h5 className="mb-0">Datos del viaje</h5>
 								</div>
 								<div className="card-body datos-viaje">
-									<div className="col-12 mb-3">
+									<div className="row" style={{ marginLeft: '0px', marginRight: '0px' }}>
+										<div className="col-lg-6 col-md-12 col-sm-12 col-xs-12 mt-3">
+											<div className="row check-input">
+												<TextField
+													size="small"
+													variant="outlined"
+													label={"Km Estipulado"}
+													value={values.KmE}
+													onChange={handleChange}
+													name="KmE"
+													id="KmE"
+													InputProps={{
+														inputComponent:
+															customFormats.KmFormatCustom,
+													}}
+												/>
+											</div>
+										</div>
+										<div className="col-lg-6 col-md-12 col-sm-12 col-xs-12 mt-3">
+											<div className="row check-input">
+												<TextField
+													size="small"
+													variant="outlined"
+													// label="Costo Base Km"
+													label={`${Number(values.KmE) > 15 && Number(values.CB) > 0 && !checked.LM
+														? `Subtotal = $${(Number(values.KmE) - 15) * Number(values.CB)}`
+														: "Costo Base Km"
+														}`}
+													value={values.CB}
+													onChange={handleChange}
+													name="CB"
+													id="CB"
+													InputProps={{
+														inputComponent:
+															customFormats.PesoKmFormatCustom,
+													}}
+												/>
+											</div>
+										</div>
+									</div>
+									{Number(values.KmE) > 15 ?
+										<div className="col-12 mt-3">
+											<div className="row check-input">
+												<TextField
+													disabled
+													size="small"
+													variant="outlined"
+													label="Km de Arranque"
+													value={15}
+													onChange={handleTotal}
+													name="km arranque"
+													id="kmArranque"
+													InputProps={{
+														inputComponent:
+															customFormats.KmFormatCustom,
+													}}
+												/>
+											</div>
+										</div>
+										: null
+									}
+									{Number(values.KmE) > 15 ?
+										<div className="col-12 mt-3">
+											<div className="row check-input">
+												<TextField
+													disabled
+													size="small"
+													variant="outlined"
+													label="Km sin Arranque"
+													value={Number(values.KmE) > 15 ? Number(values.KmE) - 15 : ""}
+													onChange={handleTotal}
+													name="km sin arranque"
+													id="kmSinArranque"
+													InputProps={{
+														inputComponent:
+															customFormats.KmFormatCustom,
+													}}
+												/>
+											</div>
+										</div>
+										: null
+									}
+									{Number(values.KmE) > 15 ?
+										<div className="col-12 mt-3">
+											<div className="row check-input">
+												<TextField
+													disabled
+													size="small"
+													variant="outlined"
+													label="Total Arranque"
+													value={1200}
+													onChange={handleTotal}
+													name="totalArranque"
+													id="totalArranque"
+													InputProps={{
+														inputComponent:
+															customFormats.NumberFormatCustom,
+													}}
+												/>
+											</div>
+										</div>
+										: null
+									}
+									{checked.LM ? <div className="separator"></div> : null}
+									<div className="col-12 mt-3">
 										<div className="row check-input">
-											<TextField
+											<CustomTextField
 												size="small"
 												variant="outlined"
-												label={`${Number(values.KmE) > 15
-														? `${values.KmE
-														}Km - 15Km = ${Number(
-															values.KmE
-														) - 15
-														}Km`
-														: "Kilómetro Estipulado"
-													}`}
-												value={values.KmE}
-												onChange={handleChange}
-												name="KmE"
-												id="KmE"
-												InputProps={{
-													inputComponent:
-														customFormats.KmFormatCustom,
-												}}
+												values={values}
+												checked={checked}
+												setChecked={setChecked}
+												shortName={"LM"}
+												LongName={"Loma"}
+												Format={
+													customFormats.PesoKmFormatCustom
+												}
+												handleChange={handleChange}
+												rightCheckBox
 											/>
 										</div>
 									</div>
 									{checked.LM ? (
-										<div className="col-12 mb-3">
+										<div className="col-12 mt-3">
 											<div className="row check-input">
 												<TextField
 													size="small"
 													variant="outlined"
 													label="Kilómetro de Loma"
-													value={values.KmL}
+													value={Number(values.KmE) > 15 
+														? Number(values.KmL) <= (Number(values.KmE) - 15) ? values.KmL : "" 
+														: Number(values.KmL) <= Number(values.KmE) ? values.Kml : "" 
+													}
 													onChange={handleChange}
 													name="KmL"
 													id="KmL"
@@ -169,17 +281,42 @@ const ServiceSummary = () => {
 											</div>
 										</div>
 									) : null}
-									{/* {(checked.SP && values.KmE>15) ? (
-										<div className="col-12 mb-3">
+									{checked.LM && values.LM > 0 && values.KmL ? (
+										<div className="col-12 mt-3">
 											<div className="row check-input">
 												<TextField
+													disabled
 													size="small"
 													variant="outlined"
-													label="Kilómetro de sobre peso"
-													value={(Number(values.KmSP) <= Number(values.KmE)) ? values.KmSP : ""}
+													label="Total Km de Loma"
+													value={Number(values.LM) * Number(values.KmL) >= 0 ? Number(values.LM) * Number(values.KmL) : ""}
 													onChange={handleChange}
-													name="KmSP"
-													id="KmSP"
+													name="totalKmLoma"
+													id="totalKmLoma"
+													InputProps={{
+														inputComponent:
+															customFormats.NumberFormatCustom,
+													}}
+												/>
+											</div>
+										</div>
+									) : null}
+									{checked.LM ? <div className="separator"></div> : null}
+									{checked.LM && values.LM > 0 && values.KmL ? (
+										<div className="col-12 mt-3">
+											<div className="row check-input">
+												<TextField
+													disabled
+													size="small"
+													variant="outlined"
+													label="Km de Llano"
+													value={Number(values.KmE) > 15
+														? (Number(values.KmE) - 15 - values.KmL) > 0 ? (Number(values.KmE) - 15 - values.KmL) : ""
+														: (Number(values.KmE) - values.KmL) > 0 ? (Number(values.KmE) - values.KmL) : ""
+													}
+													onChange={handleChange}
+													name="KmLlano"
+													id="KmLllano"
 													InputProps={{
 														inputComponent:
 															customFormats.KmFormatCustom,
@@ -187,29 +324,31 @@ const ServiceSummary = () => {
 												/>
 											</div>
 										</div>
-									) : null} */}
-									<div className="col-12 mb-3">
-										<div className="row check-input">
-											<TextField
-												size="small"
-												variant="outlined"
-												// label="Costo Base Km"
-												label={`${Number(values.KmE) > 15 && Number(values.CB) > 0
-														? `Subtotal = $${(Number(values.KmE) - 15) * Number(values.CB)}`
-														: "Costo Base Km"
-													}`}
-												value={values.CB}
-												onChange={handleChange}
-												name="CB"
-												id="CB"
-												InputProps={{
-													inputComponent:
-														customFormats.PesoKmFormatCustom,
-												}}
-											/>
+									) : null}
+									{checked.LM && values.LM > 0 && values.KmL ? (
+										<div className="col-12 mt-3">
+											<div className="row check-input">
+												<TextField
+													disabled
+													size="small"
+													variant="outlined"
+													label="Total Km de Llano"
+													value={Number(values.KmE) > 15
+														? (Number(values.KmE) - 15 - values.KmL) * values.CB > 0 ? (Number(values.KmE) - 15 - values.KmL) * values.CB : ""
+														: (Number(values.KmE) - values.KmL) * values.CB > 0 ? (Number(values.KmE) - values.KmL) * values.CB : ""
+													}
+													onChange={handleChange}
+													name="totalKmLlano"
+													id="totalKmLlano"
+													InputProps={{
+														inputComponent:
+															customFormats.NumberFormatCustom,
+													}}
+												/>
+											</div>
 										</div>
-									</div>
-									<div className="col-12 mb-3">
+									) : null}
+									<div className="col-12 mt-3">
 										<div className="row check-input">
 											<TextField
 												size="small"
@@ -236,7 +375,7 @@ const ServiceSummary = () => {
 									<h5 className="mb-0">Servicios</h5>
 								</div>
 								<div className="card-body">
-									<div className="col-12 mb-3">
+									<div className="col-12 mt-3">
 										<div className="row check-input">
 											<CustomTextField
 												size="small"
@@ -254,7 +393,7 @@ const ServiceSummary = () => {
 											/>
 										</div>
 									</div>
-									<div className="col-12 mb-3">
+									<div className="col-12 mt-3">
 										<div className="row check-input">
 											<CustomTextField
 												size="small"
@@ -274,7 +413,7 @@ const ServiceSummary = () => {
 											/>
 										</div>
 									</div>
-									<div className="col-12 mb-3">
+									<div className="col-12 mt-3">
 										<div className="row check-input">
 											<CustomTextField
 												size="small"
@@ -291,7 +430,7 @@ const ServiceSummary = () => {
 											/>
 										</div>
 									</div>
-									<div className="col-12 mb-3">
+									<div className="col-12 mt-3">
 										<div className="row check-input">
 											<CustomTextField
 												size="small"
@@ -308,23 +447,25 @@ const ServiceSummary = () => {
 											/>
 										</div>
 									</div>
-									<div className="col-12 mb-3">
-										<div className="row check-input">
-											<CustomTextField
-												size="small"
-												variant="outlined"
-												values={values}
-												checked={checked}
-												setChecked={setChecked}
-												shortName={"LM"}
-												LongName={"Loma"}
-												Format={
-													customFormats.PesoKmFormatCustom
-												}
-												handleChange={handleChange}
-											/>
+									{/* {(checked.SP && values.KmE>15) ? (
+										<div className="col-12 mt-3">
+											<div className="row check-input">
+												<TextField
+													size="small"
+													variant="outlined"
+													label="Kilómetro de sobre peso"
+													value={(Number(values.KmSP) <= Number(values.KmE)) ? values.KmSP : ""}
+													onChange={handleChange}
+													name="KmSP"
+													id="KmSP"
+													InputProps={{
+														inputComponent:
+															customFormats.KmFormatCustom,
+													}}
+												/>
+											</div>
 										</div>
-									</div>
+									) : null} */}
 								</div>
 							</div>
 						</div>
