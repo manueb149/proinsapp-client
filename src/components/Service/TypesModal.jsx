@@ -72,7 +72,7 @@ const TypesService = ({
 									LongName={"Tansporte de Grúa"}
 									Format={customFormats.PesoKmFormatCustom}
 									handleChange={handleChange}
-									// alwaysDisabled
+									alwaysDisabled
 									// noCheck
 								/>
 							</div>
@@ -119,6 +119,7 @@ const TypesService = ({
 									LongName={"Sobre peso"}
 									Format={customFormats.KmFormatCustom}
 									handleChange={handleChange}
+									alwaysDisabled={data.distancia <= 15 ? true : false}
 								/>
 							</div>
 						</div>

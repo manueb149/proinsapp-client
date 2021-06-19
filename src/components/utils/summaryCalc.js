@@ -8,6 +8,7 @@ const summaryCalc = (values, checked) => {
         subTotalLoma: 0,
         kmLlano: 0,
         subTotalLlano: 0,
+        kmSobrepeso: 0,
         sobrePeso: 0,
         servicios: 0,
         peaje: 0,
@@ -19,12 +20,9 @@ const summaryCalc = (values, checked) => {
         if (checked.LM) {
             if (checked.LM && (Number(values.KmL) <= vars.distancia)) vars.kmLoma = Number(values.KmL);
             if (checked.LM && (Number(values.KmL) <= vars.distancia)) vars.kmLlano = vars.distancia - vars.kmLoma;
-            // if (checked.LM && vars.kmLoma > 0 && Number(values.LM) > 0) vars.subTotalLoma = vars.kmLoma * Number(values.LM);
-            // if (checked.LM && vars.kmLlano > 0) vars.subTotalLlano = vars.kmLlano * Number(values.CB);
-            // if (checked.SP && vars.kmLlano > 0) vars.sobrePeso = vars.subTotalLlano * (Number(values.SP) / 100);
+            if (checked.LM && vars.kmLlano > 0 && Number(values.KmL) > 0) vars.subTotalLlano = vars.kmLlano * Number(values.CB);
             if (checked.SP) vars.sobrePeso = vars.arranque * (Number(values.SP) / 100);
         } else {
-            // if (Number(values.CB) > 0) vars.subTotal = vars.distancia * Number(values.CB);
             if (checked.SP) vars.sobrePeso = vars.arranque * (Number(values.SP) / 100);
         }
         if (checked.LM && values.KmL > 0 && values.LM > 0) vars.total += (Number(values.LM) * Number(values.KmL));
@@ -33,9 +31,9 @@ const summaryCalc = (values, checked) => {
         if (Number(values.CP) > 0) vars.peaje = Number(values.CP);
 
         vars.total = vars.arranque +
-        vars.sobrePeso +
-        vars.subTotalNoche +
-        vars.subTotalFeriado
+            vars.sobrePeso +
+            vars.subTotalNoche +
+            vars.subTotalFeriado
 
         if (checked.TN) vars.subTotalNoche = vars.total * Number(values.TN) / 100;
         if (checked.FF) vars.subTotalFeriado = vars.total * Number(values.FF) / 100;
@@ -51,15 +49,18 @@ const summaryCalc = (values, checked) => {
             vars.arranque
     } else {
         vars.distancia = Number(values.KmE) - 15;
+        if(checked.SP && Number(values.KmSP) > 0) vars.kmSobrepeso = Number(values.KmSP);
         if (checked.LM) {
             if (checked.LM && (Number(values.KmL) <= vars.distancia)) vars.kmLoma = Number(values.KmL);
             if (checked.LM && (Number(values.KmL) <= vars.distancia)) vars.kmLlano = vars.distancia - vars.kmLoma;
             if (checked.LM && vars.kmLoma > 0 && Number(values.LM) > 0) vars.subTotalLoma = vars.kmLoma * Number(values.LM);
             if (checked.LM && vars.kmLlano > 0) vars.subTotalLlano = vars.kmLlano * Number(values.CB);
-            if (checked.SP && vars.kmLlano > 0) vars.sobrePeso = vars.subTotalLlano * (Number(values.SP) / 100);
+            // if (checked.SP && vars.kmLlano > 0) vars.sobrePeso = vars.subTotalLlano * (Number(values.SP) / 100);
+            if(checked.SP && Number(values.KmSP) > 0 ) vars.sobrePeso = Number(values.KmSP) * Number(values.CB) * (Number(values.SP) / 100);
         } else {
             if (Number(values.CB) > 0) vars.subTotal = vars.distancia * Number(values.CB);
-            if (checked.SP) vars.sobrePeso = vars.distancia * Number(values.CB) * (Number(values.SP) / 100);
+            // if (checked.SP) vars.sobrePeso = vars.distancia * Number(values.CB) * (Number(values.SP) / 100);
+            if(checked.SP && Number(values.KmSP) > 0 ) vars.sobrePeso = Number(values.KmSP) * Number(values.CB) * (Number(values.SP) / 100);
         }
         if (checked.LM && values.KmL > 0 && values.LM > 0) vars.total += (Number(values.LM) * Number(values.KmL));
 
@@ -67,11 +68,12 @@ const summaryCalc = (values, checked) => {
         if (Number(values.CP) > 0) vars.peaje = Number(values.CP);
 
         vars.total = vars.subTotal +
-        vars.subTotalLoma +
-        vars.subTotalLlano +
-        vars.sobrePeso +
-        vars.subTotalNoche +
-        vars.subTotalFeriado
+            vars.subTotalLoma +
+            vars.subTotalLlano +
+            vars.sobrePeso +
+            vars.subTotalNoche +
+            vars.subTotalFeriado +
+            vars.arranque // Lo pusimo' otra ve
 
         if (checked.TN) vars.subTotalNoche = vars.total * Number(values.TN) / 100;
         if (checked.FF) vars.subTotalFeriado = vars.total * Number(values.FF) / 100;
@@ -86,6 +88,7 @@ const summaryCalc = (values, checked) => {
             vars.subTotalFeriado +
             vars.arranque
     }
+    console.log(vars);
     return (vars.total.toFixed(2))
 }
 

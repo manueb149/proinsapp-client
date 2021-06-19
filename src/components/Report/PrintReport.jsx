@@ -291,23 +291,25 @@ const MyDocument = ({ data, timeFormat }) => (
 				<View style={styles.section_data}>
 					<View style={{ flexBasis: "33%", marginLeft: "20px" }}>
 						<Text style={styles.header_subtext_title}>
-							Grúa:
+							{data.tipoServicios.servicesType.TG
+								? '✔ '
+								: ""}Grúa:
 							<Text style={styles.header_subtext}>
 								{" "}
 								{data.tipoServicios.servicesType.TG
-									? data.tipoServicios.servicesType.TG
-									: 0}{" "}
-								$/Km
+									? `${data.tipoServicios.servicesType.TG} $/Km`
+									: ""}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
-							Sobre peso:
+							{data.tipoServicios.servicesType.SP
+								? "✔️ "
+								: ""}Sobre peso:
 							<Text style={styles.header_subtext}>
 								{" "}
 								{data.tipoServicios.servicesType.SP
-									? data.tipoServicios.servicesType.SP
-									: 0}
-								Km
+									? `${data.tipoServicios.servicesType.SP} Km`
+									: ""}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
@@ -539,7 +541,7 @@ const MyDocument = ({ data, timeFormat }) => (
 					Tarifa Especial:
 					<Text style={styles.header_subtext}>
 						{" $"}
-						{data.tarifaEspecial!=="" ? data.tarifaEspecial : 0}
+						{data.tarifaEspecial !== "" ? data.tarifaEspecial : 0}
 					</Text>
 				</Text>
 			</View>
@@ -559,8 +561,8 @@ const PrintReport = ({ printData }) => {
 				<>
 					<PDFDownloadLink
 						document={<MyDocument data={printData} />}
-						fileName="Factura.pdf" 
-						style={{color: "blue", fontStyle: "italic"}}
+						fileName="Factura.pdf"
+						style={{ color: "blue", fontStyle: "italic" }}
 					>
 						{({ blob, url, loading, error }) => {
 							if (!loading) return "Descargar Factura 📄";

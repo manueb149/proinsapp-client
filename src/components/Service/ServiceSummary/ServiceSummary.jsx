@@ -187,7 +187,7 @@ const ServiceSummary = () => {
 													label="Km de Arranque"
 													value={15}
 													onChange={handleTotal}
-													name="km arranque"
+													name="kmArranque"
 													id="kmArranque"
 													InputProps={{
 														inputComponent:
@@ -266,9 +266,9 @@ const ServiceSummary = () => {
 													size="small"
 													variant="outlined"
 													label="Kilómetro de Loma"
-													value={Number(values.KmE) > 15 
-														? Number(values.KmL) <= (Number(values.KmE) - 15) ? values.KmL : "" 
-														: Number(values.KmL) <= Number(values.KmE) ? values.Kml : "" 
+													value={Number(values.KmE) > 15
+														? Number(values.KmL) <= (Number(values.KmE) - 15) ? values.KmL : ""
+														: Number(values.KmL) <= Number(values.KmE) ? values.Kml : ""
 													}
 													onChange={handleChange}
 													name="KmL"
@@ -374,10 +374,11 @@ const ServiceSummary = () => {
 								<div className="card-header">
 									<h5 className="mb-0">Servicios</h5>
 								</div>
-								<div className="card-body">
+								<div className="card-body pl-3">
 									<div className="col-12 mt-3">
 										<div className="row check-input">
 											<CustomTextField
+												rightCheckBox
 												size="small"
 												variant="outlined"
 												values={values}
@@ -396,6 +397,7 @@ const ServiceSummary = () => {
 									<div className="col-12 mt-3">
 										<div className="row check-input">
 											<CustomTextField
+												rightCheckBox
 												size="small"
 												variant="outlined"
 												values={values}
@@ -416,6 +418,7 @@ const ServiceSummary = () => {
 									<div className="col-12 mt-3">
 										<div className="row check-input">
 											<CustomTextField
+												rightCheckBox
 												size="small"
 												variant="outlined"
 												values={values}
@@ -433,6 +436,7 @@ const ServiceSummary = () => {
 									<div className="col-12 mt-3">
 										<div className="row check-input">
 											<CustomTextField
+												rightCheckBox
 												size="small"
 												variant="outlined"
 												values={values}
@@ -447,13 +451,13 @@ const ServiceSummary = () => {
 											/>
 										</div>
 									</div>
-									{/* {(checked.SP && values.KmE>15) ? (
+									{(checked.SP && values.KmE > 15) ? (
 										<div className="col-12 mt-3">
 											<div className="row check-input">
 												<TextField
 													size="small"
 													variant="outlined"
-													label="Kilómetro de sobre peso"
+													label="Kilómetros sobre peso"
 													value={(Number(values.KmSP) <= Number(values.KmE)) ? values.KmSP : ""}
 													onChange={handleChange}
 													name="KmSP"
@@ -465,7 +469,27 @@ const ServiceSummary = () => {
 												/>
 											</div>
 										</div>
-									) : null} */}
+									) : null}
+									{(checked.SP && Number(values.KmSP) > 0 && values.KmE > 15) ? (
+										<div className="col-12 mt-3">
+											<div className="row check-input">
+												<TextField
+													disabled
+													size="small"
+													variant="outlined"
+													label="Total Sobrepeso"
+													value={(checked.SP && Number(values.KmSP) > 0 ) ? Number(values.KmSP) * Number(values.CB) * (Number(values.SP) / 100) : ""}
+													onChange={handleChange}
+													name="totalKmSP"
+													id="totalKmSP"
+													InputProps={{
+														inputComponent:
+															customFormats.NumberFormatCustom,
+													}}
+												/>
+											</div>
+										</div>
+									) : null}
 								</div>
 							</div>
 						</div>
