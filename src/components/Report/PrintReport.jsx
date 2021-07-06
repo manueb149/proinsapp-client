@@ -292,7 +292,7 @@ const MyDocument = ({ data, timeFormat }) => (
 					<View style={{ flexBasis: "33%", marginLeft: "20px" }}>
 						<Text style={styles.header_subtext_title}>
 							{data.tipoServicios.servicesType.TG
-								? '✔ '
+								? '* '
 								: ""}Grúa:
 							<Text style={styles.header_subtext}>
 								{" "}
@@ -303,7 +303,7 @@ const MyDocument = ({ data, timeFormat }) => (
 						</Text>
 						<Text style={styles.header_subtext_title}>
 							{data.tipoServicios.servicesType.SP
-								? "✔️ "
+								? "* "
 								: ""}Sobre peso:
 							<Text style={styles.header_subtext}>
 								{" "}
@@ -313,107 +313,139 @@ const MyDocument = ({ data, timeFormat }) => (
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
+							{data.tipoServicios.servicesType.PE
+								? "* "
+								: ""}
 							Peaje:
 							<Text style={styles.header_subtext}>
-								{" $"}
+								{" "}
 								{data.tipoServicios.servicesType.PE
-									? data.tipoServicios.servicesType.PE
-									: 0}
+									? `$${data.tipoServicios.servicesType.PE}`
+									: ""}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
+							{data.tipoServicios.servicesType.CR
+								? "* "
+								: ""}
 							Cerragería:
 							<Text style={styles.header_subtext}>
-								{" $"}
+								{" "}
 								{data.tipoServicios.servicesType.CR
-									? data.tipoServicios.servicesType.CR
-									: 0}
+									? `$${data.tipoServicios.servicesType.CR}`
+									: ""}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
+							{data.tipoServicios.servicesType.EX
+								? "* "
+								: ""}
 							Extracción:
 							<Text style={styles.header_subtext}>
-								{" $"}
+								{" "}
 								{data.tipoServicios.servicesType.EX
-									? data.tipoServicios.servicesType.EX
-									: 0}
+									? `$${data.tipoServicios.servicesType.EX}`
+									: ""}
 							</Text>
 						</Text>
 					</View>
 					<View style={{ flexBasis: "33%" }}>
 						<Text style={styles.header_subtext_title}>
+							{data.tipoServicios.servicesType.LM
+								? "* "
+								: ""}
 							Loma:
 							<Text style={styles.header_subtext}>
 								{" "}
 								{data.tipoServicios.servicesType.LM
-									? data.tipoServicios.servicesType.LM
-									: 0}
-								Km
+									? `${data.tipoServicios.servicesType.LM} Km`
+									: ""}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
+							{data.tipoServicios.servicesType.CG
+								? "* "
+								: ""}
 							Gomas:
 							<Text style={styles.header_subtext}>
-								{" $"}
+								{" "}
 								{data.tipoServicios.servicesType.CG
-									? data.tipoServicios.servicesType.CG
-									: 0}
+									? `$${data.tipoServicios.servicesType.CG} Km`
+									: ""}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
+							{data.tipoServicios.servicesType.CE
+								? "* "
+								: ""}
 							Corriente:
 							<Text style={styles.header_subtext}>
-								{" $"}
+								{" "}
 								{data.tipoServicios.servicesType.CE
-									? data.tipoServicios.servicesType.CE
-									: 0}
+									? `$${data.tipoServicios.servicesType.CE}`
+									: ""}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
+							{data.tipoServicios.servicesType.SG
+								? "* "
+								: ""}
 							Suministros:
 							<Text style={styles.header_subtext}>
-								{" $"}
+								{" "}
 								{data.tipoServicios.servicesType.SG
-									? data.tipoServicios.servicesType.SG
-									: 0}
+									? `$${data.tipoServicios.servicesType.SG}`
+									: ""}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
+							{data.detalleSiniestro.detailSinister.VO
+								? "* "
+								: ""}
 							Volcaduras:
 							<Text style={styles.header_subtext}>
-								{" $"}
+								{" "}
 								{data.detalleSiniestro.detailSinister.VO
-									? data.detalleSiniestro.detailSinister.VO
-									: 0}
+									? `$${data.detalleSiniestro.detailSinister.VO}`
+									: ""}
 							</Text>
 						</Text>
 					</View>
 					<View style={{ flexBasis: "33%" }}>
 						<Text style={styles.header_subtext_title}>
+							{data.detalleSiniestro.detailSinister.CO
+								? "* "
+								: ""}
 							Colisión:
 							<Text style={styles.header_subtext}>
-								{" $"}
+								{" "}
 								{data.detalleSiniestro.detailSinister.CO
-									? data.detalleSiniestro.detailSinister.CO
-									: 0}
+									? `$${data.detalleSiniestro.detailSinister.CO}`
+									: ""}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
+							{data.detalleSiniestro.detailSinister.IN
+								? "* "
+								: ""}
 							Incendios:
 							<Text style={styles.header_subtext}>
-								{" $"}
+								{" "}
 								{data.detalleSiniestro.detailSinister.IN
-									? data.detalleSiniestro.detailSinister.IN
-									: 0}
+									? `$${data.detalleSiniestro.detailSinister.IN}`
+									: ""}
 							</Text>
 						</Text>
 						<Text style={styles.header_subtext_title}>
+							{data.detalleSiniestro.detailSinister.DM
+								? "* "
+								: ""}
 							Daños Mecánicos:
 							<Text style={styles.header_subtext}>
-								{" $"}
+								{" "}
 								{data.detalleSiniestro.detailSinister.DM
-									? data.detalleSiniestro.detailSinister.DM
-									: 0}
+									? `$${data.detalleSiniestro.detailSinister.DM}`
+									: ""}
 							</Text>
 						</Text>
 					</View>

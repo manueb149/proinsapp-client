@@ -109,7 +109,6 @@ const summaryCalc = (data, values, servicesType, servicesTypeCk, detailSinister,
             vars.subTotalFeriado +
             vars.arranque
     }
-    console.log(vars);
     data.precio = Number(vars.total).toFixed(2);
     return (Number(vars.total).toFixed(2))
 }

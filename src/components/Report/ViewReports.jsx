@@ -117,6 +117,14 @@ const columns = [
 		},
 	},
 	{
+		name: "gruero",
+		label: "Gruero",
+		options: {
+			filter: true,
+			sort: true,
+		},
+	},
+	{
 		name: "precio",
 		label: "Precio (RD$)",
 		options: {
@@ -230,7 +238,16 @@ const ViewReports = () => {
 				await axios
 					.get(`/service`)
 					.then((res) => {
-						setData(res.data.results);
+						const newData = res.data.results.map((value) => {
+							const gruero = value.datosGruero.gruaDeServicio
+							return(
+								{
+									...value,
+									gruero
+								}
+							)
+						})
+						setData(newData);
 					})
 					.catch((error) => {
 						if (error.response) {

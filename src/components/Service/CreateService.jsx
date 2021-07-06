@@ -27,6 +27,7 @@ const CreateService = () => {
 	const [showMap, setShowMap] = useState(false);
 	const [showConfirm, setShowConfirm] = useState(false);
 	const [openSB, setOpenSB] = useState(false);
+	const [repeatedServices, setRepeatedServices] = useState(null);
 	const history = useHistory();
 
 	const DefaultValuesContext = useContext(defaultValuesContext);
@@ -290,6 +291,8 @@ const CreateService = () => {
 			CO: false,
 			DM: false,
 		});
+		setSearch({...search, id: ""});
+		setRepeatedServices(null);
 		SetAreaTruckSelect([]);
 		setDataTrucks([]);
 		setOpenSB(false);
@@ -429,6 +432,32 @@ const CreateService = () => {
 						console.log("Error", error.message);
 					}
 				});
+
+			axios
+				.get(`/service/report/${search.type}/${search.id}`)
+				.then((res) => {
+					setRepeatedServices(res.data.length)
+				})
+				.catch((error) => {
+					if (error.response) {
+						// Request made and server responded
+						if (error.response.data.text === "TNV") {
+							logout();
+							history.push("/");
+						} else {
+							setOpenSB(false);
+							setSeverity("error");
+							setNotification(error.response.data.message);
+							setOpenSB(true);
+						}
+					} else if (error.request) {
+						// The request was made but no response was received
+						console.log(error.request);
+					} else {
+						// Something happened in setting up the request that triggered an Error
+						console.log("Error", error.message);
+					}
+				});
 		}
 	};
 
@@ -454,11 +483,14 @@ const CreateService = () => {
 					servicesType,
 					servicesTypeCk,
 					selectedDate,
-					selectedBakDate
+					selectedBakDate,
 				}}
 				setData={setData}
 				handleDateChange={handleDateChange}
 				handleBakDateChange={handleBakDateChange}
+				search={search}
+				setSearch={setSearch}
+				setRepeatedServices={setRepeatedServices}
 			/>
 
 			<SnackBar
@@ -589,6 +621,9 @@ const CreateService = () => {
 								Buscar
 							</Button>
 						</div>
+						<div className="col-lg-3 mb-3" style={{textAlign: "right", display: "flex", justifyContent: "flex-end", alignItems: "center", color: "red"}}>
+							{repeatedServices ? <h6 style={{margin: "0px"}}>SERVICIOS: {`${repeatedServices}`}</h6> : null}
+						</div>
 					</form>
 				</div>
 			</div>
@@ -679,7 +714,7 @@ const CreateService = () => {
 									})
 								}
 								value={data.color}
-								// disabled
+							// disabled
 							></input>
 						</div>
 						<div className="col-lg-1 mb-3">
@@ -848,7 +883,7 @@ const CreateService = () => {
 								selectedDate={selectedDate}
 								handleDateChange={handleDateChange}
 							/>
-							<div className="bakDate" style={{display: "none"}}>
+							<div className="bakDate" style={{ display: "none" }}>
 								<DateTimePicker
 									selectedDate={selectedBakDate}
 									handleDateChange={handleBakDateChange}

@@ -921,11 +921,13 @@ const EditReport = () => {
 							<input
 								type="number"
 								step="0.01"
-								min="0"
 								className="form-control form-control-sm"
 								id="tarifaEspecial"
 								name="tarifaEspecial"
 								placeholder="RD$ Pesos"
+								value={
+									data.tarifaEspecial <= 0 ? "" : Number(data.tarifaEspecial)
+								}
 								onChange={handleChangeTF}
 							></input>
 						</div>
