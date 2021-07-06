@@ -290,8 +290,18 @@ const ViewReports = () => {
 							selectedDateStart,
 							selectedDateEnd
 						);
-						setData(data);
-						setFilteredReports(data);
+						const newData = data.map((value) => {
+							const gruero = value.datosGruero.gruaDeServicio
+							return(
+								{
+									...value,
+									gruero
+								}
+							)
+						})
+						setData(newData);
+						// setData(data);
+						setFilteredReports(newData);
 						setFilteredDates([selectedDateStart, selectedDateEnd]);
 						setFiltering(false);
 					})
@@ -326,7 +336,16 @@ const ViewReports = () => {
 				await axios
 					.get(`/service`)
 					.then((res) => {
-						setData(res.data.results);
+						const newData = res.data.results.map((value) => {
+							const gruero = value.datosGruero.gruaDeServicio
+							return(
+								{
+									...value,
+									gruero
+								}
+							)
+						})
+						setData(newData);
 						setFilteredReports(null);
 						setFilteredDates([]);
 						setFilteredReports([]);
