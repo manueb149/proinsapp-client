@@ -133,6 +133,14 @@ const columns = [
 		},
 	},
 	{
+		name: "tarifaEspecial",
+		label: "Tarifa Esp. (RD$)",
+		options: {
+			filter: true,
+			sort: true,
+		},
+	},
+	{
 		name: "distancia",
 		label: "Distancia (Km)",
 		options: {
@@ -178,7 +186,7 @@ const ViewReports = () => {
 	const authContext = useContext(AuthContext);
 	const { logout } = authContext;
 	const ReportContext = useContext(reportContext);
-	const { setSelectedReport, setFilteredReports, setFilteredDates } = ReportContext;
+	const { setSelectedReport, setFilteredReports, setFilteredDates, setCurrTable } = ReportContext;
 
 	const options = {
 		filter: true,
@@ -230,6 +238,18 @@ const ViewReports = () => {
 		onRowSelectionChange: (rowsSelectedData, allRows, rowsSelected) => {
 			setSelectedReport(data[rowsSelected]);
 		},
+		onTableChange: (action, tableState) => {
+			switch (action) {
+				case 'sort':
+					setCurrTable(tableState.displayData);
+					break;
+				case 'filterChange':
+					setCurrTable(tableState.displayData);
+					break;
+				default:
+					break;
+			}
+		},
 	};
 
 	useEffect(() => {
@@ -240,7 +260,8 @@ const ViewReports = () => {
 					.then((res) => {
 						const newData = res.data.results.map((value) => {
 							const gruero = value.datosGruero.gruaDeServicio
-							return(
+							if(value.tarifaEspecial === "") value.tarifaEspecial = 0
+							return (
 								{
 									...value,
 									gruero
@@ -274,6 +295,7 @@ const ViewReports = () => {
 		setSelectedReport(null);
 		setFilteredDates([]);
 		setFilteredReports([]);
+		setCurrTable([]);
 		// eslint-disable-next-line
 	}, []);
 
@@ -292,7 +314,7 @@ const ViewReports = () => {
 						);
 						const newData = data.map((value) => {
 							const gruero = value.datosGruero.gruaDeServicio
-							return(
+							return (
 								{
 									...value,
 									gruero
@@ -338,7 +360,7 @@ const ViewReports = () => {
 					.then((res) => {
 						const newData = res.data.results.map((value) => {
 							const gruero = value.datosGruero.gruaDeServicio
-							return(
+							return (
 								{
 									...value,
 									gruero

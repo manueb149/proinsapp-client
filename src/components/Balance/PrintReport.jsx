@@ -61,17 +61,17 @@ const styles = StyleSheet.create({
 		display: "table",
 		fontSize: 11,
 		fontWeight: "bold",
-		flexBasis: "24%",
+		flexBasis: "22%",
 	},
 	table_header_ope: {
 		fontSize: 11,
 		fontWeight: "bold",
-		flexBasis: "24%",
+		flexBasis: "22%",
 	},
 	table_header_date: {
 		fontSize: 11,
 		fontWeight: "bold",
-		flexBasis: "16%",
+		flexBasis: "14%",
 	},
 	table_header_dist: {
 		textAlign: "right",
@@ -79,11 +79,17 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 		flexBasis: "10%",
 	},
+	table_header_tari: {
+		textAlign: "right",
+		fontSize: 11,
+		fontWeight: "bold",
+		flexBasis: "8%",
+	},
 	table_header_pre: {
 		textAlign: "right",
 		fontSize: 11,
 		fontWeight: "bold",
-		flexBasis: "10%",
+		flexBasis: "8%",
 	},
 
 	table_body_row: {
@@ -109,19 +115,19 @@ const styles = StyleSheet.create({
 	table_body_aseg: {
 		fontSize: 8,
 		fontWeight: "light",
-		flexBasis: "24%",
+		flexBasis: "22%",
 		paddingLeft: "2px",
 	},
 	table_body_ope: {
 		fontSize: 8,
 		fontWeight: "light",
-		flexBasis: "24%",
+		flexBasis: "22%",
 		paddingLeft: "2px",
 	},
 	table_body_date: {
 		fontSize: 8,
 		fontWeight: "light",
-		flexBasis: "16%",
+		flexBasis: "14%",
 		paddingLeft: "0px",
 	},
 	table_body_dist: {
@@ -131,11 +137,18 @@ const styles = StyleSheet.create({
 		flexBasis: "10%",
 		paddingRight: "2px",
 	},
+	table_body_tari: {
+		textAlign: "left",
+		fontSize: 8,
+		fontWeight: "light",
+		flexBasis: "8%",
+		paddingLeft: "2px",
+	},
 	table_body_pre: {
 		textAlign: "left",
 		fontSize: 8,
 		fontWeight: "light",
-		flexBasis: "10%",
+		flexBasis: "8%",
 		paddingLeft: "20px",
 	},
 
@@ -161,11 +174,17 @@ const styles = StyleSheet.create({
 		fontWeight: "bold",
 		flexBasis: "10%",
 	},
+	table_footer_tari: {
+		textAlign: "center",
+		fontSize: 11,
+		fontWeight: "bold",
+		flexBasis: "8%",
+	},
 	table_footer_pre: {
 		textAlign: "center",
 		fontSize: 11,
 		fontWeight: "bold",
-		flexBasis: "10%",
+		flexBasis: "8%",
 	},
 
 	section_data: {
@@ -212,78 +231,89 @@ const styles = StyleSheet.create({
 
 // Total sum
 let TotalPrice = 0;
+let TotalTEPrice = 0;
 let newFilteredReports = [];
+let currTableFilteredReports = [];
 // Create Document Component
 const MyDocument = ({ data, dates }) => (
 	<Document>
 		<Page size="LETTER" orientation="landscape" style={styles.page}>
 			{/* <View style={styles.table}> */}
-				<View style={styles.header}>
-					<View wrap>
-						<Image src={logo} style={styles.logo}></Image>
-						<Text style={styles.logo_text}>Pablo Pumarol No. 13</Text>
-						<Text style={styles.logo_text}>(809)-565-7740</Text>
-					</View>
-					<View wrap>
-						<Text style={styles.header_text}>Cuadre de Servicios</Text>
-						<Text style={styles.header_subtext_title}>
-							Desde:{" "}{dates[0] ? getDateString(dates[0]) : ""}
-							<Text style={styles.header_subtext}> </Text>
-						</Text>
-						<Text style={styles.header_subtext_title}>
-							Hasta:{" "}{dates[1] ? getDateString(dates[1]) : ""}
-							<Text style={styles.header_subtext}> </Text>
-						</Text>
-					</View>
+			<View style={styles.header}>
+				<View wrap>
+					<Image src={logo} style={styles.logo}></Image>
+					<Text style={styles.logo_text}>Pablo Pumarol No. 13</Text>
+					<Text style={styles.logo_text}>(809)-565-7740</Text>
 				</View>
-				{/* HEADER */}
-				<View style={styles.table_header} fixed>
-					<Text style={styles.table_header_pol}>Póliza</Text>
-					<Text style={styles.table_header_aseg}>Asegurado</Text>
-					<Text style={styles.table_header_ope}>Operador</Text>
-					<Text style={styles.table_header_date}>Fecha</Text>
-					<Text style={styles.table_header_dist}>Distancia (Km)</Text>
-					<Text style={styles.table_header_pre}>Precio (RD$)</Text>
-				</View>
-				{/* BODY*/}
-				{data.map((report, index) => {
-					TotalPrice += report.precio
-					return (
-						<View key={report.serviceNo} style={styles.table_body_row} wrap={false}>
-							<Text style={styles.table_body_pol}>
-								{report.poliza ? report.poliza : ""}
-							</Text>
-							<Text style={styles.table_body_aseg}>
-								{report.asegurado ? report.asegurado : ""}
-							</Text>
-							<Text style={styles.table_body_ope}>
-								{report.datosGruero.gruaDeServicio
-									? report.datosGruero.gruaDeServicio
-									: ""}
-							</Text>
-							<Text style={styles.table_body_date}>
-								{report.fechaSiniestro ? report.fechaSiniestro : ""}
-							</Text>
-							<Text style={styles.table_body_dist}>
-								{report.distancia ? report.distancia : ""}
-							</Text>
-							<Text style={styles.table_body_pre}>
-								{report.precio ? Number(report.precio).toLocaleString(undefined, { maximumFractionDigits: 2 }) : ""}
-							</Text>
-						</View>
-					);
-				})}
-				{/* FOOTER */}
-				<View style={styles.table_footer}>
-					<Text style={styles.table_header_pol}>TOTAL POLIZAS:</Text>
-					<Text style={styles.table_header_aseg}>{data.length}</Text>
-					<Text style={styles.table_header_ope}> </Text>
-					<Text style={styles.table_header_date}> </Text>
-					<Text style={styles.table_footer_dist}>TOTAL RD$:</Text>
-					<Text style={styles.table_footer_pre}>
-						{Number(TotalPrice).toLocaleString(undefined, { maximumFractionDigits: 2 })}
+				<View wrap>
+					<Text style={styles.header_text}>Cuadre de Servicios</Text>
+					<Text style={styles.header_subtext_title}>
+						Desde:{" "}{dates[0] ? getDateString(dates[0]) : ""}
+						<Text style={styles.header_subtext}> </Text>
+					</Text>
+					<Text style={styles.header_subtext_title}>
+						Hasta:{" "}{dates[1] ? getDateString(dates[1]) : ""}
+						<Text style={styles.header_subtext}> </Text>
 					</Text>
 				</View>
+			</View>
+			{/* HEADER */}
+			<View style={styles.table_header} fixed>
+				<Text style={styles.table_header_pol}>Póliza</Text>
+				<Text style={styles.table_header_aseg}>Asegurado</Text>
+				<Text style={styles.table_header_ope}>Operador</Text>
+				<Text style={styles.table_header_date}>Fecha</Text>
+				<Text style={styles.table_header_dist}>Distancia (Km)</Text>
+				<Text style={styles.table_header_tari}>Tarifa Esp. (RD$)</Text>
+				<Text style={styles.table_header_pre}>Precio (RD$)</Text>
+			</View>
+			{/* BODY*/}
+			{data.map((report) => {
+				if (report.tarifaEspecial === "") report.tarifaEspecial = 0
+				TotalPrice += report.precio
+				TotalTEPrice += report.tarifaEspecial
+				return (
+					<View key={report.serviceNo} style={styles.table_body_row} wrap={false}>
+						<Text style={styles.table_body_pol}>
+							{report.poliza ? report.poliza : ""}
+						</Text>
+						<Text style={styles.table_body_aseg}>
+							{report.asegurado ? report.asegurado : ""}
+						</Text>
+						<Text style={styles.table_body_ope}>
+							{report.datosGruero.gruaDeServicio
+								? report.datosGruero.gruaDeServicio
+								: ""}
+						</Text>
+						<Text style={styles.table_body_date}>
+							{report.fechaSiniestro ? report.fechaSiniestro : ""}
+						</Text>
+						<Text style={styles.table_body_dist}>
+							{report.distancia ? report.distancia : ""}
+						</Text>
+						<Text style={styles.table_body_tari}>
+							{report.precio ? Number(report.tarifaEspecial).toLocaleString(undefined, { maximumFractionDigits: 2 }) : ""}
+						</Text>
+						<Text style={styles.table_body_pre}>
+							{report.precio ? Number(report.precio).toLocaleString(undefined, { maximumFractionDigits: 2 }) : ""}
+						</Text>
+					</View>
+				);
+			})}
+			{/* FOOTER */}
+			<View style={styles.table_footer}>
+				<Text style={styles.table_header_pol}>TOTAL POLIZAS:</Text>
+				<Text style={styles.table_header_aseg}>{data.length}</Text>
+				<Text style={styles.table_header_ope}> </Text>
+				<Text style={styles.table_header_date}>TARIFA ESP:</Text>
+				<Text style={styles.table_footer_tari}>
+					{Number(TotalTEPrice).toLocaleString(undefined, { maximumFractionDigits: 2 })}
+				</Text>
+				<Text style={styles.table_footer_dist}>TOTAL RD$:</Text>
+				<Text style={styles.table_footer_pre}>
+					{Number(TotalPrice).toLocaleString(undefined, { maximumFractionDigits: 2 })}
+				</Text>
+			</View>
 			{/* </View> */}
 		</Page>
 	</Document>
@@ -294,20 +324,29 @@ const PrintBalanceReport = () => {
 	const {
 		filteredReports,
 		filteredDates,
+		currTable,
 	} = ReportContext;
 
 	useEffect(() => {
+		currTableFilteredReports = [];
 		newFilteredReports = [];
+		TotalTEPrice= 0;
 		TotalPrice = 0;
 	}, [])
 
-	if(filteredReports) {
+	if (filteredReports) {
+		const filteredServices = currTable.map(value => value.data[1])
 		const polizas = filteredReports.map(value => value.poliza);
 		const uniquePolizas = Array.from(new Set(polizas));
 		newFilteredReports = filteredReports.map((value, index) => ({
 			...value,
-			poliza : `(${uniquePolizas.indexOf(value.poliza)}) ${value.poliza}`
+			poliza: `(${uniquePolizas.indexOf(value.poliza)}) ${value.poliza}`
 		}))
+		if (filteredServices.length > 0) {
+			currTableFilteredReports = newFilteredReports.filter(value => filteredServices.includes(value.serviceNo))
+			newFilteredReports = currTableFilteredReports;
+		}
+
 	}
 
 	return (

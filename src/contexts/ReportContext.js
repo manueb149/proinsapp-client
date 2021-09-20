@@ -7,6 +7,7 @@ const ReportContext = (props) => {
     const [selectedReport, setSelectedReport] = useState(null);
     const [filteredReports, setFilteredReports] = useState([]);
     const [filteredDates, setFilteredDates] = useState([]);
+    const [currTable, setCurrTable] = useState([]);
 
     return (
         <reportContext.Provider
@@ -14,9 +15,11 @@ const ReportContext = (props) => {
                 filteredReports,
                 selectedReport,
                 filteredDates,
+                currTable,
                 setFilteredReports,
                 setSelectedReport,
                 setFilteredDates,
+                setCurrTable,
             }}
         >
             {props.children}
