@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
 		paddingRight: "2px",
 	},
 	table_body_tari: {
-		textAlign: "left",
+		textAlign: "center",
 		fontSize: 8,
 		fontWeight: "light",
 		flexBasis: "8%",
@@ -154,7 +154,6 @@ const styles = StyleSheet.create({
 
 	table_footer: {
 		marginTop: 10,
-		marginBottom: 10,
 		marginLeft: 20,
 		marginRight: 20,
 		paddingHorizontal: 10,
@@ -168,23 +167,44 @@ const styles = StyleSheet.create({
 		borderColor: "#000",
 		borderStyle: "solid",
 	},
+	table_footer_total: {
+		marginTop: 1,
+		marginBottom: 10,
+		marginLeft: 20,
+		marginRight: 20,
+		paddingVertical: 2,
+		display: "flex",
+		flexDirection: "row",
+		alignItems: "center",
+		justifyContent: "flex-start",
+		backgroundColor: "#f5f5f5",
+		border: 1,
+		borderColor: "#000",
+		borderStyle: "solid",
+	},
 	table_footer_dist: {
 		textAlign: "center",
-		fontSize: 11,
+		fontSize: 8,
 		fontWeight: "bold",
 		flexBasis: "10%",
 	},
 	table_footer_tari: {
-		textAlign: "center",
-		fontSize: 11,
+		textAlign: "right",
+		fontSize: 8,
 		fontWeight: "bold",
-		flexBasis: "8%",
+		flexBasis: "14%",
 	},
 	table_footer_pre: {
 		textAlign: "center",
-		fontSize: 11,
+		fontSize: 8,
 		fontWeight: "bold",
 		flexBasis: "8%",
+	},
+	table_footer_pre_total: {
+		textAlign: "center",
+		fontSize: 8,
+		fontWeight: "bold",
+		flexBasis: "6%",
 	},
 
 	section_data: {
@@ -231,6 +251,7 @@ const styles = StyleSheet.create({
 
 // Total sum
 let TotalPrice = 0;
+let TotalSUBPrice = 0;
 let TotalTEPrice = 0;
 let newFilteredReports = [];
 let currTableFilteredReports = [];
@@ -270,8 +291,9 @@ const MyDocument = ({ data, dates }) => (
 			{/* BODY*/}
 			{data.map((report) => {
 				if (report.tarifaEspecial === "") report.tarifaEspecial = 0
-				TotalPrice += report.precio
-				TotalTEPrice += report.tarifaEspecial
+				TotalPrice += Number(report.tarifaEspecial > 0) ? Number(report.tarifaEspecial) : Number(report.precio)
+				TotalSUBPrice += Number(report.precio)
+				TotalTEPrice += Number(report.tarifaEspecial)
 				return (
 					<View key={report.serviceNo} style={styles.table_body_row} wrap={false}>
 						<Text style={styles.table_body_pol}>
@@ -305,12 +327,23 @@ const MyDocument = ({ data, dates }) => (
 				<Text style={styles.table_header_pol}>TOTAL POLIZAS:</Text>
 				<Text style={styles.table_header_aseg}>{data.length}</Text>
 				<Text style={styles.table_header_ope}> </Text>
-				<Text style={styles.table_header_date}>TARIFA ESP:</Text>
-				<Text style={styles.table_footer_tari}>
+				<Text style={styles.table_footer_tari}>TARIFA ESP RD$:</Text>
+				<Text style={styles.table_footer_pre}>
 					{Number(TotalTEPrice).toLocaleString(undefined, { maximumFractionDigits: 2 })}
 				</Text>
-				<Text style={styles.table_footer_dist}>TOTAL RD$:</Text>
+				<Text style={styles.table_footer_dist}>SUBTOTAL RD$:</Text>
 				<Text style={styles.table_footer_pre}>
+					{Number(TotalSUBPrice).toLocaleString(undefined, { maximumFractionDigits: 2 })}
+				</Text>
+			</View>
+			<View style={styles.table_footer_total}>
+				<Text style={styles.table_header_pol}> </Text>
+				<Text style={styles.table_header_aseg}> </Text>
+				<Text style={styles.table_header_ope}> </Text>
+				<Text style={styles.table_header_date}> </Text>
+				<Text style={styles.table_header_tari}> </Text>
+				<Text style={styles.table_footer_dist}>TOTAL RD$:</Text>
+				<Text style={styles.table_footer_pre_total}>
 					{Number(TotalPrice).toLocaleString(undefined, { maximumFractionDigits: 2 })}
 				</Text>
 			</View>
@@ -330,7 +363,8 @@ const PrintBalanceReport = () => {
 	useEffect(() => {
 		currTableFilteredReports = [];
 		newFilteredReports = [];
-		TotalTEPrice= 0;
+		TotalTEPrice = 0;
+		TotalSUBPrice = 0;
 		TotalPrice = 0;
 	}, [])
 
