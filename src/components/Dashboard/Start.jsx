@@ -11,6 +11,7 @@ import AuthContext from "../../contexts/auth/authContext";
 import { useHistory } from "react-router-dom";
 
 const Start = () => {
+    const actualYear = Number((new Date()).getFullYear());
     const [openSB, setOpenSB] = useState(false);
     const [loading, setLoading] = useState(false);
     const [clear, setClear] = useState(false);
@@ -56,7 +57,7 @@ const Start = () => {
                     const newData = [];
                     const storedChassis = []
                     data.forEach(service => {
-                        const repeated = data.filter(value => value.chassis === service.chassis)
+                        const repeated = data.filter(value => (value.chassis === service.chassis) && (value.registry.search(`${actualYear}`) !== -1))
                         if(repeated.length >= 2 && !storedChassis.includes(service.chassis)){
                             newData.push({
                                 ...service,

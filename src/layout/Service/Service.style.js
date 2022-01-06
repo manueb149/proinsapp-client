@@ -38,6 +38,16 @@ export const CreateServiceContainer = styled.div`
         transition: .15s ease-out;
         transform: scale(1.01);
     }
+    button.btn.btn-info{
+        background-color: #10707f;
+        color: var(--text-color);
+    }
+    button.btn.btn-info:hover{
+        color: white;
+        background-color: #068397;
+        transition: .15s ease-out;
+        transform: scale(1.01);
+    }
     .form-check-input{
         margin-top: 0.2rem !important;
     }

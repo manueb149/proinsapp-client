@@ -20,8 +20,10 @@ import PhoneInput from "react-phone-number-input";
 import AuthContext from "../../contexts/auth/authContext";
 import { useHistory } from "react-router-dom";
 import serviceCalc from "../utils/serviceCalc";
+import copyText from "../utils/copyText";
 
 const CreateService = () => {
+	const actualYear = Number((new Date()).getFullYear());
 	const [showType, setShowType] = useState(false);
 	const [showDetail, setShowDetail] = useState(false);
 	const [showMap, setShowMap] = useState(false);
@@ -225,6 +227,10 @@ const CreateService = () => {
 			[e.target.name]: Number(e.target.value),
 		});
 	};
+
+	const handleShare = () => {
+		copyText(`Aseguradora: ${data.aseguradora}\nUbicación: ${data.ubicacion}\nDestino: ${data.destino}\nPóliza: ${data.poliza}\nPlaca: ${data.placa}\nChasis: ${data.chassis}\nPlan: ${data.plan}\nVehículo: ${data.tipoV} ${data.marca} ${data.modelo}\nTeléfono: ${data.telAseg1 || data.telAseg2}\nNombre: ${data.asegurado}`)
+	}
 
 	const handleErase = () => {
 		setData({
@@ -433,10 +439,10 @@ const CreateService = () => {
 					}
 				});
 
-			axios
+			await axios
 				.get(`/service/report/${search.type}/${search.id}`)
 				.then((res) => {
-					setRepeatedServices(res.data.length)
+					setRepeatedServices(res.data.filter(service => service.registry.search(`${actualYear}`) !== -1).length)
 				})
 				.catch((error) => {
 					if (error.response) {
@@ -557,6 +563,9 @@ const CreateService = () => {
 				}}
 			>
 				Mostrar Mapa
+			</Button>
+			<Button variant="info" size="sm" onClick={handleShare}>
+				Copiar
 			</Button>
 			<Button variant="warning" size="sm" onClick={handleErase}>
 				Limpiar
