@@ -21,6 +21,7 @@ import AuthContext from "../../contexts/auth/authContext";
 import { useHistory } from "react-router-dom";
 import serviceCalc from "../utils/serviceCalc";
 import copyText from "../utils/copyText";
+import combinedServices from "../utils/combinedServices";
 
 const CreateService = () => {
 	const actualYear = Number((new Date()).getFullYear());
@@ -30,6 +31,7 @@ const CreateService = () => {
 	const [showConfirm, setShowConfirm] = useState(false);
 	const [openSB, setOpenSB] = useState(false);
 	const [repeatedServices, setRepeatedServices] = useState(null);
+	const [combServices, setCombServices] = useState(null);
 	const history = useHistory();
 
 	const DefaultValuesContext = useContext(defaultValuesContext);
@@ -229,7 +231,11 @@ const CreateService = () => {
 	};
 
 	const handleShare = () => {
-		copyText(`Aseguradora: ${data.aseguradora}\nUbicación: ${data.ubicacion}\nDestino: ${data.destino}\nPóliza: ${data.poliza}\nPlaca: ${data.placa}\nChasis: ${data.chassis}\nPlan: ${data.plan}\nVehículo: ${data.tipoV} ${data.marca} ${data.modelo}\nTeléfono: ${data.telAseg1 || data.telAseg2}\nNombre: ${data.asegurado}`)
+		copyText(`Aseguradora: ${data.aseguradora}\nUbicación: ${data.ubicacion}\nDestino: ${data.destino}\nPóliza: ${data.poliza}\nPlaca: ${data.placa}\nChasis: ${data.chassis}\nPlan: ${data.plan}\nVehículo: ${data.tipoV} ${data.marca} ${data.modelo}\nColor: ${data.color}\nTeléfono: ${data.telAseg1 || data.telAseg2}\nNombre: ${data.asegurado}`)
+		setOpenSB(false);
+		setSeverity("success");
+		setNotification("Campos Copiados!");
+		setOpenSB(true);
 	}
 
 	const handleErase = () => {
@@ -297,8 +303,9 @@ const CreateService = () => {
 			CO: false,
 			DM: false,
 		});
-		setSearch({...search, id: ""});
+		setSearch({ ...search, id: "" });
 		setRepeatedServices(null);
+		setCombServices(null);
 		SetAreaTruckSelect([]);
 		setDataTrucks([]);
 		setOpenSB(false);
@@ -443,6 +450,7 @@ const CreateService = () => {
 				.get(`/service/report/${search.type}/${search.id}`)
 				.then((res) => {
 					setRepeatedServices(res.data.filter(service => service.registry.search(`${actualYear}`) !== -1).length)
+					setCombServices(combinedServices(res.data, ['SG', 'CR', 'CE', 'CG']))
 				})
 				.catch((error) => {
 					if (error.response) {
@@ -497,6 +505,7 @@ const CreateService = () => {
 				search={search}
 				setSearch={setSearch}
 				setRepeatedServices={setRepeatedServices}
+				setCombServices={setCombServices}
 			/>
 
 			<SnackBar
@@ -539,44 +548,46 @@ const CreateService = () => {
 			) : null}
 
 			<MapModal showMap={showMap} setShowMap={setShowMap} />
-
-			<Button
-				variant="primary"
-				size="sm"
-				onClick={() => setShowType(true)}
-			>
-				Tipos de servicios
-			</Button>
-			<Button
-				variant="primary"
-				size="sm"
-				onClick={() => setShowDetail(true)}
-			>
-				Detalles siniestro
-			</Button>
-			<Button
-				variant="primary"
-				size="sm"
-				// onClick={() => setShowMap(true)}
-				onClick={() => {
-					window.open("https://www.google.com/maps/", "_blank");
-				}}
-			>
-				Mostrar Mapa
-			</Button>
-			<Button variant="info" size="sm" onClick={handleShare}>
-				Copiar
-			</Button>
-			<Button variant="warning" size="sm" onClick={handleErase}>
-				Limpiar
-			</Button>
-			<Button
-				variant="success"
-				size="sm"
-				onClick={() => setShowConfirm(true)}
-			>
-				Guardar
-			</Button>
+			
+			<div className="buttons">
+				<Button
+					variant="primary"
+					size="sm"
+					onClick={() => setShowType(true)}
+				>
+					Tipos de servicios
+				</Button>
+				<Button
+					variant="primary"
+					size="sm"
+					onClick={() => setShowDetail(true)}
+				>
+					Detalles siniestro
+				</Button>
+				<Button
+					variant="primary"
+					size="sm"
+					// onClick={() => setShowMap(true)}
+					onClick={() => {
+						window.open("https://www.google.com/maps/", "_blank");
+					}}
+				>
+					Mostrar Mapa
+				</Button>
+				<Button variant="info" size="sm" onClick={handleShare}>
+					Copiar
+				</Button>
+				<Button variant="warning" size="sm" onClick={handleErase}>
+					Limpiar
+				</Button>
+				<Button
+					variant="success"
+					size="sm"
+					onClick={() => setShowConfirm(true)}
+				>
+					Guardar
+				</Button>
+			</div>
 
 			<div className="card c-search mb-2">
 				<div className="card-header">Búsqueda</div>
@@ -630,8 +641,12 @@ const CreateService = () => {
 								Buscar
 							</Button>
 						</div>
-						<div className="col-lg-3 mb-3" style={{textAlign: "right", display: "flex", justifyContent: "flex-end", alignItems: "center", color: "red"}}>
-							{repeatedServices ? <h6 style={{margin: "0px"}}>SERVICIOS: {`${repeatedServices}`}</h6> : null}
+						<div className="col-lg-3 mb-3" style={{ textAlign: "right", display: "flex", flexDirection: 'column', justifyContent: "flex-end", alignItems: 'flex-end', color: "#e37d00" }}>
+							{/* <div style={{width: '100%', display='flex', flexDirection='column', }}>
+
+							</div> */}
+							{repeatedServices ? <h6 style={{ margin: "0px" }}>SERVICIOS: {`${repeatedServices}`}</h6> : null}
+							{combServices ? <h6 style={{ margin: "0px" }}>SERVICIOS COMBINADOS: {`${combServices}`}</h6> : null}
 						</div>
 					</form>
 				</div>

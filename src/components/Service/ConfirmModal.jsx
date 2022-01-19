@@ -19,7 +19,8 @@ const ConfirmModal = ({
 	handleBakDateChange,
 	search,
 	setSearch,
-	setRepeatedServices
+	setRepeatedServices,
+	setCombServices,
 }) => {
 	const history = useHistory();
 	const authContext = useContext(AuthContext);
@@ -157,6 +158,7 @@ const ConfirmModal = ({
 					handleBakDateChange(new Date());
 					setSearch({...search, id: ""});
 					setRepeatedServices(null);
+					setCombServices(null);
 					// setPrintService(res.data.newService);
 				})
 				.catch((error) => {

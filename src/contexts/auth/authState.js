@@ -43,8 +43,9 @@ const AuthState = (props) => {
 
     // Cuando el usuario inicia sesión
     const login = async loginData => {
+        const { email, password, setLoading } = loginData;
         try {
-            const result = await axios.post('/auth', loginData);
+            const result = await axios.post('/auth', {email, password});
             dispatch({
                 type: LOGIN_SUCCESS,
                 payload: result.data
@@ -52,7 +53,9 @@ const AuthState = (props) => {
 
             // Obtener el usuario
             userAuthenticated();
+            setLoading(false);
         } catch (error) {
+            setLoading(false);
             const alerta = {
                 text: error.response.data.text || 'Error',
                 severity: 'error'
