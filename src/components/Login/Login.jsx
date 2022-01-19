@@ -14,6 +14,7 @@ const Login = (props) => {
 	});
 	const [showEye, setShowEye] = useState(false);
 	const [openSB, setOpenSB] = useState(true);
+	const [loading, setLoading] = useState(false);
 
 	const { email, password } = user;
 
@@ -54,7 +55,8 @@ const Login = (props) => {
 		}
 
 		// Pasarlo al action
-		login({ email: email.toLowerCase(), password });
+		setLoading(true);
+		login({ email: email.toLowerCase(), password, setLoading });
 	};
 
 	const handleCloseSB = (event, reason) => {
@@ -131,7 +133,7 @@ const Login = (props) => {
 								</Form.Group>
 								<div className="btn-box">
 									<Button variant="primary" type="submit">
-										Ingresar
+										{loading ? 'Cargando...' : 'Ingresar'}
 									</Button>
 								</div>
 							</Form>
