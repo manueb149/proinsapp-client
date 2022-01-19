@@ -449,8 +449,9 @@ const CreateService = () => {
 			await axios
 				.get(`/service/report/${search.type}/${search.id}`)
 				.then((res) => {
-					setRepeatedServices(res.data.filter(service => service.registry.search(`${actualYear}`) !== -1).length)
-					setCombServices(combinedServices(res.data, ['SG', 'CR', 'CE', 'CG']))
+					const actualServices = res.data.filter(service => service.registry.search(`${actualYear}`) !== -1)
+					setRepeatedServices(actualServices.length)
+					setCombServices(combinedServices(actualServices, ['SG', 'CR', 'CE', 'CG']))
 				})
 				.catch((error) => {
 					if (error.response) {
@@ -548,7 +549,7 @@ const CreateService = () => {
 			) : null}
 
 			<MapModal showMap={showMap} setShowMap={setShowMap} />
-			
+
 			<div className="buttons">
 				<Button
 					variant="primary"
