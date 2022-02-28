@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from "react";
+import React, { Fragment, useContext, useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import { Button } from "react-bootstrap";
 import axios from "../../config/http-common";
@@ -22,6 +22,7 @@ const ConfirmModal = ({
 	setRepeatedServices,
 	setCombServices,
 }) => {
+	const [saving, setSaving] = useState(false);
 	const history = useHistory();
 	const authContext = useContext(AuthContext);
 	const ServiceModalsContext = useContext(serviceModalsContext);
@@ -83,6 +84,7 @@ const ConfirmModal = ({
 					"es-DO"
 				);
 			}
+			setSaving(true);
 			await axios
 				.post("/service/create", payload)
 				.then((res) => {
@@ -159,9 +161,11 @@ const ConfirmModal = ({
 					setSearch({...search, id: ""});
 					setRepeatedServices(null);
 					setCombServices(null);
+					setSaving(false);
 					// setPrintService(res.data.newService);
 				})
 				.catch((error) => {
+					setSaving(false);
 					if (error.response) {
 						// Request made and server responded
 						if (error.response.data.text === "TNV") {
@@ -234,8 +238,9 @@ const ConfirmModal = ({
 							handleBakDateChange(new Date());
 							handleCreateService();
 						}}
+						disabled={saving}
 					>
-						Confirmar
+						{saving ? 'Guardando...' : 'Confirmar'}
 					</Button>
 				</Modal.Footer>
 			</Modal>
