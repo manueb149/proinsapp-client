@@ -231,7 +231,7 @@ const CreateService = () => {
 	};
 
 	const handleShare = () => {
-		copyText(`Aseguradora: ${data.aseguradora}\nUbicación: ${data.ubicacion}\nDestino: ${data.destino}\nPóliza: ${data.poliza}\nPlaca: ${data.placa}\nChasis: ${data.chassis}\nPlan: ${data.plan}\nVehículo: ${data.tipoV} ${data.marca} ${data.modelo}\nColor: ${data.color}\nTeléfono: ${data.telAseg1 || data.telAseg2}\nNombre: ${data.asegurado}`)
+		copyText(`*Aseguradora:* ${data.aseguradora}\n*Ubicación:* ${data.ubicacion}\n*Destino:* ${data.destino}\n*Póliza:* ${data.poliza}\n*Placa:* ${data.placa}\n*Chasis:* ${data.chassis}\n*Plan:* ${data.plan}\n*Vehículo:* ${data.tipoV} ${data.marca} ${data.modelo} ${data.anio}\n*Color:* ${data.color}\n*Teléfono1:* ${(data.telAseg1 && data.telAseg1.length>5 ? data.telAseg1 : '')}\n*Teléfono2:* ${(data.telAseg2 && data.telAseg2.length>5 ? data.telAseg2 : '')}\n*Nombre del operador:* ${data.contactoGruero}\n*Nombre del cliente:* ${data.asegurado}`)
 		setOpenSB(false);
 		setSeverity("success");
 		setNotification("Campos Copiados!");
