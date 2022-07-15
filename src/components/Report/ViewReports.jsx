@@ -3,12 +3,12 @@ import MUIDataTable from "mui-datatables";
 import { Button } from "react-bootstrap";
 import DatePicker from "../utils/DatePicker";
 import axios from "../../config/http-common";
-import filterReportsByDate from "../utils/filterReportsByDate";
 import { ReportsContainer } from "../../layout/Reports/Reports.style";
 import AuthContext from "../../contexts/auth/authContext";
 import { reportContext } from "../../contexts/ReportContext";
 import { useHistory } from "react-router-dom";
 import moment from "moment-timezone";
+import { isDate } from "moment"
 moment().tz("America/Santo_Domingo").format();
 
 const columns = [
@@ -150,7 +150,7 @@ const columns = [
 	},
 	{
 		name: "registry",
-		label: "Fecha",
+		label: "Fecha registro",
 		options: {
 			filter: true,
 			sort: true,
@@ -158,7 +158,7 @@ const columns = [
 	},
 	{
 		name: "created_at",
-		label: "Fecha2",
+		label: "Fecha para ordenar",
 		options: {
 			filter: true,
 			sort: true,
@@ -253,10 +253,13 @@ const ViewReports = () => {
 	};
 
 	useEffect(() => {
+    setFiltering(true);
 		const getReports = async () => {
+      const gte = !isDate(selectedDateStart) ? selectedDateStart._d : selectedDateStart;
+      const lt = !isDate(selectedDateEnd)  ? selectedDateEnd._d : selectedDateEnd;
 			try {
 				await axios
-					.get(`/service`)
+					.get(`/service?gte=${gte}&lt=${lt}`)
 					.then((res) => {
 						const newData = res.data.results.map((value) => {
 							const gruero = value.datosGruero.gruaDeServicio
@@ -269,8 +272,11 @@ const ViewReports = () => {
 							)
 						})
 						setData(newData);
+            setFiltering(false);
 					})
 					.catch((error) => {
+            setFilteredReports([]);
+            setCurrTable([]);
 						if (error.response) {
 							// Request made and server responded
 							if (error.response.data.text === "TNV") {
@@ -303,15 +309,13 @@ const ViewReports = () => {
 		setFiltering(true);
 		setSelectedReport(null);
 		const getReports = () => {
+      const gte = !isDate(selectedDateStart) ? selectedDateStart._d : selectedDateStart;
+      const lt = !isDate(selectedDateEnd)  ? selectedDateEnd._d : selectedDateEnd;
 			try {
 				axios
-					.get(`/service`)
+					.get(`/service?gte=${gte}&lt=${lt}`)
 					.then((res) => {
-						const data = filterReportsByDate(
-							res.data.results,
-							selectedDateStart,
-							selectedDateEnd
-						);
+						const data = res.data.results || [];
 						const newData = data.map((value) => {
 							const gruero = value.datosGruero.gruaDeServicio
 							return (
@@ -353,10 +357,14 @@ const ViewReports = () => {
 
 	const handleClear = () => {
 		setCleaning(true);
+    handleDateChangeStart(new Date());
+    handleDateChangeEnd(new Date());
 		const getReports = async () => {
+      const gte = new Date().toLocaleString();
+      const lt = gte
 			try {
 				await axios
-					.get(`/service`)
+					.get(`/service?gte=${gte}&lt=${lt}`)
 					.then((res) => {
 						const newData = res.data.results.map((value) => {
 							const gruero = value.datosGruero.gruaDeServicio
@@ -418,7 +426,7 @@ const ViewReports = () => {
 					<Button
 						style={{ marginTop: "5px" }}
 						onClick={handleFilter}
-						disabled={filtering}
+						disabled={filtering || cleaning}
 					>
 						{filtering ? "Filtrando" : "Filtrar"}
 					</Button>
@@ -426,7 +434,7 @@ const ViewReports = () => {
 						variant="warning"
 						style={{ marginTop: "5px", marginLeft: "5px" }}
 						onClick={handleClear}
-						disabled={cleaning}
+						disabled={cleaning || filtering}
 					>
 						{cleaning ? "Limpiando" : "Limpiar"}
 					</Button>

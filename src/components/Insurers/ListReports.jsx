@@ -10,6 +10,7 @@ import filterReportsByDate from "../utils/filterReportsByDate";
 import AuthContext from "../../contexts/auth/authContext";
 import getServiceType from "../utils/getServiceType";
 import MUIDataTable from "mui-datatables";
+import { isDate } from "moment"
 moment().tz("America/Santo_Domingo").format();
 
 const columns = [
@@ -135,9 +136,11 @@ const ListReports = () => {
 
 	useEffect(() => {
 		const getReports = async () => {
+      const gte = !isDate(selectedDateStart) ? selectedDateStart._d : selectedDateStart;
+      const lt = !isDate(selectedDateEnd)  ? selectedDateEnd._d : selectedDateEnd;
 			try {
 				await axios
-					.get(`/service`)
+					.get(`/service?gte=${gte}&lt=${lt}`)
 					.then((res) => {
 						const newData = res.data.results.map(
 							(value, index) => ({
@@ -187,9 +190,11 @@ const ListReports = () => {
 		setFiltering(true);
 		// setSelectedReport(null);
 		const getReports = () => {
+      const gte = !isDate(selectedDateStart) ? selectedDateStart._d : selectedDateStart;
+      const lt = !isDate(selectedDateEnd)  ? selectedDateEnd._d : selectedDateEnd;
 			try {
-				axios
-					.get(`/service`)
+				await axios
+					.get(`/service?gte=${gte}&lt=${lt}`)
 					.then((res) => {
 						const newData = res.data.results.map(
 							(value, index) => ({
@@ -199,15 +204,10 @@ const ListReports = () => {
 								)
 							})
 						);
-						const filteredData = newData.filter(
+						const data = newData.filter(
 							(value) =>
 								value.aseguradora ===
 								String(user.name).toUpperCase()
-						);
-						const data = filterReportsByDate(
-							filteredData,
-							selectedDateStart,
-							selectedDateEnd
 						);
 						setData(data);
 						setFilteredInsurersReports(data);
@@ -244,9 +244,11 @@ const ListReports = () => {
 	const handleClear = () => {
 		setCleaning(true);
 		const getReports = async () => {
+      const gte = !isDate(selectedDateStart) ? selectedDateStart._d : selectedDateStart;
+      const lt = !isDate(selectedDateEnd)  ? selectedDateEnd._d : selectedDateEnd;
 			try {
 				await axios
-					.get(`/service`)
+					.get(`/service?gte=${gte}&lt=${lt}`)
 					.then((res) => {
 						const newData = res.data.results.map(
 							(value, index) => ({
