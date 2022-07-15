@@ -7,7 +7,6 @@ import moment from "moment-timezone";
 import { Button } from "react-bootstrap";
 import DatePicker from "../utils/DatePicker";
 import axios from "../../config/http-common";
-import filterReportsByDate from "../utils/filterReportsByDate";
 import AuthContext from "../../contexts/auth/authContext";
 import getServiceType from "../utils/getServiceType";
 import GraphViewer from "./GraphReport";
@@ -15,6 +14,7 @@ import LegendModal from "./LegendModal";
 import SnackBar from "../utils/SnackBar";
 import getUserPrivileges from "../utils/getActiveMenu";
 import { LegendModalContainer } from "../../layout/Service/Service.style";
+import { isDate } from "moment"
 moment().tz("America/Santo_Domingo").format();
 
 
@@ -51,9 +51,11 @@ const ViewReport = () => {
 
 	useEffect(() => {
 		const getReports = async () => {
+      const gte = !isDate(selectedDateStart) ? selectedDateStart._d : selectedDateStart;
+      const lt = !isDate(selectedDateEnd)  ? selectedDateEnd._d : selectedDateEnd;
 			try {
 				await axios
-					.get(`/service`)
+					.get(`/service?gte=${gte}&lt=${lt}`)
 					.then((res) => {
 						const newData = res.data.results.map(
 							(value) => ({
@@ -214,26 +216,22 @@ const ViewReport = () => {
 	const handleFilter = () => {
 		setFiltering(true);
 		const getReports = () => {
+      const gte = !isDate(selectedDateStart) ? selectedDateStart._d : selectedDateStart;
+      const lt = !isDate(selectedDateEnd)  ? selectedDateEnd._d : selectedDateEnd;
 			try {
 				axios
-					.get(`/service`)
+					.get(`/service?gte=${gte}&lt=${lt}`)
 					.then((res) => {
 						// const filteredData = res.data.results.filter(
 						// 	(value) =>
 						// 		value.aseguradora ===
 						// 		String(user.name).toUpperCase()
 						// );
-						const filteredData = res.data.results.filter(
-							(value) =>
-								value.aseguradora ===
-								String("la internacional").toUpperCase()
+						const filteredDataDate = res.data.results.filter(
+							(value) => value.aseguradora === String("la internacional").toUpperCase()
 						);
-						const filteredDataDate = filterReportsByDate(
-							filteredData,
-							selectedDateStart,
-							selectedDateEnd
-						);
-						if (filteredDataDate.length !== 0) {
+            console.log(res.data.results, filteredDataDate);
+						if (filteredDataDate.length > 0) {
 							setDataGraph(filteredDataDate)
 						} else {
 							setOpenSB(false);
@@ -388,10 +386,14 @@ const ViewReport = () => {
 
 	const handleClear = () => {
 		setCleaning(true);
+    handleDateChangeStart(new Date());
+    handleDateChangeEnd(new Date());
 		const getReports = async () => {
+      const gte = new Date().toLocaleString();
+      const lt = gte
 			try {
 				await axios
-					.get(`/service`)
+					.get(`/service?gte=${gte}&lt=${lt}`)
 					.then((res) => {
 						const newData = res.data.results.map(
 							(value, index) => ({
@@ -594,7 +596,7 @@ const ViewReport = () => {
 					<Button
 						style={{ marginTop: "5px", marginRight: "5px" }}
 						onClick={handleFilter}
-						disabled={filtering}
+						disabled={filtering || cleaning || updating}
 						size="sm"
 					>
 						{filtering ? "Filtrando" : "Filtrar"}
@@ -603,7 +605,7 @@ const ViewReport = () => {
 						variant="warning"
 						style={{ marginTop: "5px", marginRight: "5px" }}
 						onClick={handleClear}
-						disabled={cleaning}
+						disabled={filtering || cleaning || updating}
 						size="sm"
 					>
 						{cleaning ? "Procesando" : "Limpiar"}
@@ -612,7 +614,7 @@ const ViewReport = () => {
 						style={{ marginTop: "5px", marginRight: "5px" }}
 						variant="info"
 						onClick={() => handleUpdate()}
-						disabled={updating}
+						disabled={filtering || cleaning || updating}
 						size="sm"
 					>
 						{updating ? "Actualizando" : "Actualizar"}

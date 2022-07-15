@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import './serviceSummary.scss';
+import './serviceSummary.css';
 import { SummaryContainer } from "../../../layout/Service/Service.style";
 import PropTypes from "prop-types";
 import customFormats, { TextMaskCustom } from "../../utils/customFormats";
