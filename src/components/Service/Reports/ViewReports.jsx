@@ -8,6 +8,7 @@ import { useHistory } from "react-router-dom";
 import moment from "moment-timezone";
 import DatePicker from "../../utils/DatePicker";
 import { isDate } from "moment"
+import { Button } from "react-bootstrap";
 moment().tz("America/Santo_Domingo").format();
 
 const columns = [
@@ -135,6 +136,9 @@ const ViewReports = () => {
   const ServiceReportContext = useContext(serviceReportContext);
   const { setSelectedServiceReport } = ServiceReportContext;
   const [selectedDateStart, handleDateChangeStart] = useState(new Date());
+  const [selectedDateEnd, handleDateChangeEnd] = useState(new Date());
+  const [filtering, setFiltering] = useState(false);
+  const [cleaning, setCleaning] = useState(false);
 
   const options = {
     filter: true,
@@ -144,7 +148,7 @@ const ViewReports = () => {
     responsive: "standard",
     fixedHeader: true,
     fixedSelectColumn: true,
-    tableBodyHeight: "64vh",
+    tableBodyHeight: "55vh",
     selectableRows: "single",
     selectableRowsOnClick: true,
     selectableRowsHeader: false,
@@ -191,16 +195,17 @@ const ViewReports = () => {
   useEffect(() => {
     const getReports = async () => {
       const gte = !isDate(selectedDateStart) ? selectedDateStart._d : selectedDateStart;
+      const lt = !isDate(selectedDateEnd)  ? selectedDateEnd._d : selectedDateEnd;
       try {
         await axios
-          .get(`/service?gte=${gte}&lt=${gte}`)
+          .get(`/service?gte=${gte}&lt=${lt}`)
           .then((res) => {
             setData(
               res.data.results.filter(
                 (value) =>
                   value.user === user.name.toUpperCase()
               )
-            );
+            )
           })
           .catch((error) => {
             if (error.response) {
@@ -228,16 +233,124 @@ const ViewReports = () => {
     // eslint-disable-next-line
   }, []);
 
+  const handleFilter = () => {
+		setFiltering(true);
+		const getReports = () => {
+      const gte = !isDate(selectedDateStart) ? selectedDateStart._d : selectedDateStart;
+      const lt = !isDate(selectedDateEnd)  ? selectedDateEnd._d : selectedDateEnd;
+			try {
+				axios
+					.get(`/service?gte=${gte}&lt=${lt}`)
+					.then((res) => {
+            setData(
+              res.data.results.filter(
+                (value) =>
+                  value.user === user.name.toUpperCase()
+              )
+            )
+						setFiltering(false);
+					})
+					.catch((error) => {
+						if (error.response) {
+							// Request made and server responded
+							if (error.response.data.text === "TNV") {
+								logout();
+								history.push("/");
+							}
+							// console.log(error.response.status);
+							// console.log(error.response.headers);
+						} else if (error.request) {
+							// The request was made but no response was received
+							console.log(error.request);
+						} else {
+							// Something happened in setting up the request that triggered an Error
+							console.log("Error", error.message);
+						}
+					});
+			} catch (error) {
+				console.log(error.response.data);
+			}
+		};
+		getReports();
+    setSelectedServiceReport(null);
+	};
+
+  const handleClear = () => {
+    setCleaning(true);
+    handleDateChangeStart(new Date());
+    handleDateChangeEnd(new Date());
+    const getReports = async () => {
+      const gte = new Date().toLocaleString();
+      const lt = gte
+      try {
+        await axios
+          .get(`/service?gte=${gte}&lt=${lt}`)
+          .then((res) => {
+            setData(
+              res.data.results.filter((value) => value.user === user.name.toUpperCase())
+            );
+            setCleaning(false);
+          })
+          .catch((error) => {
+            if (error.response) {
+              // Request made and server responded
+              if (error.response.data.text === "TNV") {
+                logout();
+                history.push("/");
+              }
+              // console.log(error.response.status);
+              // console.log(error.response.headers);
+            } else if (error.request) {
+              // The request was made but no response was received
+              console.log(error.request);
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              console.log("Error", error.message);
+            }
+          });
+      } catch (error) {
+        console.log(error.response.data);
+      }
+    };
+    getReports();
+    setSelectedServiceReport(null);
+  };
+
   return (
     <ReportsContainer>
-      <DatePicker
-        MaxDate
-        MinDate
-        label="Fecha Inicial"
-        selectedDate={selectedDateStart}
-        handleDateChange={handleDateChangeStart}
-        noDisplay
-      />
+      <div className="date-picker">
+        <div className="col-lg-12 mb-3">
+          <DatePicker
+            MaxDate
+            MinDate
+            label="Fecha Inicial"
+            selectedDate={selectedDateStart}
+            handleDateChange={handleDateChangeStart}
+          />
+          <DatePicker
+            MaxDate
+            MinDate
+            label="Fecha Final"
+            selectedDate={selectedDateEnd}
+            handleDateChange={handleDateChangeEnd}
+          />
+          <Button
+            style={{ marginTop: "5px" }}
+            onClick={handleFilter}
+            disabled={filtering || cleaning}
+          >
+            {filtering ? "Filtrando" : "Filtrar"}
+          </Button>
+          <Button
+            variant="warning"
+            style={{ marginTop: "5px", marginLeft: "5px" }}
+            onClick={handleClear}
+            disabled={cleaning || filtering}
+          >
+            {cleaning ? "Limpiando" : "Limpiar"}
+          </Button>
+        </div>
+      </div>
       <MUIDataTable
         title={"Reportes registrados"}
         data={data}
