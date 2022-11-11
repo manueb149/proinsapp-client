@@ -616,7 +616,6 @@ const CreateService = () => {
 								}
 								required
 								disabled={isServiceNotRegistered}
-								style={{ marginTop: '10px' }}
 							></input>
 						</div>
 						<div className="col-lg-3 mb-3">
@@ -631,7 +630,6 @@ const CreateService = () => {
 								}
 								required
 								disabled={isServiceNotRegistered}
-								style={{ marginTop: '10px' }}
 							>
 								<option value={"poliza"} defaultValue>
 									Póliza
