@@ -295,7 +295,15 @@ const MyDocument = ({ data, dates }) => (
 				TotalSUBPrice += Number(report.precio)
 				TotalTEPrice += Number(report.tarifaEspecial)
 				return (
-					<View key={report.serviceNo} style={styles.table_body_row} wrap={false}>
+					<View 
+						key={report.serviceNo} 
+						style={{
+							...styles.table_body_row, 
+							backgroundColor: String(report.poliza).includes("N/A") ? '#999' : 'transparent',
+							color: String(report.poliza).includes("N/A") ? 'white' : 'black',
+						}} 
+						wrap={false}
+					>
 						<Text style={styles.table_body_pol}>
 							{report.poliza ? report.poliza : ""}
 						</Text>

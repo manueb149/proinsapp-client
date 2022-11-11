@@ -12,6 +12,38 @@ export const CreateServiceContainer = styled.div`
     label{
         font-weight: 400;
     }
+    .buttons{
+        position: fixed;
+        z-index: 1;
+        top: 93px;
+        background: #ebebeb;
+        border-radius: 10px;
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+    .card.c-search {
+        margin-top: 43px;
+    }
+    @media (max-width: 900px) {
+        .buttons{
+            position: relative;
+            z-index: 1;
+            top: 0;
+            background: transparent;
+            border-radius: 10px;
+            border-top-left-radius: 0px;
+            border-bottom-left-radius: 0px;
+        }
+        .card.c-search {
+            margin-top: 0px;
+        }
+    }
+    .buttons > button{
+        border-radius: var(--border-radius);
+        background-color: var(--bg-icon);
+        margin: 10px 10px 10px 0;
+        color: var(--text-color);
+    }
     button{
         border-radius: var(--border-radius);
         background-color: var(--bg-icon);

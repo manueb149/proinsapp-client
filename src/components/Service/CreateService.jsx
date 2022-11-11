@@ -77,7 +77,9 @@ const CreateService = () => {
 		selectedDate,
 		handleDateChange,
 		selectedBakDate,
-		handleBakDateChange
+		handleBakDateChange,
+		isServiceNotRegistered,
+		setIsServiceNotRegistered,
 	} = ServiceDataContext;
 
 	useEffect(() => {
@@ -231,7 +233,7 @@ const CreateService = () => {
 	};
 
 	const handleShare = () => {
-		copyText(`*Aseguradora:* ${data.aseguradora}\n*Ubicación:* ${data.ubicacion}\n*Destino:* ${data.destino}\n*Póliza:* ${data.poliza}\n*Placa:* ${data.placa}\n*Chasis:* ${data.chassis}\n*Plan:* ${data.plan}\n*Vehículo:* ${data.tipoV} ${data.marca} ${data.modelo} ${data.anio}\n*Color:* ${data.color}\n*Teléfono1:* ${(data.telAseg1 && data.telAseg1.length>5 ? data.telAseg1 : '')}\n*Teléfono2:* ${(data.telAseg2 && data.telAseg2.length>5 ? data.telAseg2 : '')}\n*Nombre del operador:* ${user.name}\n*Nombre del cliente:* ${data.asegurado}`)
+		copyText(`*Aseguradora:* ${data.aseguradora}\n*Ubicación:* ${data.ubicacion}\n*Destino:* ${data.destino}\n*Póliza:* ${data.poliza}\n*Placa:* ${data.placa}\n*Chasis:* ${data.chassis}\n*Plan:* ${data.plan}\n*Vehículo:* ${data.tipoV} ${data.marca} ${data.modelo} ${data.anio}\n*Color:* ${data.color}\n*Teléfono1:* ${(data.telAseg1 && data.telAseg1.length > 5 ? data.telAseg1 : '')}\n*Teléfono2:* ${(data.telAseg2 && data.telAseg2.length > 5 ? data.telAseg2 : '')}\n*Nombre del operador:* ${user.name}\n*Nombre del cliente:* ${data.asegurado}`)
 		setOpenSB(false);
 		setSeverity("success");
 		setNotification("Campos Copiados!");
@@ -476,6 +478,8 @@ const CreateService = () => {
 		}
 	};
 
+	const RequiredTag = () => <sup style={{ color: 'red' }}>*</sup>
+
 	return (
 		<CreateServiceContainer>
 			<ConfirmModal
@@ -507,6 +511,7 @@ const CreateService = () => {
 				setSearch={setSearch}
 				setRepeatedServices={setRepeatedServices}
 				setCombServices={setCombServices}
+				setIsServiceNotRegistered={setIsServiceNotRegistered}
 			/>
 
 			<SnackBar
@@ -610,6 +615,8 @@ const CreateService = () => {
 									setSearch({ ...search, id: e.target.value })
 								}
 								required
+								disabled={isServiceNotRegistered}
+								style={{ marginTop: '10px' }}
 							></input>
 						</div>
 						<div className="col-lg-3 mb-3">
@@ -623,6 +630,8 @@ const CreateService = () => {
 									})
 								}
 								required
+								disabled={isServiceNotRegistered}
+								style={{ marginTop: '10px' }}
 							>
 								<option value={"poliza"} defaultValue>
 									Póliza
@@ -638,6 +647,7 @@ const CreateService = () => {
 								variant="primary"
 								size="sm"
 								onClick={() => handleSearch()}
+								disabled={isServiceNotRegistered}
 							>
 								Buscar
 							</Button>
@@ -650,6 +660,28 @@ const CreateService = () => {
 							{combServices ? <h6 style={{ margin: "0px" }}>SERVICIOS COMBINADOS: {`${combServices}`}</h6> : null}
 						</div>
 					</form>
+				</div>
+				<div className="card-footer text-muted">
+					<div className="col-12 m-0">
+						<span style={{ display: 'flex', alignItems: 'center' }}>
+							<label className="form-check-label" htmlFor="SNR">
+								<input
+									style={{ marginBottom: '0' }} className="form-check-input" type="checkbox" id="SNR"
+									onChange={(e) => {
+										setIsServiceNotRegistered(e.target.checked);
+										if (!e.target.checked) return;
+										setData({
+											...data,
+											aseguradora: "N/A",
+											plan: "N/A",
+											poliza: "N/A",
+										})
+									}}
+								/>
+								Servicio no registrado
+							</label>
+						</span>
+					</div>
 				</div>
 			</div>
 			{multipleCars.length > 1 ? (
@@ -674,53 +706,77 @@ const CreateService = () => {
 				<div className="card-body">
 					<div className="form-row">
 						<div className="col-lg-3 mb-3">
-							<label htmlFor="no-poliza">No. Póliza</label>
+							<label htmlFor="no-poliza">No. Póliza<RequiredTag /></label>
 							<input
 								type="text"
 								className="form-control form-control-sm"
 								id="no-poliza"
-								value={data.poliza || ""}
+								value={isServiceNotRegistered ? "N/A" : (data.poliza || "")}
 								disabled
 							></input>
 						</div>
 						<div className="col-lg-3 mb-3">
-							<label htmlFor="chassis">Chassis</label>
+							<label htmlFor="chassis">Chassis<RequiredTag /></label>
 							<input
 								type="text"
 								className="form-control form-control-sm"
 								id="chassis"
 								value={data.chassis || ""}
-								disabled
+								onChange={(e) =>
+									setData({
+										...data,
+										chassis: e.target.value.toUpperCase(),
+									})
+								}
+								disabled={!isServiceNotRegistered}
 							></input>
 						</div>
 						<div className="col-lg-2 mb-3">
-							<label htmlFor="tipo">Tipo</label>
+							<label htmlFor="tipoV">Tipo<RequiredTag /></label>
 							<input
 								type="text"
 								className="form-control form-control-sm"
-								id="tipo"
+								id="tipoV"
 								value={data.tipoV || ""}
-								disabled
+								onChange={(e) =>
+									setData({
+										...data,
+										tipoV: e.target.value.toUpperCase(),
+									})
+								}
+								disabled={!isServiceNotRegistered}
 							></input>
 						</div>
 						<div className="col-lg-2 mb-3">
-							<label htmlFor="marca">Marca</label>
+							<label htmlFor="marca">Marca<RequiredTag /></label>
 							<input
 								type="text"
 								className="form-control form-control-sm"
 								id="marca"
 								value={data.marca || ""}
-								disabled
+								onChange={(e) =>
+									setData({
+										...data,
+										marca: e.target.value.toUpperCase(),
+									})
+								}
+								disabled={!isServiceNotRegistered}
 							></input>
 						</div>
 						<div className="col-lg-2 mb-3">
-							<label htmlFor="modelo">Modelo</label>
+							<label htmlFor="modelo">Modelo<RequiredTag /></label>
 							<input
 								type="text"
 								className="form-control form-control-sm"
 								id="modelo"
 								value={data.modelo || ""}
-								disabled
+								onChange={(e) =>
+									setData({
+										...data,
+										modelo: e.target.value.toUpperCase(),
+									})
+								}
+								disabled={!isServiceNotRegistered}
 							></input>
 						</div>
 					</div>
@@ -743,42 +799,54 @@ const CreateService = () => {
 							></input>
 						</div>
 						<div className="col-lg-1 mb-3">
-							<label htmlFor="anio">Año</label>
+							<label htmlFor="anio">Año<RequiredTag /></label>
 							<input
 								type="text"
 								className="form-control form-control-sm"
 								id="anio"
 								value={data.anio || ""}
-								disabled
+								onChange={(e) =>
+									setData({
+										...data,
+										anio: e.target.value.toUpperCase(),
+									})
+								}
+								disabled={!isServiceNotRegistered}
 							></input>
 						</div>
 						<div className="col-lg-3 mb-3">
-							<label htmlFor="placa2">Placa</label>
+							<label htmlFor="placa2">Placa<RequiredTag /></label>
 							<input
 								type="text"
 								className="form-control form-control-sm"
 								id="placa2"
 								value={data.placa || ""}
-								disabled
+								onChange={(e) =>
+									setData({
+										...data,
+										placa: e.target.value.toUpperCase(),
+									})
+								}
+								disabled={!isServiceNotRegistered}
 							></input>
 						</div>
 						<div className="col-lg-3 mb-3">
-							<label htmlFor="aseg">Aseguradora</label>
+							<label htmlFor="aseg">Aseguradora<RequiredTag /></label>
 							<input
 								type="text"
 								className="form-control form-control-sm"
 								id="aseg"
-								value={data.aseguradora || ""}
+								value={isServiceNotRegistered ? "N/A" : (data.aseguradora || "")}
 								disabled
 							></input>
 						</div>
 						<div className="col-lg-3 mb-3">
-							<label htmlFor="plan">Plan</label>
+							<label htmlFor="plan">Plan<RequiredTag /></label>
 							<input
 								type="text"
 								className="form-control form-control-sm"
 								id="plan"
-								value={data.plan || ""}
+								value={isServiceNotRegistered ? "N/A" : (data.plan || "")}
 								disabled
 							></input>
 						</div>
@@ -790,14 +858,20 @@ const CreateService = () => {
 				<div className="card-body">
 					<div className="form-row">
 						<div className="col-lg-6 mb-3">
-							<label htmlFor="nombre">Nombre</label>
+							<label htmlFor="nombre">Nombre<RequiredTag /></label>
 							<input
 								type="text"
 								className="form-control form-control-sm"
 								id="nombre"
 								value={data.asegurado || ""}
 								required
-								disabled
+								onChange={(e) =>
+									setData({
+										...data,
+										asegurado: e.target.value.toUpperCase(),
+									})
+								}
+								disabled={!isServiceNotRegistered}
 							></input>
 						</div>
 					</div>
@@ -887,7 +961,7 @@ const CreateService = () => {
 							></input>
 						</div>
 						<div className="col-lg-12 mb-3">
-							<label htmlFor="destino">Destino</label>
+							<label htmlFor="destino">Destino<RequiredTag /></label>
 							<input
 								placeholder="¿Hacia dónde se dirige?"
 								type="text"
@@ -1098,7 +1172,7 @@ const CreateService = () => {
 						</div>
 						<div className="col-lg-3 mb-3">
 							<label htmlFor="tiempoGrua">
-								Tiempo de llegada Grúa
+								Tiempo de llegada Grúa<RequiredTag />
 							</label>
 							<input
 								type="number"
@@ -1132,7 +1206,7 @@ const CreateService = () => {
 							></input>
 						</div>
 						<div className="col-lg-2 mb-3">
-							<label htmlFor="distancia">Distancia</label>
+							<label htmlFor="distancia">Distancia<RequiredTag /></label>
 							<input
 								type="number"
 								className="form-control form-control-sm"
@@ -1147,7 +1221,7 @@ const CreateService = () => {
 							></input>
 						</div>
 						<div className="col-lg-2 mb-3">
-							<label htmlFor="precio">Precio Aproximado</label>
+							<label htmlFor="precio">Precio Aproximado<RequiredTag /></label>
 							<input
 								type="text"
 								className="form-control form-control-sm"
