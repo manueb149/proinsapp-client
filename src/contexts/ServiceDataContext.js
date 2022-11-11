@@ -1,4 +1,4 @@
-import React, { createContext, useState , useEffect} from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 import axios from '../config/http-common';
 
 export const serviceDataContext = createContext();
@@ -13,6 +13,7 @@ const ServiceDataContext = ({ children }) => {
 	const [areaTruckSelect, SetAreaTruckSelect] = useState([]);
 	const [multipleCars, setMultipleCars] = useState([]);
 	const [multipleCarsSelect, setMultipleCarsSelect] = useState([]);
+	const [isServiceNotRegistered, setIsServiceNotRegistered] = useState(false);
 	const [selectedDate, handleDateChange] = useState(new Date());
 	const [selectedBakDate, handleBakDateChange] = useState(new Date());
 
@@ -21,7 +22,7 @@ const ServiceDataContext = ({ children }) => {
 		type: "poliza", //Default value: póliza
 	});
 
-    const [data, setData] = useState({
+	const [data, setData] = useState({
 		poliza: "",
 		cedula: "",
 		asegurado: "",
@@ -52,7 +53,8 @@ const ServiceDataContext = ({ children }) => {
 		distancia: "",
 		precio: "",
 		tarifaEspecial: "",
-		user: ""
+		user: "",
+		snr: false,
 	});
 
 	useEffect(() => {
@@ -83,21 +85,22 @@ const ServiceDataContext = ({ children }) => {
 	}, []);
 
 
-    return (
-        <serviceDataContext.Provider
-            value={{
+	return (
+		<serviceDataContext.Provider
+			value={{
 				data: data,
 				search: search,
-				trucks: trucks, 
-				truckAreas: truckAreas, 
-				dataTrucks: dataTrucks, 
-				areaTruckSelect: areaTruckSelect, 
-				severity: severity, 
+				trucks: trucks,
+				truckAreas: truckAreas,
+				dataTrucks: dataTrucks,
+				areaTruckSelect: areaTruckSelect,
+				severity: severity,
 				notification: notification,
 				multipleCars: multipleCars,
 				multipleCarsSelect: multipleCarsSelect,
 				selectedDate: selectedDate,
 				selectedBakDate: selectedBakDate,
+				isServiceNotRegistered: isServiceNotRegistered,
 				setData: setData,
 				setSearch: setSearch,
 				setTrucks: setTrucks,
@@ -108,14 +111,14 @@ const ServiceDataContext = ({ children }) => {
 				setNotification: setNotification,
 				setMultipleCars: setMultipleCars,
 				setMultipleCarsSelect: setMultipleCarsSelect,
+				setIsServiceNotRegistered: setIsServiceNotRegistered,
 				handleDateChange: handleDateChange,
 				handleBakDateChange: handleBakDateChange
-
-            }}
-        >
-            {children}
-        </serviceDataContext.Provider>
-    )
+			}}
+		>
+			{children}
+		</serviceDataContext.Provider>
+	)
 }
 
 export default ServiceDataContext;

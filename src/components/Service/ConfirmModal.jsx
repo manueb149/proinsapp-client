@@ -21,6 +21,7 @@ const ConfirmModal = ({
 	setSearch,
 	setRepeatedServices,
 	setCombServices,
+	setIsServiceNotRegistered,
 }) => {
 	const [saving, setSaving] = useState(false);
 	const history = useHistory();
@@ -51,6 +52,15 @@ const ConfirmModal = ({
 			return;
 		}
 		if (
+			String(payload.data.poliza).length === 0 ||
+			String(payload.data.chassis).length === 0 ||
+			String(payload.data.tipoV).length === 0 ||
+			String(payload.data.marca).length === 0 ||
+			String(payload.data.modelo).length === 0 ||
+			String(payload.data.anio).length === 0 ||
+			String(payload.data.placa).length === 0 ||
+			String(payload.data.aseguradora).length === 0 ||
+			String(payload.data.plan).length === 0 ||
 			String(payload.data.asegurado).length === 0 ||
 			String(payload.data.dia).length === 0 ||
 			String(payload.data.ubicacion).length === 0 ||
@@ -162,6 +172,7 @@ const ConfirmModal = ({
 					setRepeatedServices(null);
 					setCombServices(null);
 					setSaving(false);
+					setIsServiceNotRegistered(false);
 					// setPrintService(res.data.newService);
 				})
 				.catch((error) => {
