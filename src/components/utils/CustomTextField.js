@@ -10,17 +10,17 @@ const CustomTextField = ({ values, setValues, checked, setChecked, variant, size
                 ?
                 <Checkbox
                     name={shortName}
-                    checked={noCheck ? true : shortName === "TH" ? values[shortName] : checked[shortName]}
+                    checked={noCheck ? true : shortName === "TH" || shortName ==="SNR" ? values[shortName] : checked[shortName]}
                     onChange={(e) => {
                         setChecked({
                             ...checked,
                             [e.target.name]:
                                 e.target.checked,
                         })
-                        if (e.target.name === "TH") {
+                        if (e.target.name === "TH" || e.target.name === "SNR") {
                             setValues({
                                 ...values,
-                                TH: e.target.checked
+                                [e.target.name]: e.target.checked
                             })
                         }
                     }}

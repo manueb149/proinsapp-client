@@ -3,6 +3,7 @@ import React, { Fragment, useContext, useEffect } from "react";
 import logo from "../../assets/logo_h.png";
 import getDateString from "../utils/getDateString";
 import { reportContext } from "../../contexts/ReportContext";
+import { defaultValuesContext } from "../../contexts/DefaultValuesContext";
 // import printDate from "../utils/printReportDate";
 import {
 	Document,
@@ -299,8 +300,8 @@ const MyDocument = ({ data, dates }) => (
 						key={report.serviceNo} 
 						style={{
 							...styles.table_body_row, 
-							backgroundColor: String(report.poliza).includes("N/A") ? '#999' : 'transparent',
-							color: String(report.poliza).includes("N/A") ? 'white' : 'black',
+							backgroundColor: report.snr === true ? '#7e7e7e' : 'transparent',
+							color: report.snr === true ? 'white' : 'black',
 						}} 
 						wrap={false}
 					>
@@ -362,6 +363,10 @@ const MyDocument = ({ data, dates }) => (
 
 const PrintBalanceReport = () => {
 	const ReportContext = useContext(reportContext);
+	const DefaultValuesContext = useContext(defaultValuesContext);
+
+	const { values } = DefaultValuesContext;
+	console.log(values)
 	const {
 		filteredReports,
 		filteredDates,
@@ -388,7 +393,21 @@ const PrintBalanceReport = () => {
 			currTableFilteredReports = newFilteredReports.filter(value => filteredServices.includes(value.serviceNo))
 			newFilteredReports = currTableFilteredReports;
 		}
-
+		newFilteredReports = newFilteredReports.filter(value => { 
+			if(!values?.SNR){
+				if(!!value.snr){
+					return false
+				} else{
+					return true
+				}
+			} else {
+				if(!!value.snr){
+					return true
+				} else{
+					return false
+				}
+			}
+		});
 	}
 
 	return (
