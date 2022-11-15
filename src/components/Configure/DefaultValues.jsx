@@ -89,6 +89,7 @@ const DefaultValues = () => {
 		TN: false,
 		FF: false,
 		TH: true,
+		SNR: true,
 	});
 
 	useEffect(() => {
@@ -488,6 +489,22 @@ const DefaultValues = () => {
 										setChecked={setChecked}
 										shortName={"TH"}
 										LongName={"24 Horas"}
+										handleChange={handleChange}
+									/>
+								</div>
+							</div>
+							<div className="col-sm-12 col-md-6 col-lg-4 mb-3">
+								<div className="row check-input">
+									<CustomTextField
+										alwaysDisabled
+										size="small"
+										variant="outlined"
+										values={values}
+										setValues={setValues}
+										checked={checked}
+										setChecked={setChecked}
+										shortName={"SNR"}
+										LongName={"Servicios no registrados"}
 										handleChange={handleChange}
 									/>
 								</div>

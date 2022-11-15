@@ -664,19 +664,20 @@ const CreateService = () => {
 						<span style={{ display: 'flex', alignItems: 'center' }}>
 							<label className="form-check-label" htmlFor="SNR">
 								<input
+									value={isServiceNotRegistered}
 									style={{ marginBottom: '0' }} className="form-check-input" type="checkbox" id="SNR"
 									onChange={(e) => {
 										setIsServiceNotRegistered(e.target.checked);
-										if (!e.target.checked) return;
 										setData({
 											...data,
 											aseguradora: "N/A",
 											plan: "N/A",
 											poliza: "N/A",
+											snr: e.target.value,
 										})
 									}}
 								/>
-								Servicio no registrado
+								Servicio no registrado en el reporte
 							</label>
 						</span>
 					</div>
@@ -709,8 +710,14 @@ const CreateService = () => {
 								type="text"
 								className="form-control form-control-sm"
 								id="no-poliza"
-								value={isServiceNotRegistered ? "N/A" : (data.poliza || "")}
-								disabled
+								value={(data.poliza ?? "N/A")}
+								disabled={!isServiceNotRegistered}
+								onChange={(e) => {
+									setData({
+										...data,
+										poliza: e.target.value.toUpperCase(),
+									})
+								}}
 							></input>
 						</div>
 						<div className="col-lg-3 mb-3">
@@ -829,23 +836,35 @@ const CreateService = () => {
 							></input>
 						</div>
 						<div className="col-lg-3 mb-3">
-							<label htmlFor="aseg">Aseguradora<RequiredTag /></label>
+							<label htmlFor="aseg">Aseguradora</label>
 							<input
 								type="text"
 								className="form-control form-control-sm"
 								id="aseg"
-								value={isServiceNotRegistered ? "N/A" : (data.aseguradora || "")}
-								disabled
+								value={(data.aseguradora || "")}
+								disabled={!isServiceNotRegistered}
+								onChange={(e) => {
+									setData({
+										...data,
+										aseguradora: e.target.value.toUpperCase(),
+									})
+								}}
 							></input>
 						</div>
 						<div className="col-lg-3 mb-3">
-							<label htmlFor="plan">Plan<RequiredTag /></label>
+							<label htmlFor="plan">Plan</label>
 							<input
 								type="text"
 								className="form-control form-control-sm"
 								id="plan"
-								value={isServiceNotRegistered ? "N/A" : (data.plan || "")}
-								disabled
+								value={(data.plan || "")}
+								disabled={!isServiceNotRegistered}
+								onChange={(e) => {
+									setData({
+										...data,
+										plan: e.target.value.toUpperCase(),
+									})
+								}}
 							></input>
 						</div>
 					</div>
@@ -942,7 +961,7 @@ const CreateService = () => {
 							></input>
 						</div>
 						<div className="col-lg-12 mb-3">
-							<label htmlFor="ubicacion">Ubicación</label>
+							<label htmlFor="ubicacion">Ubicación<RequiredTag /></label>
 							<input
 								placeholder="¿Dónde ocurrió el incidente?"
 								type="text"
