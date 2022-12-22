@@ -57,7 +57,7 @@ const AuthState = (props) => {
         } catch (error) {
             setLoading(false);
             const alerta = {
-                text: error.response.data.text || 'Error',
+                text: error?.response?.data?.text || 'Error',
                 severity: 'error'
             }
             dispatch({
