@@ -305,6 +305,7 @@ const CreateService = () => {
 			CO: false,
 			DM: false,
 		});
+		setIsServiceNotRegistered(false);
 		setSearch({ ...search, id: "" });
 		setRepeatedServices(null);
 		setCombServices(null);
@@ -664,7 +665,7 @@ const CreateService = () => {
 						<span style={{ display: 'flex', alignItems: 'center' }}>
 							<label className="form-check-label" htmlFor="SNR">
 								<input
-									value={isServiceNotRegistered}
+									checked={isServiceNotRegistered}
 									style={{ marginBottom: '0' }} className="form-check-input" type="checkbox" id="SNR"
 									onChange={(e) => {
 										setIsServiceNotRegistered(e.target.checked);
@@ -673,7 +674,7 @@ const CreateService = () => {
 											aseguradora: "N/A",
 											plan: "N/A",
 											poliza: "N/A",
-											snr: e.target.value,
+											snr: e.target.checked,
 										})
 									}}
 								/>
