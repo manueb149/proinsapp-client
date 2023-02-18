@@ -257,7 +257,7 @@ let TotalTEPrice = 0;
 let newFilteredReports = [];
 let currTableFilteredReports = [];
 // Create Document Component
-const MyDocument = ({ data, dates }) => (
+const MyDocument = ({ data, dates, snr }) => (
 	<Document>
 		<Page size="LETTER" orientation="landscape" style={styles.page}>
 			{/* <View style={styles.table}> */}
@@ -268,7 +268,7 @@ const MyDocument = ({ data, dates }) => (
 					<Text style={styles.logo_text}>(809)-565-7740</Text>
 				</View>
 				<View wrap>
-					<Text style={styles.header_text}>Cuadre de Servicios</Text>
+					<Text style={styles.header_text}>Cuadre de Servicios {snr ? 'No Registrados' : ''}</Text>
 					<Text style={styles.header_subtext_title}>
 						Desde:{" "}{dates[0] ? getDateString(dates[0]) : ""}
 						<Text style={styles.header_subtext}> </Text>
@@ -424,6 +424,7 @@ const PrintBalanceReport = () => {
 					<MyDocument
 						data={newFilteredReports}
 						dates={filteredDates}
+						snr={values?.SNR}
 					/>
 				</PDFViewer>
 			) : null}

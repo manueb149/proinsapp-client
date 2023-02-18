@@ -253,17 +253,17 @@ const ViewReports = () => {
 	};
 
 	useEffect(() => {
-    setFiltering(true);
+		setFiltering(true);
 		const getReports = async () => {
-      const gte = !isDate(selectedDateStart) ? selectedDateStart._d : selectedDateStart;
-      const lt = !isDate(selectedDateEnd)  ? selectedDateEnd._d : selectedDateEnd;
+			const gte = !isDate(selectedDateStart) ? selectedDateStart._d : selectedDateStart;
+			const lt = !isDate(selectedDateEnd) ? selectedDateEnd._d : selectedDateEnd;
 			try {
 				await axios
 					.get(`/service?gte=${gte}&lt=${lt}`)
 					.then((res) => {
 						const newData = res.data.results.map((value) => {
 							const gruero = value.datosGruero.gruaDeServicio
-							if(value.tarifaEspecial === "") value.tarifaEspecial = 0
+							if (value.tarifaEspecial === "") value.tarifaEspecial = 0
 							return (
 								{
 									...value,
@@ -272,11 +272,11 @@ const ViewReports = () => {
 							)
 						})
 						setData(newData);
-            setFiltering(false);
+						setFiltering(false);
 					})
 					.catch((error) => {
-            setFilteredReports([]);
-            setCurrTable([]);
+						setFilteredReports([]);
+						setCurrTable([]);
 						if (error.response) {
 							// Request made and server responded
 							if (error.response.data.text === "TNV") {
@@ -309,8 +309,8 @@ const ViewReports = () => {
 		setFiltering(true);
 		setSelectedReport(null);
 		const getReports = () => {
-      const gte = !isDate(selectedDateStart) ? selectedDateStart._d : selectedDateStart;
-      const lt = !isDate(selectedDateEnd)  ? selectedDateEnd._d : selectedDateEnd;
+			const gte = !isDate(selectedDateStart) ? selectedDateStart._d : selectedDateStart;
+			const lt = !isDate(selectedDateEnd) ? selectedDateEnd._d : selectedDateEnd;
 			try {
 				axios
 					.get(`/service?gte=${gte}&lt=${lt}`)
@@ -357,11 +357,11 @@ const ViewReports = () => {
 
 	const handleClear = () => {
 		setCleaning(true);
-    handleDateChangeStart(new Date());
-    handleDateChangeEnd(new Date());
+		handleDateChangeStart(new Date());
+		handleDateChangeEnd(new Date());
 		const getReports = async () => {
-      const gte = new Date().toLocaleString();
-      const lt = gte
+			const gte = new Date().toLocaleString();
+			const lt = gte
 			try {
 				await axios
 					.get(`/service?gte=${gte}&lt=${lt}`)
@@ -414,15 +414,13 @@ const ViewReports = () => {
 						MinDate
 						label="Fecha Inicial"
 						selectedDate={selectedDateStart}
-						handleDateChange={handleDateChangeStart}
-					/>
+						handleDateChange={handleDateChangeStart} noDisplay={undefined} />
 					<DatePicker
 						MaxDate
 						MinDate
 						label="Fecha Final"
 						selectedDate={selectedDateEnd}
-						handleDateChange={handleDateChangeEnd}
-					/>
+						handleDateChange={handleDateChangeEnd} noDisplay={undefined} />
 					<Button
 						style={{ marginTop: "5px" }}
 						onClick={handleFilter}
