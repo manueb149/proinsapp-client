@@ -37,6 +37,7 @@ const ServiceDataContext = ({ children }) => {
 		color: "",
 		aseguradora: "",
 		plan: "",
+		tipoSiniestro: "",
 		infoSin: "",
 		estadoV: "",
 		ubicacion: "",

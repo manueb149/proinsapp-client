@@ -22,6 +22,8 @@ const ConfirmModal = ({
 	setRepeatedServices,
 	setCombServices,
 	setIsServiceNotRegistered,
+	SetAreaTruckSelect,
+	setDataTrucks
 }) => {
 	const [saving, setSaving] = useState(false);
 	const history = useHistory();
@@ -52,6 +54,7 @@ const ConfirmModal = ({
 			return;
 		}
 		if (
+			String(payload.data.tipoSiniestro).length === 0 ||
 			String(payload.data.poliza).length === 0 ||
 			String(payload.data.chassis).length === 0 ||
 			String(payload.data.tipoV).length === 0 ||
@@ -117,6 +120,7 @@ const ConfirmModal = ({
 						color: "",
 						aseguradora: "",
 						plan: "",
+						tipoSiniestro: "",
 						infoSin: "",
 						estadoV: "",
 						ubicacion: "",
@@ -169,6 +173,9 @@ const ConfirmModal = ({
 					setShowConfirm(false);
 					handleDateChange(new Date());
 					handleBakDateChange(new Date());
+
+					SetAreaTruckSelect([]);
+					setDataTrucks([]);
 					setSearch({...search, id: ""});
 					setRepeatedServices(null);
 					setCombServices(null);

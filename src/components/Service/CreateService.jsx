@@ -256,6 +256,7 @@ const CreateService = () => {
 			color: "",
 			aseguradora: "",
 			plan: "",
+			tipoSiniestro: "",
 			infoSin: "",
 			estadoV: "",
 			ubicacion: "",
@@ -272,6 +273,7 @@ const CreateService = () => {
 			distancia: "",
 			precio: "",
 			tarifaEspecial: "",
+			snr: false
 		});
 		setServicesType({
 			EX: "",
@@ -311,6 +313,7 @@ const CreateService = () => {
 		setCombServices(null);
 		SetAreaTruckSelect([]);
 		setDataTrucks([]);
+
 		setOpenSB(false);
 		setSeverity("warning");
 		setNotification("Campos Limpiados!");
@@ -513,6 +516,8 @@ const CreateService = () => {
 				setRepeatedServices={setRepeatedServices}
 				setCombServices={setCombServices}
 				setIsServiceNotRegistered={setIsServiceNotRegistered}
+				SetAreaTruckSelect={SetAreaTruckSelect}
+				setDataTrucks={setDataTrucks}
 			/>
 
 			<SnackBar
@@ -925,7 +930,53 @@ const CreateService = () => {
 				<div className="card-header">Datos del Siniestro</div>
 				<div className="card-body">
 					<div className="form-row">
-						<div className="col-lg-12 mb-3">
+					<div className="col-lg-12 mb-3">
+							<div className="form-check form-check-inline">
+								<input
+									className="form-check-input rad"
+									name="tipoSiniestro"
+									type="radio"
+									id="mecanico"
+									value="MECANICO"
+									checked={data.tipoSiniestro === "MECANICO" ? true : false}
+									onChange={(e) => {
+										setData({
+											...data,
+											tipoSiniestro: e.target.value,
+										});
+									}}
+								></input>
+								<label
+									className="form-check-label"
+									htmlFor="mecanico"
+								>
+									Daño Mecánico
+								</label>
+							</div>
+							<div className="form-check form-check-inline">
+								<input
+									className="form-check-input rad"
+									name="tipoSiniestro"
+									type="radio"
+									id="colision"
+									value="COLISION"
+									checked={data.tipoSiniestro === "COLISION" ? true : false}
+									onChange={(e) => {
+										setData({
+											...data,
+											tipoSiniestro: e.target.value,
+										});
+									}}
+								></input>
+								<label
+									className="form-check-label"
+									htmlFor="colision"
+								>
+									Colisión
+								</label>
+							</div>
+						</div>
+						{/* <div className="col-lg-12 mb-3">
 							<label htmlFor="infoSin">
 								Información del siniestro
 							</label>
@@ -943,8 +994,8 @@ const CreateService = () => {
 								value={data.infoSin}
 								required
 							></input>
-						</div>
-						<div className="col-lg-12 mb-3">
+						</div> */}
+						{/* <div className="col-lg-12 mb-3">
 							<label htmlFor="estadoV">Estado del vehículo</label>
 							<input
 								placeholder="¿En qué condición se encuentra el vehículo?"
@@ -960,7 +1011,7 @@ const CreateService = () => {
 								value={data.estadoV}
 								required
 							></input>
-						</div>
+						</div> */}
 						<div className="col-lg-12 mb-3">
 							<label htmlFor="ubicacion">Ubicación<RequiredTag /></label>
 							<input
