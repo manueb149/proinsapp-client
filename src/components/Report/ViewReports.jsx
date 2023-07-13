@@ -85,6 +85,14 @@ const columns = [
 		},
 	},
 	{
+		name: "tipoSiniestro",
+		label: "Tipo Siniestro",
+		options: {
+			filter: true,
+			sort: true,
+		},
+	},
+	{
 		name: "tipoVehiculo",
 		label: "Vehículo",
 		options: {

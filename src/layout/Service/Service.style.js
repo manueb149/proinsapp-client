@@ -15,7 +15,7 @@ export const CreateServiceContainer = styled.div`
     .buttons{
         position: fixed;
         z-index: 1;
-        top: 93px;
+        top: 11vh;
         background: #ebebeb;
         border-radius: 10px;
         border-top-left-radius: 0px;
