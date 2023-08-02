@@ -59,6 +59,7 @@ export default function DialogSelect({aseguradora, setAseguradora, plan, setPlan
                                 <option aria-label="" value="" />
                                 <option value={"LA-INTERNACIONAL"}>La Internacional</option>
                                 <option value={"FIHOGAR"}>Fihogar</option>
+                                <option value={"FUTURO"}>Futuro</option>
                             </Select>
                         </FormControl>
                         <FormControl className={classes.formControl}>
@@ -76,6 +77,11 @@ export default function DialogSelect({aseguradora, setAseguradora, plan, setPlan
                                 <MenuItem value={"PLAN-VIP"}>Plan VIP</MenuItem>
                                 <MenuItem value={"PLAN-MINIBUS"}>Plan Minibus</MenuItem>
                                 <MenuItem value={"PLAN-BASICO"}>Plan Básico</MenuItem>
+                                <MenuItem value={"PLAN-VIP-SD"}>Plan VIP - SD</MenuItem>
+                                <MenuItem value={"PLAN-VIP-STGO"}>Plan VIP - STGO</MenuItem>
+                                <MenuItem value={"PLAN-BASICO-MINI-SD"}>Plan Básico Mini - SD</MenuItem>
+                                <MenuItem value={"PLAN-BASICO-LIVIANO-SD"}>Plan Básico Liviano - SD</MenuItem>
+                                <MenuItem value={"PLAN-BASICO-LIVIANO-STGO"}>Plan Básico Liviano - STGO</MenuItem>
                             </Select>
                         </FormControl>
                     </form>
