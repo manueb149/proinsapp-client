@@ -12,7 +12,7 @@ const DataUpload = () => {
 	const [fileInfos, setFileInfos] = useState([]);
 	const [updateList, setUpdateList] = useState(false);
 	const [aseguradora, setAseguradora] = useState('');
-    const [plan, setPlan] = useState('');
+  const [plan, setPlan] = useState('');
 
 	useEffect(() => {
 		FileUpload.getFiles().then((response) => {
