@@ -1,4 +1,4 @@
-const summaryCalc = (data, values, servicesType, servicesTypeCk, detailSinister, detailSinisterCk) => {
+const summaryCalc = (data, values, servicesType, servicesTypeCk, detailSinister, detailSinisterCk, dataTrucks) => {
     const vars = {
         total: 0,
         subTotal: 0,
@@ -15,7 +15,9 @@ const summaryCalc = (data, values, servicesType, servicesTypeCk, detailSinister,
         subTotalNoche: 0,
         subTotalFeriado: 0,
     }
-    if (Number(data.distancia) <= 15) {
+    const truckRadio = (dataTrucks && dataTrucks[0] && Number(dataTrucks[0]?.radio)) || 15;
+
+    if (Number(data.distancia) <= truckRadio) {
         vars.distancia = Number(data.distancia);
         if (servicesTypeCk.TG) vars.arranque = 1200;
         if (servicesTypeCk.SP && Number(servicesType.SP) > 0) vars.kmSobrepeso = Number(servicesType.SP);
@@ -61,7 +63,7 @@ const summaryCalc = (data, values, servicesType, servicesTypeCk, detailSinister,
             vars.arranque
     } else {
 
-        vars.distancia = Number(data.distancia) - 15;
+        vars.distancia = Number(data.distancia) - truckRadio;
         if (servicesTypeCk.TG) vars.arranque = 1200;
         if (servicesTypeCk.SP && Number(servicesType.SP) > 0) vars.kmSobrepeso = Number(servicesType.SP);
         if (servicesTypeCk.TG && servicesTypeCk.LM) {
