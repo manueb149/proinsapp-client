@@ -1304,7 +1304,8 @@ const CreateService = () => {
 									servicesType,
 									servicesTypeCk,
 									detailSinister,
-									detailSinisterCk
+									detailSinisterCk,
+									dataTrucks
 								)}
 								onChange={handleChange}
 								disabled
