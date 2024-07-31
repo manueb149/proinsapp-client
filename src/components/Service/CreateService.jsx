@@ -1241,7 +1241,7 @@ const CreateService = () => {
 						<div className="col-lg-8" style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-end' }}>
 							{/* Pago Aproximado */}
 							<div className="col-lg-3" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
-								<label htmlFor="precio">{pagoCliente > 0 ? 'Pago Proinsa' : 'Pago Aproximado'}<RequiredTag /></label>
+								<label htmlFor="precio">{pagoCliente > 0 && isServiceFromFihogar ? 'Pago Proinsa' : 'Pago Aproximado'}<RequiredTag /></label>
 								<input
 									key="precio"
 									type="text"

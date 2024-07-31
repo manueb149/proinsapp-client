@@ -23,6 +23,8 @@ export const summaryCalc = (
 		servicios: 0,
 		peaje: 0,
 		peajeCliente: 0,
+		extraccionCliente: 0,
+		maniobraCliente: 0,
 		subTotalNoche: 0,
 		subTotalFeriado: 0,
 	};
@@ -43,6 +45,7 @@ export const summaryCalc = (
 		}
 
 		if (servicesTypeCk.EX) vars.servicios += Number(servicesType.EX);
+		if (servicesTypeCk.MN) vars.servicios += Number(servicesType.MN);
 		if (servicesTypeCk.CR) vars.servicios += Number(servicesType.CR);
 		if (servicesTypeCk.CG) vars.servicios += Number(servicesType.CG);
 		if (servicesTypeCk.CE) vars.servicios += Number(servicesType.CE);
@@ -103,7 +106,25 @@ export const summaryCalc = (
 				vars.sobrePeso = Number(servicesType.SP) * Number(servicesType.TG) * (Number(servicesType.SP0) / 100);
 		}
 
-		if (servicesTypeCk.EX) vars.servicios += Number(servicesType.EX);
+		if (servicesTypeCk.EX) {
+			console.log({ splitFare, proinsaPrice });
+			if (splitFare === false && proinsaPrice === false) {
+				vars.servicios += Number(servicesType.EX);
+			} else if (splitFare === false && proinsaPrice === true && Number(servicesType.EX) <= 3000) {
+				vars.servicios += Number(servicesType.EX);
+			} else if (splitFare === true && proinsaPrice === false && Number(servicesType.EX) > 3000) {
+				vars.extraccionCliente += Number(servicesType.EX);
+			} else {
+			}
+		}
+		if (servicesTypeCk.MN) {
+			if (splitFare === false && proinsaPrice === false) {
+				vars.servicios += Number(servicesType.MN);
+			} else if (splitFare === true && proinsaPrice === false) {
+				vars.maniobraCliente += Number(servicesType.MN);
+			} else {
+			}
+		}
 		if (servicesTypeCk.CR) vars.servicios += Number(servicesType.CR);
 		if (servicesTypeCk.CG) vars.servicios += Number(servicesType.CG);
 		if (servicesTypeCk.CE) vars.servicios += Number(servicesType.CE);
@@ -130,15 +151,19 @@ export const summaryCalc = (
 			vars.servicios +
 			vars.peaje +
 			vars.peajeCliente +
+			vars.extraccionCliente +
+			vars.maniobraCliente +
 			vars.subTotalNoche +
 			vars.subTotalFeriado +
 			vars.arranque;
 	}
+
 	if (splitFare) {
 		data.precioCliente = Number(data.distancia) <= 100 ? 0 : Number(vars.total).toFixed(2);
 	} else {
 		data.precio = Number(vars.total).toFixed(2);
 	}
+
 	return Number(vars.total).toFixed(2);
 };
 
