@@ -1,4 +1,4 @@
-export const summaryCalc = (
+const summaryCalc = (
 	data,
 	values,
 	servicesType,
@@ -6,9 +6,10 @@ export const summaryCalc = (
 	detailSinister,
 	detailSinisterCk,
 	dataTrucks,
-	fihogarPrice = false,
 	proinsaPrice = true,
-	futuroPrice = false
+	fihogarPrice = false,
+	futuroPrice = false,
+	futuroBasico = false
 ) => {
 	const vars = {
 		total: 0,
@@ -23,15 +24,13 @@ export const summaryCalc = (
 		sobrePeso: 0,
 		servicios: 0,
 		peaje: 0,
-		peajeCliente: 0,
-		extraccionCliente: 0,
-		maniobraCliente: 0,
 		subTotalNoche: 0,
 		subTotalFeriado: 0,
+		maniobra: 0,
 	};
 	const truckRadio = (dataTrucks && dataTrucks[0] && Number(dataTrucks[0]?.radio)) || 15;
 
-	if (Number(data.distancia) <= truckRadio && !fihogarPrice) {
+	if (Number(data.distancia) <= truckRadio) {
 		vars.distancia = Number(data.distancia);
 		if (servicesTypeCk.TG) vars.arranque = 1200;
 		if (servicesTypeCk.SP && Number(servicesType.SP) > 0) vars.kmSobrepeso = Number(servicesType.SP);
@@ -45,8 +44,24 @@ export const summaryCalc = (
 			if (servicesTypeCk.SP && Number(servicesType.SP) > 0) vars.sobrePeso = vars.arranque * (Number(servicesType.SP0) / 100);
 		}
 
-		if (servicesTypeCk.EX) vars.servicios += Number(servicesType.EX);
-		if (servicesTypeCk.MN) vars.servicios += Number(servicesType.MN);
+		if (servicesTypeCk.MN) {
+			if (fihogarPrice || futuroPrice) {
+				vars.maniobra = 0;
+			} else {
+				vars.maniobra = Number(servicesType.MN);
+			}
+		}
+		if (servicesTypeCk.EX) {
+			if (futuroPrice || fihogarPrice) {
+				if (Number(servicesType.EX) <= 3000) {
+					vars.servicios += Number(servicesType.EX);
+				} else {
+					vars.servicios += 3000;
+				}
+			} else {
+				vars.servicios += Number(servicesType.EX);
+			}
+		}
 		if (servicesTypeCk.CR) vars.servicios += Number(servicesType.CR);
 		if (servicesTypeCk.CG) vars.servicios += Number(servicesType.CG);
 		if (servicesTypeCk.CE) vars.servicios += Number(servicesType.CE);
@@ -57,9 +72,15 @@ export const summaryCalc = (
 		if (detailSinisterCk.CO) vars.servicios += Number(detailSinister.CO);
 		if (detailSinisterCk.DM) vars.servicios += Number(detailSinister.DM);
 
-		if (servicesTypeCk.PE && Number(servicesType.PE) > 0 && !fihogarPrice) vars.peaje = Number(servicesType.PE);
-		else {
-			vars.peajeCliente = Number(servicesType.PE);
+		if (servicesTypeCk.PE && Number(servicesType.PE) > 0) {
+			if (fihogarPrice) {
+				vars.peaje = 0;
+			} else if (futuroPrice) {
+				if (Number(servicesType.PE) <= 500) vars.peaje = Number(servicesType.PE);
+				else vars.peaje = 500;
+			} else {
+				vars.peaje = Number(servicesType.PE);
+			}
 		}
 
 		vars.total = vars.arranque + vars.sobrePeso + vars.subTotalNoche + vars.subTotalFeriado;
@@ -76,29 +97,31 @@ export const summaryCalc = (
 			vars.peaje +
 			vars.subTotalNoche +
 			vars.subTotalFeriado +
+			vars.maniobra +
 			vars.arranque;
 	} else {
-		vars.distancia = fihogarPrice
-			? Number(data.distancia) - 100 // Para calcular el excedente de 100km
-			: proinsaPrice && Number(data.distancia) >= 100
-			? 100 - truckRadio
-			: Number(data.distancia) - truckRadio;
-		if (servicesTypeCk.TG) vars.arranque = fihogarPrice ? 0 : 1200; // Para calcular el excedente de 100km
+		if (fihogarPrice) {
+			if (Number(data.distancia) <= 100) vars.distancia = Number(data.distancia) - truckRadio;
+			else vars.distancia = 100 - truckRadio;
+		} else if (futuroPrice) {
+			if (futuroBasico) {
+				if (Number(data.distancia) <= 50) vars.distancia = Number(data.distancia) - truckRadio;
+				else vars.distancia = 50 - truckRadio;
+			} else {
+				vars.distancia = vars.distancia = Number(data.distancia) - truckRadio;
+			}
+		} else {
+			vars.distancia = Number(data.distancia) - truckRadio;
+		}
+
+		if (servicesTypeCk.TG) vars.arranque = 1200;
 		if (servicesTypeCk.SP && Number(servicesType.SP) > 0) vars.kmSobrepeso = Number(servicesType.SP);
 		if (servicesTypeCk.TG && servicesTypeCk.LM) {
-			if (!fihogarPrice) {
-				if (servicesTypeCk.LM && Number(servicesType.LM) <= vars.distancia) vars.kmLoma = Number(servicesType.LM);
-				if (servicesTypeCk.LM && Number(servicesType.LM) <= vars.distancia) vars.kmLlano = vars.distancia - vars.kmLoma;
-				if (servicesTypeCk.LM && vars.kmLoma > 0 && Number(servicesType.LM) > 0)
-					vars.subTotalLoma = vars.kmLoma * (Number(servicesType.SL) + Number(servicesType.TG));
-				if (servicesTypeCk.LM && vars.kmLlano > 0) vars.subTotalLlano = vars.kmLlano * Number(servicesType.TG);
-			} else {
-				vars.subTotal = Number(vars.distancia) * Number(servicesType.TG);
-				if (servicesTypeCk.LM && Number(servicesType.LM) > 0) {
-					vars.subTotalLoma = Number(servicesType.LM) * Number(servicesType.SL);
-					console.log(Number(servicesType.LM), Number(servicesType.SL));
-				}
-			}
+			if (servicesTypeCk.LM && Number(servicesType.LM) <= vars.distancia) vars.kmLoma = Number(servicesType.LM);
+			if (servicesTypeCk.LM && Number(servicesType.LM) <= vars.distancia) vars.kmLlano = vars.distancia - vars.kmLoma;
+			if (servicesTypeCk.LM && vars.kmLoma > 0 && Number(servicesType.LM) > 0)
+				vars.subTotalLoma = vars.kmLoma * (Number(servicesType.SL) + Number(servicesType.TG));
+			if (servicesTypeCk.LM && vars.kmLlano > 0) vars.subTotalLlano = vars.kmLlano * Number(servicesType.TG);
 			if (servicesTypeCk.SP && Number(servicesType.SP) > 0)
 				vars.sobrePeso = Number(servicesType.SP) * Number(servicesType.TG) * (Number(servicesType.SP0) / 100);
 		} else {
@@ -107,23 +130,22 @@ export const summaryCalc = (
 				vars.sobrePeso = Number(servicesType.SP) * Number(servicesType.TG) * (Number(servicesType.SP0) / 100);
 		}
 
-		if (servicesTypeCk.EX) {
-			console.log({ fihogarPrice, proinsaPrice });
-			if (fihogarPrice === false && proinsaPrice === false) {
-				vars.servicios += Number(servicesType.EX);
-			} else if (fihogarPrice === false && proinsaPrice === true && Number(servicesType.EX) <= 3000) {
-				vars.servicios += Number(servicesType.EX);
-			} else if (fihogarPrice === true && proinsaPrice === false && Number(servicesType.EX) > 3000) {
-				vars.extraccionCliente += Number(servicesType.EX);
+		if (servicesTypeCk.MN) {
+			if (fihogarPrice || futuroPrice) {
+				vars.servicios = 0;
 			} else {
+				vars.servicios = Number(servicesType.MN);
 			}
 		}
-		if (servicesTypeCk.MN) {
-			if (fihogarPrice === false && proinsaPrice === false) {
-				vars.servicios += Number(servicesType.MN);
-			} else if (fihogarPrice === true && proinsaPrice === false) {
-				vars.maniobraCliente += Number(servicesType.MN);
+		if (servicesTypeCk.EX) {
+			if (futuroPrice || fihogarPrice) {
+				if (Number(servicesType.EX) <= 3000) {
+					vars.servicios += Number(servicesType.EX);
+				} else {
+					vars.servicios += 3000;
+				}
 			} else {
+				vars.servicios += Number(servicesType.EX);
 			}
 		}
 		if (servicesTypeCk.CR) vars.servicios += Number(servicesType.CR);
@@ -136,7 +158,16 @@ export const summaryCalc = (
 		if (detailSinisterCk.CO) vars.servicios += Number(detailSinister.CO);
 		if (detailSinisterCk.DM) vars.servicios += Number(detailSinister.DM);
 
-		if (servicesTypeCk.PE && Number(servicesType.PE) > 0 && !proinsaPrice) vars.peaje = Number(servicesType.PE);
+		if (servicesTypeCk.PE && Number(servicesType.PE) > 0) {
+			if (fihogarPrice) {
+				vars.peaje = 0;
+			} else if (futuroPrice) {
+				if (Number(servicesType.PE) <= 500) vars.peaje = Number(servicesType.PE);
+				else vars.peaje = 500;
+			} else {
+				vars.peaje = Number(servicesType.PE);
+			}
+		}
 
 		vars.total =
 			vars.subTotal + vars.subTotalLoma + vars.subTotalLlano + vars.sobrePeso + vars.subTotalNoche + vars.subTotalFeriado + vars.arranque; // Lo pusimo' otra ve
@@ -151,20 +182,11 @@ export const summaryCalc = (
 			vars.sobrePeso +
 			vars.servicios +
 			vars.peaje +
-			vars.peajeCliente +
-			vars.extraccionCliente +
-			vars.maniobraCliente +
 			vars.subTotalNoche +
 			vars.subTotalFeriado +
 			vars.arranque;
 	}
-
-	if (fihogarPrice) {
-		data.precioCliente = Number(data.distancia) <= 100 ? 0 : Number(vars.total).toFixed(2);
-	} else {
-		data.precio = Number(vars.total).toFixed(2);
-	}
-
+	data.precio = Number(vars.total).toFixed(2);
 	return Number(vars.total).toFixed(2);
 };
 

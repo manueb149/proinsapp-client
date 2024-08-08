@@ -19,7 +19,9 @@ import DateTimePicker from "../utils/DateTimePicker";
 import PhoneInput from "react-phone-number-input";
 import AuthContext from "../../contexts/auth/authContext";
 import { useHistory } from "react-router-dom";
-import { summaryCalc } from "../utils/serviceCalc";
+import summaryCalcProinsa from "../utils/serviceCalculation/proinsa";
+import summaryCalcFihogar from "../utils/serviceCalculation/fihogar";
+import summaryCalcFuturo from "../utils/serviceCalculation/futuro";
 import copyText from "../utils/copyText";
 import combinedServices from "../utils/combinedServices";
 import plusIcon from '../../assets/svg/plus-icon.svg';
@@ -84,9 +86,25 @@ const CreateService = () => {
 		setIsServiceNotRegistered,
 	} = ServiceDataContext;
 
-	const isServiceFromFihogar = String(data?.aseguradora).toLowerCase() === 'fihogar';
-	const isMoreThan100km = Number(data?.distancia) > 100;
-	const pagoProinsa = summaryCalc(
+	const isServiceFromFihogar = String(data?.aseguradora).toLowerCase().includes('fihogar');
+	const isServiceFromFuturo = String(data?.aseguradora).toLowerCase().includes('futuro');
+	const isServiceFromFuturoBasico = isServiceFromFuturo && String(data?.plan).toLowerCase().includes('basico');
+
+	const pagoProinsa = summaryCalcProinsa(
+		data,
+		values,
+		servicesType,
+		servicesTypeCk,
+		detailSinister,
+		detailSinisterCk,
+		dataTrucks,
+		true,
+		isServiceFromFihogar,
+		isServiceFromFuturo,
+		isServiceFromFuturoBasico
+	);
+
+	const pagoClienteFihogar = isServiceFromFihogar ? summaryCalcFihogar(
 		data,
 		values,
 		servicesType,
@@ -95,9 +113,12 @@ const CreateService = () => {
 		detailSinisterCk,
 		dataTrucks,
 		false,
-		isServiceFromFihogar && isMoreThan100km
-	)
-	const pagoCliente = summaryCalc(
+		true,
+		isServiceFromFuturo,
+		isServiceFromFuturoBasico
+	) : 0;
+
+	const pagoClienteFuturo = isServiceFromFuturo ? summaryCalcFuturo(
 		data,
 		values,
 		servicesType,
@@ -105,9 +126,11 @@ const CreateService = () => {
 		detailSinister,
 		detailSinisterCk,
 		dataTrucks,
+		false,
 		isServiceFromFihogar,
-		false
-	)
+		true,
+		isServiceFromFuturoBasico
+	) : 0;
 
 
 	useEffect(() => {
@@ -1239,9 +1262,9 @@ const CreateService = () => {
 							</div>
 						</div>
 						<div className="col-lg-8" style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-end' }}>
-							{/* Pago Aproximado */}
+							{/* Pago Aproximado Proinsa */}
 							<div className="col-lg-3" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
-								<label htmlFor="precio">{pagoCliente > 0 && isServiceFromFihogar ? 'Pago Proinsa' : 'Pago Aproximado'}<RequiredTag /></label>
+								<label htmlFor="precio">{(isServiceFromFihogar || isServiceFromFuturo) ? 'Pago Proinsa' : 'Pago Aproximado'}<RequiredTag /></label>
 								<input
 									key="precio"
 									type="text"
@@ -1249,24 +1272,14 @@ const CreateService = () => {
 									name="precio"
 									id="precio"
 									placeholder="RD$ Pesos"
-									value={summaryCalc(
-										data,
-										values,
-										servicesType,
-										servicesTypeCk,
-										detailSinister,
-										detailSinisterCk,
-										dataTrucks,
-										false,
-										isServiceFromFihogar && isMoreThan100km
-									)}
+									value={pagoProinsa}
 									onChange={handleChange}
 									disabled
 								/>
 							</div>
 
-							{/* SOLO PARA FIHOGAR */}
-							{isServiceFromFihogar && isMoreThan100km &&
+							{/* SOLO PARA FIHOGAR Y FUTURO */}
+							{(isServiceFromFihogar || isServiceFromFuturo) &&
 								<>
 									{/* plus icon */}
 									<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
@@ -1284,17 +1297,7 @@ const CreateService = () => {
 											name="precioCliente"
 											id="precioCliente"
 											placeholder="RD$ Pesos"
-											value={summaryCalc(
-												data,
-												values,
-												servicesType,
-												servicesTypeCk,
-												detailSinister,
-												detailSinisterCk,
-												dataTrucks,
-												isServiceFromFihogar,
-												false
-											)}
+											value={isServiceFromFihogar ? pagoClienteFihogar : isServiceFromFuturo ? pagoClienteFuturo : 0}
 											onChange={handleChange}
 											disabled
 										/>
@@ -1302,7 +1305,8 @@ const CreateService = () => {
 								</>
 							}
 
-							{Number(pagoCliente) > 0 && isServiceFromFihogar && <>
+							{/* SOLO PARA PAGO TOTAL*/}
+							{(isServiceFromFihogar || isServiceFromFuturo) && <>
 								{/* iquals icon */}
 								<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end' }}>
 									<img className="iquals-icon" src={iqualsIcon} alt="iquals-icon" />
@@ -1319,13 +1323,13 @@ const CreateService = () => {
 										name="precioTotal"
 										id="precioTotal"
 										placeholder="RD$ Pesos"
-										value={Number(Number(pagoProinsa) + Number(pagoCliente)).toFixed(2)}
+										value={Number(Number(pagoProinsa) + Number(pagoClienteFihogar) + Number(pagoClienteFuturo)).toFixed(2)}
 										onChange={handleChange}
 										disabled
 									/>
 								</div>
-							</>
-							}
+							</>}
+
 						</div>
 					</div>
 					<div className="form-row">
