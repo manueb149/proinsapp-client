@@ -115,7 +115,7 @@ const summaryCalc = (
 		if (data.noche && servicesTypeCk.TG) vars.subTotalNoche = vars.total * (Number(servicesType.TN) / 100);
 		if (data.dia === "DF" && servicesTypeCk.TG) vars.subTotalFeriado = vars.total * (Number(values.FF) / 100);
 
-		if (Number(data.distancia) <= 50) {
+		if (!futuroBasico || Number(data.distancia) <= 50) {
 			vars.total = vars.servicios + vars.peaje;
 		} else {
 			vars.total =
