@@ -9,7 +9,8 @@ const summaryCalc = (
 	proinsaPrice = true,
 	fihogarPrice = false,
 	futuroPrice = false,
-	futuroBasico = false
+	isServiceVIP = false,
+	proinsaAmount = 0
 ) => {
 	const vars = {
 		total: 0,
@@ -29,31 +30,30 @@ const summaryCalc = (
 	};
 	const truckRadio = (dataTrucks && dataTrucks[0] && Number(dataTrucks[0]?.radio)) || 15;
 
-	if (Number(data.distancia) <= truckRadio && !fihogarPrice) {
-		vars.distancia = Number(data.distancia);
-		if (servicesTypeCk.TG) vars.arranque = 1200;
-		if (servicesTypeCk.SP && Number(servicesType.SP) > 0) vars.kmSobrepeso = Number(servicesType.SP);
+	if (Number(data.distancia) <= truckRadio) {
+		if (!fihogarPrice) {
+			vars.distancia = Number(data.distancia);
+			if (servicesTypeCk.TG) vars.arranque = 1200;
+			if (servicesTypeCk.SP && Number(servicesType.SP) > 0) vars.kmSobrepeso = Number(servicesType.SP);
 
-		if (servicesTypeCk.TG && servicesTypeCk.LM) {
-			if (servicesTypeCk.LM && Number(servicesType.LM) <= vars.distancia) vars.kmLoma = Number(servicesType.LM);
-			if (servicesTypeCk.LM && Number(servicesType.LM) <= vars.distancia) vars.kmLlano = vars.distancia - vars.kmLoma;
-			if (servicesTypeCk.LM && Number(servicesType.LM) > 0 && vars.kmLlano > 0) vars.subTotalLlano = vars.kmLlano * Number(servicesType.TG);
-			if (servicesTypeCk.SP && Number(servicesType.SP) > 0) vars.sobrePeso = vars.arranque * (Number(servicesType.SP0) / 100);
-		} else {
-			if (servicesTypeCk.SP && Number(servicesType.SP) > 0) vars.sobrePeso = vars.arranque * (Number(servicesType.SP0) / 100);
+			if (servicesTypeCk.TG && servicesTypeCk.LM) {
+				if (servicesTypeCk.LM && Number(servicesType.LM) <= vars.distancia) vars.kmLoma = Number(servicesType.LM);
+				if (servicesTypeCk.LM && Number(servicesType.LM) <= vars.distancia) vars.kmLlano = vars.distancia - vars.kmLoma;
+				if (servicesTypeCk.LM && Number(servicesType.LM) > 0 && vars.kmLlano > 0) vars.subTotalLlano = vars.kmLlano * Number(servicesType.TG);
+				if (servicesTypeCk.SP && Number(servicesType.SP) > 0) vars.sobrePeso = vars.arranque * (Number(servicesType.SP0) / 100);
+			} else {
+				if (servicesTypeCk.SP && Number(servicesType.SP) > 0) vars.sobrePeso = vars.arranque * (Number(servicesType.SP0) / 100);
+			}
 		}
 
-		if (servicesTypeCk.EX) vars.servicios += Number(servicesType.EX);
-		if (servicesTypeCk.CR) vars.servicios += Number(servicesType.CR);
-		if (servicesTypeCk.CG) vars.servicios += Number(servicesType.CG);
-		if (servicesTypeCk.CE) vars.servicios += Number(servicesType.CE);
-		if (servicesTypeCk.SG) vars.servicios += Number(servicesType.SG);
-
-		if (detailSinisterCk.VO) vars.servicios += Number(detailSinister.VO);
-		if (detailSinisterCk.IN) vars.servicios += Number(detailSinister.IN);
-		if (detailSinisterCk.CO) vars.servicios += Number(detailSinister.CO);
-		if (detailSinisterCk.DM) vars.servicios += Number(detailSinister.DM);
-
+		if (servicesTypeCk.EX) {
+			if (Number(servicesType.EX) <= 3000) {
+				vars.servicios += 0;
+			} else {
+				vars.servicios += Number(servicesType.EX) - 3000;
+			}
+		}
+		if (servicesTypeCk.MN) vars.servicios += Number(servicesType.MN);
 		if (servicesTypeCk.PE && Number(servicesType.PE) > 0) vars.peaje = Number(servicesType.PE);
 
 		vars.total = vars.arranque + vars.sobrePeso + vars.subTotalNoche + vars.subTotalFeriado;
@@ -97,16 +97,6 @@ const summaryCalc = (
 			}
 		}
 		if (servicesTypeCk.MN) vars.servicios += Number(servicesType.MN);
-		// if (servicesTypeCk.CR) vars.servicios += Number(servicesType.CR);
-		// if (servicesTypeCk.CG) vars.servicios += Number(servicesType.CG);
-		// if (servicesTypeCk.CE) vars.servicios += Number(servicesType.CE);
-		// if (servicesTypeCk.SG) vars.servicios += Number(servicesType.SG);
-
-		// if (detailSinisterCk.VO) vars.servicios += Number(detailSinister.VO);
-		// if (detailSinisterCk.IN) vars.servicios += Number(detailSinister.IN);
-		// if (detailSinisterCk.CO) vars.servicios += Number(detailSinister.CO);
-		// if (detailSinisterCk.DM) vars.servicios += Number(detailSinister.DM);
-
 		if (servicesTypeCk.PE && Number(servicesType.PE) > 0) vars.peaje = Number(servicesType.PE);
 
 		vars.total =
@@ -130,7 +120,9 @@ const summaryCalc = (
 				vars.arranque;
 		}
 	}
-	data.precio = Number(vars.total).toFixed(2);
+
+	console.log("Fihogar: ", { vars });
+	data.precioCliente = Number(vars.total).toFixed(2);
 	return Number(vars.total).toFixed(2);
 };
 

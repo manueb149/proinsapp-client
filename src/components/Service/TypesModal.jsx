@@ -15,13 +15,20 @@ const TypesService = ({
 	data,
 	dataTrucks,
 }) => {
+
+	const handleArranque = value => {
+		const totalDistance = Number(data.distancia);
+		const inputDistance = Number(value);
+		return totalDistance > 15 && (totalDistance - inputDistance) >= 15 ? value : "";
+	}
+
 	const handleChange = (event) => {
 		setValues({
 			...values,
 			[event.target.name]:
 				(event.target.name === "LM" || event.target.name === "SP")
 					? Number(event.target.value) <= Number(data.distancia)
-						? event.target.value
+						? handleArranque(event.target.value)
 						: ""
 					: Number(event.target.value) <=
 						Number(valuesContext[event.target.name])

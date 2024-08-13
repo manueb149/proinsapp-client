@@ -20,8 +20,6 @@ import PhoneInput from "react-phone-number-input";
 import AuthContext from "../../contexts/auth/authContext";
 import { useHistory } from "react-router-dom";
 import summaryCalcProinsa from "../utils/serviceCalculation/proinsa";
-import summaryCalcFihogar from "../utils/serviceCalculation/fihogar";
-import summaryCalcFuturo from "../utils/serviceCalculation/futuro";
 import copyText from "../utils/copyText";
 import combinedServices from "../utils/combinedServices";
 import plusIcon from '../../assets/svg/plus-icon.svg';
@@ -88,9 +86,9 @@ const CreateService = () => {
 
 	const isServiceFromFihogar = String(data?.aseguradora).toLowerCase().includes('fihogar');
 	const isServiceFromFuturo = String(data?.aseguradora).toLowerCase().includes('futuro');
-	const isServiceFromFuturoBasico = isServiceFromFuturo && String(data?.plan).toLowerCase().includes('basico');
+	const isServiceVIP = String(data?.plan).toLowerCase().includes('vip');
 
-	const pagoProinsa = summaryCalcProinsa(
+	const { precio: pagoProinsa, precioCliente, precioTotal } = summaryCalcProinsa(
 		data,
 		values,
 		servicesType,
@@ -98,40 +96,8 @@ const CreateService = () => {
 		detailSinister,
 		detailSinisterCk,
 		dataTrucks,
-		true,
-		isServiceFromFihogar,
-		isServiceFromFuturo,
-		isServiceFromFuturoBasico
+		isServiceVIP
 	);
-
-	const pagoClienteFihogar = isServiceFromFihogar ? summaryCalcFihogar(
-		data,
-		values,
-		servicesType,
-		servicesTypeCk,
-		detailSinister,
-		detailSinisterCk,
-		dataTrucks,
-		false,
-		true,
-		isServiceFromFuturo,
-		isServiceFromFuturoBasico
-	) : 0;
-
-	const pagoClienteFuturo = isServiceFromFuturo ? summaryCalcFuturo(
-		data,
-		values,
-		servicesType,
-		servicesTypeCk,
-		detailSinister,
-		detailSinisterCk,
-		dataTrucks,
-		false,
-		isServiceFromFihogar,
-		true,
-		isServiceFromFuturoBasico
-	) : 0;
-
 
 	useEffect(() => {
 		const getTrucksAreas = async () => {
@@ -324,6 +290,8 @@ const CreateService = () => {
 			tiempoCliente: "",
 			distancia: "",
 			precio: "",
+			precioCliente: "",
+			precioTotal: "",
 			tarifaEspecial: "",
 			snr: false
 		});
@@ -1278,8 +1246,8 @@ const CreateService = () => {
 								/>
 							</div>
 
-							{/* SOLO PARA FIHOGAR Y FUTURO */}
-							{(isServiceFromFihogar || isServiceFromFuturo) &&
+							{/* SOLO PARA PLANES BASICO/MINIBUS */}
+							{Number(precioCliente) > 0 &&
 								<>
 									{/* plus icon */}
 									<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
@@ -1297,7 +1265,7 @@ const CreateService = () => {
 											name="precioCliente"
 											id="precioCliente"
 											placeholder="RD$ Pesos"
-											value={isServiceFromFihogar ? pagoClienteFihogar : isServiceFromFuturo ? pagoClienteFuturo : 0}
+											value={precioCliente}
 											onChange={handleChange}
 											disabled
 										/>
@@ -1306,7 +1274,7 @@ const CreateService = () => {
 							}
 
 							{/* SOLO PARA PAGO TOTAL*/}
-							{(isServiceFromFihogar || isServiceFromFuturo) && <>
+							{Number(precioTotal) > 0 && Number(precioCliente) > 0 && <>
 								{/* iquals icon */}
 								<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end' }}>
 									<img className="iquals-icon" src={iqualsIcon} alt="iquals-icon" />
@@ -1323,7 +1291,7 @@ const CreateService = () => {
 										name="precioTotal"
 										id="precioTotal"
 										placeholder="RD$ Pesos"
-										value={Number(Number(pagoProinsa) + Number(pagoClienteFihogar) + Number(pagoClienteFuturo)).toFixed(2)}
+										value={precioTotal}
 										onChange={handleChange}
 										disabled
 									/>

@@ -52,6 +52,8 @@ const ServiceDataContext = ({ children }) => {
 		tiempoCliente: "",
 		distancia: "",
 		precio: "",
+		precioCliente: "",
+		precioTotal: "",
 		tarifaEspecial: "",
 		user: "",
 		snr: false,

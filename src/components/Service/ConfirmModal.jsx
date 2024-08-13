@@ -136,6 +136,8 @@ const ConfirmModal = ({
 						tiempoCliente: "",
 						distancia: "",
 						precio: "",
+						precioCliente: "",
+						precioTotal: "",
 						snr: false,
 					});
 					setServicesType({
@@ -146,6 +148,7 @@ const ConfirmModal = ({
 						SG: "",
 						PE: "",
 						LM: "",
+						MN: "",
 					});
 					setServicesTypeCk({
 						TG: false,
@@ -157,6 +160,7 @@ const ConfirmModal = ({
 						PE: false,
 						SP: false,
 						LM: false,
+						MN: false,
 					});
 					setDetailSinister({
 						VO: "",
