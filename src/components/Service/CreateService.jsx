@@ -84,8 +84,6 @@ const CreateService = () => {
 		setIsServiceNotRegistered,
 	} = ServiceDataContext;
 
-	const isServiceFromFihogar = String(data?.aseguradora).toLowerCase().includes('fihogar');
-	const isServiceFromFuturo = String(data?.aseguradora).toLowerCase().includes('futuro');
 	const isServiceVIP = String(data?.plan).toLowerCase().includes('vip');
 
 	const { precio: pagoProinsa, precioCliente, precioTotal } = summaryCalcProinsa(
@@ -1231,44 +1229,47 @@ const CreateService = () => {
 						</div>
 						<div className="col-lg-8" style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-end' }}>
 							{/* Pago Aproximado Proinsa */}
-							<div className="col-lg-3" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
-								<label htmlFor="precio">{(isServiceFromFihogar || isServiceFromFuturo) ? 'Pago Proinsa' : 'Pago Aproximado'}<RequiredTag /></label>
-								<input
-									key="precio"
-									type="text"
-									className="form-control form-control-sm"
-									name="precio"
-									id="precio"
-									placeholder="RD$ Pesos"
-									value={pagoProinsa}
-									onChange={handleChange}
-									disabled
-								/>
+							<div className="form-row">
+								<div className="col-lg-12" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
+									<label htmlFor="precio">{Number(precioCliente) > 0 ? 'Pago Proinsa' : 'Pago Aproximado'}<RequiredTag /></label>
+									<input
+										key="precio"
+										type="text"
+										className="form-control form-control-sm"
+										name="precio"
+										id="precio"
+										placeholder="RD$ Pesos"
+										value={pagoProinsa}
+										onChange={handleChange}
+										disabled
+									/>
+								</div>
 							</div>
 
 							{/* SOLO PARA PLANES BASICO/MINIBUS */}
 							{Number(precioCliente) > 0 &&
 								<>
 									{/* plus icon */}
-									<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
+									<div style={{ margin: '0 3px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
 										<img className="plus-icon" src={plusIcon} alt="plus-icon" />
 									</div>
-
-									<div className="col-lg-3" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
-										<label htmlFor="precioCliente">
-											Pago Cliente
-										</label>
-										<input
-											key="precioCliente"
-											type="text"
-											className="form-control form-control-sm"
-											name="precioCliente"
-											id="precioCliente"
-											placeholder="RD$ Pesos"
-											value={precioCliente}
-											onChange={handleChange}
-											disabled
-										/>
+									<div className="form-row">
+										<div className="col-lg-12" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
+											<label htmlFor="precioCliente">
+												Pago Cliente
+											</label>
+											<input
+												key="precioCliente"
+												type="text"
+												className="form-control form-control-sm"
+												name="precioCliente"
+												id="precioCliente"
+												placeholder="RD$ Pesos"
+												value={precioCliente}
+												onChange={handleChange}
+												disabled
+											/>
+										</div>
 									</div>
 								</>
 							}
@@ -1276,25 +1277,26 @@ const CreateService = () => {
 							{/* SOLO PARA PAGO TOTAL*/}
 							{Number(precioTotal) > 0 && Number(precioCliente) > 0 && <>
 								{/* iquals icon */}
-								<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end' }}>
+								<div style={{ margin: '0 1px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end' }}>
 									<img className="iquals-icon" src={iqualsIcon} alt="iquals-icon" />
 								</div>
-
-								<div className="col-lg-3" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
-									<label htmlFor="precioTotal">
-										Pago total
-									</label>
-									<input
-										key="precioTotal"
-										type="text"
-										className="form-control form-control-sm"
-										name="precioTotal"
-										id="precioTotal"
-										placeholder="RD$ Pesos"
-										value={precioTotal}
-										onChange={handleChange}
-										disabled
-									/>
+								<div className="form-row">
+									<div className="col-lg-12" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
+										<label htmlFor="precioTotal">
+											Pago total
+										</label>
+										<input
+											key="precioTotal"
+											type="text"
+											className="form-control form-control-sm"
+											name="precioTotal"
+											id="precioTotal"
+											placeholder="RD$ Pesos"
+											value={precioTotal}
+											onChange={handleChange}
+											disabled
+										/>
+									</div>
 								</div>
 							</>}
 

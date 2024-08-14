@@ -31,7 +31,7 @@ export const summaryCalc = (data, values, servicesType, servicesTypeCk, detailSi
 		}
 
 		if (servicesTypeCk.PE) vars.peaje += Number(servicesType.PE);
-		if (servicesTypeCk.MN) vars.servicios += Number(servicesType.MN);
+		// if (servicesTypeCk.MN) vars.servicios += Number(servicesType.MN);
 		if (servicesTypeCk.EX) vars.servicios += Number(servicesType.EX);
 		if (servicesTypeCk.CR) vars.servicios += Number(servicesType.CR);
 		if (servicesTypeCk.CG) vars.servicios += Number(servicesType.CG);
@@ -66,7 +66,7 @@ export const summaryCalc = (data, values, servicesType, servicesTypeCk, detailSi
 			vars.sobrePeso = Number(servicesType.SP) * Number(servicesType.TG) * (Number(servicesType.SP0) / 100);
 
 		if (servicesTypeCk.PE) vars.peaje += Number(servicesType.PE);
-		if (servicesTypeCk.MN) vars.servicios += Number(servicesType.MN);
+		// if (servicesTypeCk.MN) vars.servicios += Number(servicesType.MN);
 		if (servicesTypeCk.EX) vars.servicios += Number(servicesType.EX);
 		if (servicesTypeCk.CR) vars.servicios += Number(servicesType.CR);
 		if (servicesTypeCk.CG) vars.servicios += Number(servicesType.CG);
