@@ -296,13 +296,13 @@ const MyDocument = ({ data, dates, snr }) => (
 				TotalSUBPrice += Number(report.precio)
 				TotalTEPrice += Number(report.tarifaEspecial)
 				return (
-					<View 
-						key={report.serviceNo} 
+					<View
+						key={report.serviceNo}
 						style={{
-							...styles.table_body_row, 
+							...styles.table_body_row,
 							backgroundColor: report.snr === true ? '#7e7e7e' : 'transparent',
 							color: report.snr === true ? 'white' : 'black',
-						}} 
+						}}
 						wrap={false}
 					>
 						<Text style={styles.table_body_pol}>
@@ -366,7 +366,7 @@ const PrintBalanceReport = () => {
 	const DefaultValuesContext = useContext(defaultValuesContext);
 
 	const { values } = DefaultValuesContext;
-	console.log(values)
+
 	const {
 		filteredReports,
 		filteredDates,
@@ -393,17 +393,17 @@ const PrintBalanceReport = () => {
 			currTableFilteredReports = newFilteredReports.filter(value => filteredServices.includes(value.serviceNo))
 			newFilteredReports = currTableFilteredReports;
 		}
-		newFilteredReports = newFilteredReports.filter(value => { 
-			if(!values?.SNR){
-				if(!!value.snr){
+		newFilteredReports = newFilteredReports.filter(value => {
+			if (!values?.SNR) {
+				if (!!value.snr) {
 					return false
-				} else{
+				} else {
 					return true
 				}
 			} else {
-				if(!!value.snr){
+				if (!!value.snr) {
 					return true
-				} else{
+				} else {
 					return false
 				}
 			}

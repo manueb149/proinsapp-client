@@ -80,7 +80,7 @@ const ConfirmModal = ({
 			setOpenSB(true);
 			return;
 		} else {
-			if(Number(payload.data.distancia) <= 0) payload.data.distancia = 0;
+			if (Number(payload.data.distancia) <= 0) payload.data.distancia = 0;
 			if (payload.selectedDate) {
 				if (payload.selectedDate._d) {
 					payload.data.fechaSiniestro = payload.selectedDate._d.toLocaleString(
@@ -136,6 +136,8 @@ const ConfirmModal = ({
 						tiempoCliente: "",
 						distancia: "",
 						precio: "",
+						precioCliente: "",
+						precioTotal: "",
 						snr: false,
 					});
 					setServicesType({
@@ -146,6 +148,7 @@ const ConfirmModal = ({
 						SG: "",
 						PE: "",
 						LM: "",
+						MN: "",
 					});
 					setServicesTypeCk({
 						TG: false,
@@ -157,6 +160,7 @@ const ConfirmModal = ({
 						PE: false,
 						SP: false,
 						LM: false,
+						MN: false,
 					});
 					setDetailSinister({
 						VO: "",
@@ -176,7 +180,7 @@ const ConfirmModal = ({
 
 					SetAreaTruckSelect([]);
 					setDataTrucks([]);
-					setSearch({...search, id: ""});
+					setSearch({ ...search, id: "" });
 					setRepeatedServices(null);
 					setCombServices(null);
 					setSaving(false);
@@ -231,21 +235,9 @@ const ConfirmModal = ({
 					</p>
 				</Modal.Body>
 				<Modal.Footer>
-					{/* {printService ? (
-						<Button
-							variant="secondary"
-							onClick={() => {
-								setRedered(true);
-							}}
-						>
-							Imprimir
-						</Button>
-					) : null} */}
 					<Button
 						variant="secondary"
 						onClick={() => {
-							// setRedered(false);
-							// setPrintService(null);
 							setShowConfirm(false);
 						}}
 					>

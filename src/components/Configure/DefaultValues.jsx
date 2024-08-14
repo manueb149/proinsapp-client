@@ -61,7 +61,7 @@ const DefaultValues = () => {
 	const DefaultValuesContext = useContext(defaultValuesContext);
 	const authContext = useContext(AuthContext);
 
-    const { logout } = authContext;
+	const { logout } = authContext;
 
 	const {
 		severity,
@@ -88,6 +88,7 @@ const DefaultValues = () => {
 		DM: false,
 		TN: false,
 		FF: false,
+		MN: false,
 		TH: true,
 		SNR: true,
 	});
@@ -148,6 +149,7 @@ const DefaultValues = () => {
 			values.VO === "" ||
 			values.IN === "" ||
 			values.CO === "" ||
+			values.MN === "" ||
 			values.DM === ""
 		) {
 			setOpenSB(false);
@@ -176,7 +178,7 @@ const DefaultValues = () => {
 					if (error.response.data.text === "TNV") {
 						logout();
 						history.push("/");
-					}else{
+					} else {
 						setOpenSB(false);
 						setSeverity("error");
 						setNotification(error.response.data.message);
@@ -365,6 +367,23 @@ const DefaultValues = () => {
 										values={values}
 										checked={checked}
 										setChecked={setChecked}
+										shortName={"MN"}
+										LongName={"Maniobra"}
+										Format={
+											customFormats.LessNumberFormatCustom
+										}
+										handleChange={handleChange}
+									/>
+								</div>
+							</div>
+							<div className="col-sm-12 col-md-6 col-lg-4 mb-3">
+								<div className="row check-input">
+									<CustomTextField
+										size="small"
+										variant="outlined"
+										values={values}
+										checked={checked}
+										setChecked={setChecked}
 										shortName={"CG"}
 										LongName={"Cambio de Gomas"}
 										Format={
@@ -374,7 +393,6 @@ const DefaultValues = () => {
 									/>
 								</div>
 							</div>
-
 							<div className="col-sm-12 col-md-6 col-lg-4 mb-3">
 								<div className="row check-input">
 									<CustomTextField
