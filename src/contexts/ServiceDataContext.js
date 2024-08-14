@@ -1,10 +1,9 @@
-import React, { createContext, useState, useEffect } from 'react';
-import axios from '../config/http-common';
+import React, { createContext, useState, useEffect } from "react";
+import axios from "../config/http-common";
 
 export const serviceDataContext = createContext();
 
 const ServiceDataContext = ({ children }) => {
-
 	const [trucks, setTrucks] = useState([]);
 	const [truckAreas, setTruckAreas] = useState([]);
 	const [severity, setSeverity] = useState("info");
@@ -47,12 +46,14 @@ const ServiceDataContext = ({ children }) => {
 		celGruero: "",
 		contactoGruero: "",
 		comentarioGruero: "",
-		dia: "",
+		dia: "DN",
 		noche: false,
 		tiempoGrua: "",
 		tiempoCliente: "",
 		distancia: "",
 		precio: "",
+		precioCliente: "",
+		precioTotal: "",
 		tarifaEspecial: "",
 		user: "",
 		snr: false,
@@ -85,7 +86,6 @@ const ServiceDataContext = ({ children }) => {
 		// eslint-disable-next-line
 	}, []);
 
-
 	return (
 		<serviceDataContext.Provider
 			value={{
@@ -114,12 +114,12 @@ const ServiceDataContext = ({ children }) => {
 				setMultipleCarsSelect: setMultipleCarsSelect,
 				setIsServiceNotRegistered: setIsServiceNotRegistered,
 				handleDateChange: handleDateChange,
-				handleBakDateChange: handleBakDateChange
+				handleBakDateChange: handleBakDateChange,
 			}}
 		>
 			{children}
 		</serviceDataContext.Provider>
-	)
-}
+	);
+};
 
 export default ServiceDataContext;

@@ -17,9 +17,9 @@ const Start = () => {
     const [clear, setClear] = useState(false);
     const [repeatedServices, setRepeatedServices] = useState([])
     const [search, setSearch] = useState({
-		id: "",
-		type: "poliza", //Default value: póliza
-	});
+        id: "",
+        type: "poliza", //Default value: póliza
+    });
     const history = useHistory();
 
     const ServiceDataContext = useContext(serviceDataContext);
@@ -53,12 +53,12 @@ const Start = () => {
                         return
                     }
                     const data = res.data.results;
-                
+
                     const newData = [];
                     const storedChassis = []
                     data.forEach(service => {
                         const repeated = data.filter(value => (value.chassis === service.chassis) && (value.registry.search(`${actualYear}`) !== -1))
-                        if(repeated.length >= 2 && !storedChassis.includes(service.chassis)){
+                        if (repeated.length >= 2 && !storedChassis.includes(service.chassis)) {
                             newData.push({
                                 ...service,
                                 history: repeated,
@@ -67,9 +67,12 @@ const Start = () => {
                             storedChassis.push(service.chassis)
                         }
                     })
+                    if (newData?.length) {
+                        newData.sort((a, b) => b.assistances - a.assistances)
+                    }
                     setRepeatedServices(newData)
                     setLoading(false);
-                    
+
                 })
                 .catch((error) => {
                     if (error.response) {
@@ -94,7 +97,7 @@ const Start = () => {
                     }
                 });
         }
-        if(user) if(permitedUsers.includes(user.name.toUpperCase())) getServices();
+        if (user) if (permitedUsers.includes(user.name.toUpperCase())) getServices();
         // eslint-disable-next-line
     }, [clear, user]);
 
@@ -127,6 +130,9 @@ const Start = () => {
                         history: res.data,
                         assistances: res.data.length
                     })
+                    if (newData?.length) {
+                        newData.sort((a, b) => b.assistances - a.assistances)
+                    }
                     setRepeatedServices(newData)
                 })
                 .catch((error) => {
@@ -153,7 +159,7 @@ const Start = () => {
     };
 
     const handleClear = () => {
-        setSearch({...search, id: ""})
+        setSearch({ ...search, id: "" })
         setClear(!clear)
     }
 

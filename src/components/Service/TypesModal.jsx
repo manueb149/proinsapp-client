@@ -15,18 +15,25 @@ const TypesService = ({
 	data,
 	dataTrucks,
 }) => {
+
+	const handleArranque = value => {
+		const totalDistance = Number(data.distancia);
+		const inputDistance = Number(value);
+		return totalDistance > 15 && (totalDistance - inputDistance) >= 15 ? value : "";
+	}
+
 	const handleChange = (event) => {
 		setValues({
 			...values,
 			[event.target.name]:
 				(event.target.name === "LM" || event.target.name === "SP")
 					? Number(event.target.value) <= Number(data.distancia)
-						? event.target.value
+						? handleArranque(event.target.value)
 						: ""
 					: Number(event.target.value) <=
-					  Number(valuesContext[event.target.name])
-					? event.target.value
-					: "",
+						Number(valuesContext[event.target.name])
+						? event.target.value
+						: "",
 		});
 	};
 
@@ -34,7 +41,7 @@ const TypesService = ({
 		const handleChangeCustom = () => {
 			setValues({
 				...values,
-				TG: dataTrucks.length>0
+				TG: dataTrucks.length > 0
 					? dataTrucks[0].trasporteGrua
 					: valuesContext.TG,
 				SP0: valuesContext.SP,
@@ -73,7 +80,7 @@ const TypesService = ({
 									Format={customFormats.PesoKmFormatCustom}
 									handleChange={handleChange}
 									alwaysDisabled
-									// noCheck
+								// noCheck
 								/>
 							</div>
 						</div>
@@ -146,8 +153,8 @@ const TypesService = ({
 									values={values}
 									checked={checked}
 									setChecked={setChecked}
-									shortName={"PE"}
-									LongName={"Peaje"}
+									shortName={"MN"}
+									LongName={"Maniobra"}
 									Format={customFormats.NumberFormatCustom}
 									handleChange={handleChange}
 								/>
@@ -191,6 +198,21 @@ const TypesService = ({
 									values={values}
 									checked={checked}
 									setChecked={setChecked}
+									shortName={"PE"}
+									LongName={"Peaje"}
+									Format={customFormats.NumberFormatCustom}
+									handleChange={handleChange}
+								/>
+							</div>
+						</div>
+						<div className="col-sm-12 col-md-12 col-lg-4 mb-3">
+							<div className="row check-input">
+								<CustomTextField
+									size="small"
+									variant="outlined"
+									values={values}
+									checked={checked}
+									setChecked={setChecked}
 									shortName={"CG"}
 									LongName={"Cambio de Gomas"}
 									Format={customFormats.NumberFormatCustom}
@@ -198,6 +220,8 @@ const TypesService = ({
 								/>
 							</div>
 						</div>
+						<div className="col-sm-12 col-md-12 col-lg-4 mb-3"></div>
+						<div className="col-sm-12 col-md-12 col-lg-4 mb-3"></div>
 					</div>
 				</Modal.Body>
 			</DetailsModalContainer>
