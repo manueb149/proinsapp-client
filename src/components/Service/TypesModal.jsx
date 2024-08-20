@@ -28,7 +28,7 @@ const TypesService = ({
 			[event.target.name]:
 				(event.target.name === "LM" || event.target.name === "SP")
 					? Number(event.target.value) <= Number(data.distancia)
-						? handleArranque(event.target.value)
+						? event.target.value
 						: ""
 					: Number(event.target.value) <=
 						Number(valuesContext[event.target.name])
