@@ -55,12 +55,16 @@ export const summaryCalc = (data, values, servicesType, servicesTypeCk, detailSi
 		if (servicesTypeCk.TG && Number(servicesType.TG) > 0) vars.subTotalLlano = vars.distancia * Number(servicesType.TG);
 		if (servicesTypeCk.SP && Number(servicesType.SP) > 0) vars.kmSobrepeso = Number(servicesType.SP);
 		if (servicesTypeCk.TG && servicesTypeCk.LM) {
-			if (servicesTypeCk.LM && Number(servicesType.LM) <= vars.distancia) {
+			if (servicesTypeCk.LM && Number(servicesType.LM) <= Number(data.distancia)) {
 				vars.kmLoma = Number(servicesType.LM);
 				vars.kmLlano = vars.distancia - vars.kmLoma;
 			}
 			if (servicesTypeCk.LM && vars.kmLoma >= 0) vars.subTotalLoma = vars.kmLoma * (Number(servicesType.SL) + Number(servicesType.TG));
-			if (servicesTypeCk.LM && vars.kmLlano >= 0) vars.subTotalLlano = vars.kmLlano * Number(servicesType.TG);
+			if (servicesTypeCk.LM && vars.kmLlano >= 0) {
+				vars.subTotalLlano = vars.kmLlano * Number(servicesType.TG);
+			} else {
+				vars.subTotalLlano = vars.kmLlano * Number(servicesType.TG);
+			}
 		}
 		if (servicesTypeCk.SP && Number(servicesType.SP) > 0 && Number(servicesType.SP) <= Number(data.distancia))
 			vars.sobrePeso = Number(servicesType.SP) * Number(servicesType.TG) * (Number(servicesType.SP0) / 100);
