@@ -16,11 +16,11 @@ const TypesService = ({
 	dataTrucks,
 }) => {
 
-	const handleArranque = value => {
-		const totalDistance = Number(data.distancia);
-		const inputDistance = Number(value);
-		return totalDistance > 15 && (totalDistance - inputDistance) >= 15 ? value : "";
-	}
+	// const handleArranque = value => {
+	// 	const totalDistance = Number(data.distancia);
+	// 	const inputDistance = Number(value);
+	// 	return totalDistance > 15 && (totalDistance - inputDistance) >= 15 ? value : "";
+	// }
 
 	const handleChange = (event) => {
 		setValues({
