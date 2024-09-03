@@ -336,10 +336,12 @@ const ViewReports = () => {
 						const data = res.data.results || [];
 						const newData = data.map((value) => {
 							const gruero = value.datosGruero.gruaDeServicio
+							const region = value?.datosGruero?.region ?? '-'
 							return (
 								{
 									...value,
-									gruero
+									gruero,
+									region
 								}
 							)
 						})
@@ -386,10 +388,12 @@ const ViewReports = () => {
 					.then((res) => {
 						const newData = res.data.results.map((value) => {
 							const gruero = value.datosGruero.gruaDeServicio
+							const region = value?.datosGruero?.region ?? '-'
 							return (
 								{
 									...value,
-									gruero
+									gruero,
+									region,
 								}
 							)
 						})
