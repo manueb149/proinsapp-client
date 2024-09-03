@@ -133,6 +133,14 @@ const columns = [
 		},
 	},
 	{
+		name: "region",
+		label: "Region",
+		options: {
+			filter: true,
+			sort: true,
+		},
+	},
+	{
 		name: "precio",
 		label: "Precio (RD$)",
 		options: {
@@ -270,12 +278,14 @@ const ViewReports = () => {
 					.get(`/service?gte=${gte}&lt=${lt}`)
 					.then((res) => {
 						const newData = res.data.results.map((value) => {
-							const gruero = value.datosGruero.gruaDeServicio
+							const gruero = value?.datosGruero?.gruaDeServicio
+							const region = value?.datosGruero?.region ?? '-'
 							if (value.tarifaEspecial === "") value.tarifaEspecial = 0
 							return (
 								{
 									...value,
-									gruero
+									gruero,
+									region,
 								}
 							)
 						})
