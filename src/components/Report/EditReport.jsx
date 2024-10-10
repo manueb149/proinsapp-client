@@ -17,7 +17,10 @@ import DateTimePicker from "../utils/DateTimePicker";
 import PhoneInput from "react-phone-number-input";
 import AuthContext from "../../contexts/auth/authContext";
 import { useHistory } from "react-router-dom";
-import serviceCalc from "../utils/serviceCalc";
+// import serviceCalc from "../utils/serviceCalc";
+import summaryCalcProinsa from "../utils/serviceCalculation/proinsa";
+import plusIcon from '../../assets/svg/plus-icon.svg';
+import iqualsIcon from '../../assets/svg/iquals-icon.svg';
 
 const EditReport = () => {
 	const [severity, setSeverity] = useState("info");
@@ -33,62 +36,62 @@ const EditReport = () => {
 	const authContext = useContext(AuthContext);
 	const ReportContext = useContext(reportContext);
 
-	const { selectedReport, setSelectedReport } = ReportContext;
 	const { logout } = authContext;
 	const { values, setValues } = DefaultValuesContext;
+	const { selectedReport, setSelectedReport } = ReportContext;
 
 	const [servicesType, setServicesType] = useState(
 		selectedReport
 			? selectedReport.tipoServicios.servicesType
 			: {
-					TG: "",
-					EX: "",
-					CR: "",
-					CG: "",
-					CE: "",
-					SG: "",
-					PE: "",
-					SP: "",
-					LM: "",
-			  }
+				TG: "",
+				EX: "",
+				CR: "",
+				CG: "",
+				CE: "",
+				SG: "",
+				PE: "",
+				SP: "",
+				LM: "",
+			}
 	);
 
 	const [servicesTypeCk, setServicesTypeCk] = useState(
 		selectedReport
 			? selectedReport.tipoServicios.servicesTypeCk
 			: {
-					TG: false,
-					EX: false,
-					CR: false,
-					CG: false,
-					CE: false,
-					SG: false,
-					PE: false,
-					SP: false,
-					LM: false,
-			  }
+				TG: false,
+				EX: false,
+				CR: false,
+				CG: false,
+				CE: false,
+				SG: false,
+				PE: false,
+				SP: false,
+				LM: false,
+			}
 	);
 
 	const [detailSinister, setDetailSinister] = useState(
 		selectedReport
 			? selectedReport.detalleSiniestro.detailSinister
 			: {
-					VO: "",
-					IN: "",
-					CO: "",
-					DM: "",
-			  }
+				VO: "",
+				IN: "",
+				CO: "",
+				DM: "",
+			}
 	);
 
 	const [detailSinisterCk, setDetailSinisterCk] = useState(
 		selectedReport
 			? selectedReport.detalleSiniestro.detailSinisterCk
 			: {
-					VO: false,
-					IN: false,
-					CO: false,
-					DM: false,
-			  }
+				VO: false,
+				IN: false,
+				CO: false,
+				DM: false,
+			}
 	);
 
 	const [trucks, setTrucks] = useState([]);
@@ -104,45 +107,57 @@ const EditReport = () => {
 	const [data, setData] = useState(
 		selectedReport
 			? {
-					...selectedReport,
-					direccionGruero: selectedReport.datosGruero.direccion || "",
-					telGruero: selectedReport.datosGruero.telOficina || "",
-					celGruero: selectedReport.datosGruero.telCelular || "",
-					contactoGruero: selectedReport.datosGruero.contacto || "",
-			  }
+				...selectedReport,
+				direccionGruero: selectedReport.datosGruero.direccion || "",
+				telGruero: selectedReport.datosGruero.telOficina || "",
+				celGruero: selectedReport.datosGruero.telCelular || "",
+				contactoGruero: selectedReport.datosGruero.contacto || "",
+			}
 			: {
-					poliza: "",
-					cedula: "",
-					asegurado: "",
-					telAseg1: "",
-					telAseg2: "",
-					marca: "",
-					modelo: "",
-					anio: "",
-					chassis: "",
-					placa: "",
-					tipoV: "",
-					color: "",
-					aseguradora: "",
-					plan: "",
-					infoSin: "",
-					estadoV: "",
-					ubicacion: "",
-					destino: "",
-					direccionGruero: "",
-					telGruero: "",
-					celGruero: "",
-					contactoGruero: "",
-					comentarioGruero: "",
-					dia: "",
-					noche: false,
-					tiempoGrua: "",
-					tiempoCliente: "",
-					distancia: "",
-					precio: "",
-					tarifaEspecial: "",
-					user: "",
-			  }
+				poliza: "",
+				cedula: "",
+				asegurado: "",
+				telAseg1: "",
+				telAseg2: "",
+				marca: "",
+				modelo: "",
+				anio: "",
+				chassis: "",
+				placa: "",
+				tipoV: "",
+				color: "",
+				aseguradora: "",
+				plan: "",
+				infoSin: "",
+				estadoV: "",
+				ubicacion: "",
+				destino: "",
+				direccionGruero: "",
+				telGruero: "",
+				celGruero: "",
+				contactoGruero: "",
+				comentarioGruero: "",
+				dia: "",
+				noche: false,
+				tiempoGrua: "",
+				tiempoCliente: "",
+				distancia: "",
+				precio: "",
+				tarifaEspecial: "",
+				user: "",
+			}
+	);
+
+	const isServiceVIP = String(data?.plan).toLowerCase().includes('vip');
+	const { precio: pagoProinsa, precioCliente, precioTotal } = summaryCalcProinsa(
+		data,
+		values,
+		servicesType,
+		servicesTypeCk,
+		detailSinister,
+		detailSinisterCk,
+		dataTrucks,
+		isServiceVIP
 	);
 
 	useEffect(() => {
@@ -268,7 +283,7 @@ const EditReport = () => {
 	const handleChange = (e) => {
 		setData({
 			...data,
-			[e.target.name]: Number(e.target.value),
+			[e.target.name]: e.target.value,
 		});
 	};
 
@@ -324,6 +339,8 @@ const EditReport = () => {
 			}
 		}
 	};
+
+	console.log({ ...data });
 
 	return (
 		<CreateServiceContainer>
@@ -491,7 +508,7 @@ const EditReport = () => {
 									})
 								}
 								value={data.color}
-								// disabled
+							// disabled
 							></input>
 						</div>
 						<div className="col-lg-1 mb-3">
@@ -774,76 +791,158 @@ const EditReport = () => {
 			<div className="card c-precio mb-2">
 				<div className="card-header">Resúmen</div>
 				<div className="card-body">
-					<div className="form-row">
-						<div className="col-lg-12 mb-3">
-							<div className="form-check form-check-inline">
-								<input
-									className="form-check-input rad"
-									name="resumeRadio"
-									type="radio"
-									id="inlineRad1"
-									value="DN"
-									checked={data.dia === "DN" ? true : false}
-									onChange={(e) => {
-										setData({
-											...data,
-											dia: e.target.value,
-										});
-									}}
-								></input>
-								<label
-									className="form-check-label"
-									htmlFor="inlineRad1"
-								>
-									Día Normal
-								</label>
-							</div>
-							<div className="form-check form-check-inline">
-								<input
-									className="form-check-input rad"
-									name="resumeRadio"
-									type="radio"
-									id="inlineRad2"
-									value="DF"
-									checked={data.dia === "DF" ? true : false}
-									onChange={(e) => {
-										setData({
-											...data,
-											dia: e.target.value,
-										});
-									}}
-								></input>
-								<label
-									className="form-check-label"
-									htmlFor="inlineRad2"
-								>
-									Fin de Semana/Feriado
-								</label>
-							</div>
-							<div className="form-check form-check-inline">
-								<input
-									className="form-check-input rad"
-									name="noche"
-									type="checkbox"
-									id="noche"
-									value="noche"
-									checked={data.noche}
-									onChange={(e) => {
-										setData({
-											...data,
-											noche: e.target.checked,
-										});
-									}}
-								></input>
-								<label
-									className="form-check-label"
-									htmlFor="noche"
-								>
-									Noche
-								</label>
+					<div className="form-row mb-3">
+						<div className="col-lg-4" style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-start' }}>
+							<div className="form-row">
+								<div className="col-lg-12">
+									<div className="form-check form-check-inline">
+										<input
+											className="form-check-input rad"
+											name="resumeRadio"
+											type="radio"
+											id="inlineRad1"
+											value="DN"
+											checked={data.dia === "DN" ? true : false}
+											onChange={(e) => {
+												setData({
+													...data,
+													dia: e.target.value,
+												});
+											}}
+										></input>
+										<label
+											className="form-check-label"
+											htmlFor="inlineRad1"
+										>
+											Día Normal
+										</label>
+									</div>
+									<div className="form-check form-check-inline">
+										<input
+											className="form-check-input rad"
+											name="resumeRadio"
+											type="radio"
+											id="inlineRad2"
+											value="DF"
+											checked={data.dia === "DF" ? true : false}
+											onChange={(e) => {
+												setData({
+													...data,
+													dia: e.target.value,
+												});
+											}}
+										></input>
+										<label
+											className="form-check-label"
+											htmlFor="inlineRad2"
+										>
+											Fin de Semana/Feriado
+										</label>
+									</div>
+								</div>
+								<div className="col-lg-12">
+									<div className="form-check form-check-inline">
+										<input
+											className="form-check-input rad"
+											name="noche"
+											type="checkbox"
+											id="noche"
+											value="noche"
+											checked={data.noche}
+											onChange={(e) => {
+												setData({
+													...data,
+													noche: e.target.checked,
+												});
+											}}
+										></input>
+										<label
+											className="form-check-label"
+											htmlFor="noche"
+										>
+											Noche
+										</label>
+									</div>
+								</div>
 							</div>
 						</div>
-						<div className="col-lg-3 mb-3">
+						<div className="col-lg-8" style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'flex-end' }}>
+							{/* Pago Aproximado Proinsa */}
+							<div className="form-row">
+								<div className="col-lg-12" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
+									<label htmlFor="precio">{Number(precioCliente) > 0 ? 'Pago Proinsa' : 'Pago Aproximado'}</label>
+									<input
+										key="precio"
+										type="text"
+										className="form-control form-control-sm"
+										name="precio"
+										id="precio"
+										placeholder="RD$ Pesos"
+										value={pagoProinsa}
+										onChange={handleChange}
+										disabled
+									/>
+								</div>
+							</div>
+
+							{/* SOLO PARA PLANES BASICO/MINIBUS */}
+							{Number(precioCliente) > 0 &&
+								<>
+									{/* plus icon */}
+									<div style={{ margin: '0 3px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
+										<img className="plus-icon" src={plusIcon} alt="plus-icon" />
+									</div>
+									<div className="form-row">
+										<div className="col-lg-12" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
+											<label htmlFor="precioCliente">
+												Pago Cliente
+											</label>
+											<input
+												key="precioCliente"
+												type="text"
+												className="form-control form-control-sm"
+												name="precioCliente"
+												id="precioCliente"
+												placeholder="RD$ Pesos"
+												value={precioCliente}
+												onChange={handleChange}
+												disabled
+											/>
+										</div>
+									</div>
+								</>
+							}
+
+							{/* SOLO PARA PAGO TOTAL*/}
+							{Number(precioTotal) > 0 && Number(precioCliente) > 0 && <>
+								{/* iquals icon */}
+								<div style={{ margin: '0 1px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'flex-end' }}>
+									<img className="iquals-icon" src={iqualsIcon} alt="iquals-icon" />
+								</div>
+								<div className="form-row">
+									<div className="col-lg-12" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', justifyContent: 'flex-end' }}>
+										<label htmlFor="precioTotal">
+											Pago total
+										</label>
+										<input
+											key="precioTotal"
+											type="text"
+											className="form-control form-control-sm"
+											name="precioTotal"
+											id="precioTotal"
+											placeholder="RD$ Pesos"
+											value={precioTotal}
+											onChange={handleChange}
+											disabled
+										/>
+									</div>
+								</div>
+							</>}
+
+						</div>
+					</div>
+					<div className="form-row">
+						<div className="col-lg-4 mb-3">
 							<label htmlFor="tiempoGrua">
 								Tiempo de llegada Grúa
 							</label>
@@ -860,7 +959,7 @@ const EditReport = () => {
 								required
 							></input>
 						</div>
-						<div className="col-lg-3 mb-3">
+						<div className="col-lg-4 mb-3">
 							<label htmlFor="tiempoCliente">
 								Tiempo de llegada Cliente
 							</label>
@@ -894,33 +993,13 @@ const EditReport = () => {
 							></input>
 						</div>
 						<div className="col-lg-2 mb-3">
-							<label htmlFor="precio">Precio Aproximado</label>
-							<input
-								type="text"
-								className="form-control form-control-sm"
-								name="precio"
-								id="precio"
-								placeholder="RD$ Pesos"
-								// value={data.precio <= 0 ? "" : data.precio}
-								value={serviceCalc(
-									data,
-									values,
-									servicesType,
-									servicesTypeCk,
-									detailSinister,
-									detailSinisterCk
-								)}
-								onChange={handleChange}
-								disabled
-							></input>
-						</div>
-						<div className="col-lg-2 mb-3">
 							<label htmlFor="tarifaEspecial">
 								Tarifa Especial
 							</label>
 							<input
 								type="number"
 								step="0.01"
+								min="0"
 								className="form-control form-control-sm"
 								id="tarifaEspecial"
 								name="tarifaEspecial"
