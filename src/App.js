@@ -23,8 +23,8 @@ function App() {
       <AuthState>
         <Router>
           <Switch>
-            <Route exact path='/' component={Login} />
-            <PrivateRoute exact path='/dashboard' component={Dashboard} />
+            <Route exact path='*' component={Login} />
+            {/* <PrivateRoute exact path='/dashboard' component={Dashboard} /> */}
           </Switch>
         </Router>
       </AuthState>

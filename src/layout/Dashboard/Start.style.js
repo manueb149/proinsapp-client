@@ -56,7 +56,7 @@ export const StartContainer = styled.div`
     }
     .MuiTableContainer-root{
         border-radius: 0px;
-        height: 65vh;
+        height: 83vh;
         overflow-y: auto;
     }
 `;

@@ -1,10 +1,12 @@
 import axios from "axios";
 
+console.log('REACT_APP_API_URL: ', process?.env['REACT_APP_API_URL'])
+
 export default axios.create({
   // Production
-  baseURL: "https://proinsapp.herokuapp.com/api",
+  // baseURL: process?.env['REACT_APP_API_URL'] || "",
 
   // Development
-  // baseURL: "http://localhost:8080/api",
+  baseURL: process?.env['REACT_APP_API_URL'] || "http://localhost:8000/api",
 
 });
