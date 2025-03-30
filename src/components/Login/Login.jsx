@@ -14,7 +14,7 @@ const Login = (props) => {
 	});
 	const [showEye, setShowEye] = useState(false);
 	const [openSB, setOpenSB] = useState(true);
-	const [loading, setLoading] = useState(false);
+	const [loading] = useState(false);
 
 	const { email, password } = user;
 
@@ -23,7 +23,7 @@ const Login = (props) => {
 	const { showAlert } = alertContext;
 
 	const authContext = useContext(AuthContext);
-	const { msg, authenticated, login } = authContext;
+	const { msg, authenticated } = authContext;
 
 	// En caso de que el password o usuario no exista
 	useEffect(() => {
