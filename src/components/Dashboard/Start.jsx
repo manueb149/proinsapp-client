@@ -99,7 +99,7 @@ const Start = () => {
         }
         if (user) if (permitedUsers.includes(user.name.toUpperCase())) getServices();
         // eslint-disable-next-line
-    }, [clear, user]);
+    }, []);
 
     const handleCloseSB = (event, reason) => {
         if (reason === "clickaway") {
@@ -174,7 +174,7 @@ const Start = () => {
             />
 
             {loading ? <LinearProgress /> : null}
-            <div className="card c-search mb-2">
+            {/* <div className="card c-search mb-2">
                 <div className="card-header">Búsqueda General</div>
                 <div className="card-body">
                     <form
@@ -237,7 +237,7 @@ const Start = () => {
                         </div>
                     </form>
                 </div>
-            </div>
+            </div> */}
             {repeatedServices && user ? <CollapsibleTable rows={repeatedServices} user={user} permitedUsers={permitedUsers} /> : null}
         </StartContainer>
     );
