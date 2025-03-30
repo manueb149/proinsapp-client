@@ -3,7 +3,7 @@ import { serviceDataContext } from "../../contexts/ServiceDataContext";
 import { StartContainer } from "../../layout/Dashboard/Start.style";
 import LinearProgress from '../utils/linearProgress';
 import CollapsibleTable from "../utils/collapsibleTable";
-import { Button } from "react-bootstrap";
+// import { Button } from "react-bootstrap";
 import "react-bootstrap-typeahead/css/Typeahead.css";
 import axios from "../../config/http-common";
 import SnackBar from "../utils/SnackBar";
@@ -108,60 +108,60 @@ const Start = () => {
         setOpenSB(false);
     };
 
-    const handleSearch = async () => {
-        if (search.id.trim() === "" || search.type.trim() === "") {
-            return;
-        } else if (search.id.trim().toUpperCase() === "TRAMITE") {
-            return;
-        } else {
-            await axios
-                .get(`/service/report/${search.type}/${search.id}`)
-                .then((res) => {
-                    if (res.data.length < 1) {
-                        setOpenSB(false);
-                        setSeverity("warning");
-                        setNotification(`No se han encontrado servicios para ${search.type}: ${search.id}`);
-                        setOpenSB(true);
-                        return
-                    }
-                    const newData = []
-                    newData.push({
-                        ...res.data[0],
-                        history: res.data,
-                        assistances: res.data.length
-                    })
-                    if (newData?.length) {
-                        newData.sort((a, b) => b.assistances - a.assistances)
-                    }
-                    setRepeatedServices(newData)
-                })
-                .catch((error) => {
-                    if (error.response) {
-                        // Request made and server responded
-                        if (error.response.data.text === "TNV") {
-                            logout();
-                            history.push("/");
-                        } else {
-                            setOpenSB(false);
-                            setSeverity("error");
-                            setNotification(error.response.data.message);
-                            setOpenSB(true);
-                        }
-                    } else if (error.request) {
-                        // The request was made but no response was received
-                        console.log(error.request);
-                    } else {
-                        // Something happened in setting up the request that triggered an Error
-                        console.log("Error", error.message);
-                    }
-                });
-        }
-    };
+    // const handleSearch = async () => {
+    //     if (search.id.trim() === "" || search.type.trim() === "") {
+    //         return;
+    //     } else if (search.id.trim().toUpperCase() === "TRAMITE") {
+    //         return;
+    //     } else {
+    //         await axios
+    //             .get(`/service/report/${search.type}/${search.id}`)
+    //             .then((res) => {
+    //                 if (res.data.length < 1) {
+    //                     setOpenSB(false);
+    //                     setSeverity("warning");
+    //                     setNotification(`No se han encontrado servicios para ${search.type}: ${search.id}`);
+    //                     setOpenSB(true);
+    //                     return
+    //                 }
+    //                 const newData = []
+    //                 newData.push({
+    //                     ...res.data[0],
+    //                     history: res.data,
+    //                     assistances: res.data.length
+    //                 })
+    //                 if (newData?.length) {
+    //                     newData.sort((a, b) => b.assistances - a.assistances)
+    //                 }
+    //                 setRepeatedServices(newData)
+    //             })
+    //             .catch((error) => {
+    //                 if (error.response) {
+    //                     // Request made and server responded
+    //                     if (error.response.data.text === "TNV") {
+    //                         logout();
+    //                         history.push("/");
+    //                     } else {
+    //                         setOpenSB(false);
+    //                         setSeverity("error");
+    //                         setNotification(error.response.data.message);
+    //                         setOpenSB(true);
+    //                     }
+    //                 } else if (error.request) {
+    //                     // The request was made but no response was received
+    //                     console.log(error.request);
+    //                 } else {
+    //                     // Something happened in setting up the request that triggered an Error
+    //                     console.log("Error", error.message);
+    //                 }
+    //             });
+    //     }
+    // };
 
-    const handleClear = () => {
-        setSearch({ ...search, id: "" })
-        setClear(!clear)
-    }
+    // const handleClear = () => {
+    //     setSearch({ ...search, id: "" })
+    //     setClear(!clear)
+    // }
 
     return (
         <StartContainer>
