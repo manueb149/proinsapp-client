@@ -14,12 +14,12 @@ const Start = () => {
     const actualYear = Number((new Date()).getFullYear());
     const [openSB, setOpenSB] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [clear, setClear] = useState(false);
+    // const [clear, setClear] = useState(false);
     const [repeatedServices, setRepeatedServices] = useState([])
-    const [search, setSearch] = useState({
-        id: "",
-        type: "poliza", //Default value: póliza
-    });
+    // const [search, setSearch] = useState({
+    //     id: "",
+    //     type: "poliza", //Default value: póliza
+    // });
     const history = useHistory();
 
     const ServiceDataContext = useContext(serviceDataContext);
