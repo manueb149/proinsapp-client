@@ -14,7 +14,7 @@ const Login = (props) => {
 	});
 	const [showEye, setShowEye] = useState(false);
 	const [openSB, setOpenSB] = useState(true);
-	const [loading] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	const { email, password } = user;
 
@@ -23,13 +23,13 @@ const Login = (props) => {
 	const { showAlert } = alertContext;
 
 	const authContext = useContext(AuthContext);
-	const { msg, authenticated } = authContext;
+	const { msg, authenticated , login } = authContext;
 
 	// En caso de que el password o usuario no exista
 	useEffect(() => {
-		window.location.replace('https://app.servigruas.com.do')
+		// window.location.replace('https://app.servigruas.com.do')
 		if (authenticated) {
-			// props.history.push("/dashboard");
+			props.history.push("/dashboard");
 		}
 		if (msg) {
 			showAlert(msg.text, msg.severity);
@@ -56,8 +56,8 @@ const Login = (props) => {
 		}
 
 		// Pasarlo al action
-		// setLoading(true);
-		// login({ email: email.toLowerCase(), password, setLoading });
+		setLoading(true);
+		login({ email: email.toLowerCase(), password, setLoading });
 	};
 
 	const handleCloseSB = (event, reason) => {
