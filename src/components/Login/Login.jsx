@@ -27,7 +27,7 @@ const Login = (props) => {
 
 	// En caso de que el password o usuario no exista
 	useEffect(() => {
-		window.location.replace('https://app.servigruas.proinsa.com.do')
+		window.location.replace('https://app.servigruas.com.do')
 		if (authenticated) {
 			// props.history.push("/dashboard");
 		}
